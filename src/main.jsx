@@ -5,13 +5,14 @@ import { RouterProvider } from "react-router-dom";
 import router from "./router";
 import { Provider } from "react-redux";
 import store from "./store";
-import { Toast ,FlashModal } from "./component/common";
-import './assets/all.scss';
+import { Toast, FlashModal } from "./component/common";
+import "./assets/all.scss";
+import "bootstrap/dist/js/bootstrap.js";
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <RouterProvider router={router} />
     <Toast />
-    <FlashModal/>
+    <FlashModal />
   </Provider>
 );
