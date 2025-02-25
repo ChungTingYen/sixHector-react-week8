@@ -5,4 +5,5 @@ export { default as LoadingOverlay } from './LoadingOverlay';
 export { default as Carts } from './Carts';
 export { default as CustomerInfoWithNoCart } from './CustomerInfoWithNoCart';
 export { default as CustomerInfoWithNoCartNavbar } from './CustomerInfoWithNoCartNavbar';
-
+export { default as SwiperComponent } from './SwiperComponent';
+export { default as Pagination } from '../front/Pagination';

@@ -53,7 +53,7 @@ export default function Footer() {
               <p className="mb-0">02-3456-7890</p>
               <p className="mb-0">service@mail.com</p>
             </div>
-            <p className="mb-0">© 2025 LOGO All Rights Reserved.</p>
+            <p className="mb-0">此網頁僅為學習使用，全部圖片版權皆為<span>https://unsplash.com</span></p>
           </div>
         </div>
       </div>

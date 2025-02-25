@@ -10,6 +10,10 @@ export const apiService = {
     const response = await userInstance.post(path,postData);
     return response;
   },
+  axiosGetByConfig : async (path,config = {})=>{
+    const response = await userInstance.get(path,config);
+    return response;
+  },
   // axiosGetCartData:async(path)=>{
   //   const response = await userInstance.get(path);
   //   return response;

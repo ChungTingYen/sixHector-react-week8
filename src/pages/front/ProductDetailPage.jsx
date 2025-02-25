@@ -3,23 +3,26 @@ import { useParams } from "react-router-dom";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import ReactLoading from "react-loading";
 import { apiService } from "../../apiService/apiService";
-import { Modal } from "../../component/common";
+import { Link } from "react-router-dom";
 const APIPath = import.meta.env.VITE_API_PATH;
 import 'react-lazy-load-image-component/src/effects/blur.css'; // 引入模糊效果的 CSS
 import PlaceholderImage from '../../img/loading.jpg'; 
 import { useToast } from "../../hook";
+import { SwiperComponent } from '../../component/front';
 export default function ProductDetailPage() {
   const { id: productId } = useParams();
   const [product, setProduct] = useState({});
   const [qtySelect, setQtySelect] = useState(1);
   const [isButtonLoading, setIsButtonLoading] = useState(false);
-  const modalRef = useRef(null);
+  useEffect(() => {
+    window.scrollTo(0, 0); // 自動滾動到頂部
+  }, []); // 
   const updateToast = useToast();
-
-  const handleImageClick = (imageSrc) => {
-    modalRef.current.setModalImage(imageSrc);
-    modalRef.current.open();
-  };
+  //   const modalRef = useRef(null);
+  //   const handleImageClick = (imageSrc) => {
+  //     modalRef.current.setModalImage(imageSrc);
+  //     modalRef.current.open();
+  //   };
   const getProductById = async () => {
     try {
       const {
@@ -40,7 +43,7 @@ export default function ProductDetailPage() {
         },
       };
       await apiService.axiosPost(`/api/${APIPath}/cart`,postData);
-      updateToast("加入完成","success",true);
+      updateToast("裝備加入購物車完成","success",true);
     } catch (error) {
       console.log(error);
       updateToast("加入失敗","success",true);
@@ -52,95 +55,174 @@ export default function ProductDetailPage() {
     getProductById();
   }, []);
   return (
-    <>
-      <div className="container p-5">
-        <div className="row">
-          <div className="col-6">
-            {/* <img */}
-            <LazyLoadImage
-              className="img-fluid"
-              src={product.imageUrl}
-              alt={product.title}
-              placeholderSrc={PlaceholderImage}
-              effect="blur" // 可選，添加模糊效果
-              width="100%"
-              height="400%"
-            />
-          </div>
-          <div className="col-6">
-            <div className="d-flex align-items-center gap-2">
-              <h2>{product.title}</h2>
-              <span className="badge text-bg-success">{product.category}</span>
-            </div>
-            <p className="mb-3">{product.description}</p>
-            <p className="mb-3">{product.content}</p>
-            <h5 className="mb-3">NT$ {product.price}</h5>
-            <div className="input-group align-items-center w-75">
-              <select
-                value={qtySelect}
-                onChange={(e) => setQtySelect(parseInt(e.target.value))}
-                id="qtySelect"
-                className="form-select"
-              >
-                {Array.from({ length: 10 }).map((_, index) => (
-                  <option key={index} value={index + 1}>
-                    {index + 1}
-                  </option>
-                ))}
-              </select>
-              <button
-                type="button"
-                className="btn btn-primary d-flex align-items-center gap-2"
-                disabled={isButtonLoading}
-                onClick={addProductTocart}
-              >
-                <div>加入購物車</div>
-                {isButtonLoading && (
-                  <ReactLoading
-                    type={"spin"}
-                    color={"#000"}
-                    height={"1.5rem"}
-                    width={"1.5rem"}
-                  />
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-12">
-            <h5 className="mt-3">更多圖片：</h5>
-            <div className="d-flex flex-wrap">
-              { product.imagesUrl && product.imagesUrl
-                .filter((item) => item != "")
-                .map((image, index) => (
-                  // <img
+    <div className="container-fluid">
+      <div className="container">
+        <div className="row align-items-center">
+          <div className="col-md-7">
+            <div
+              id="carouselExampleControls"
+              className="carousel slide"
+              data-ride="carousel"
+            >
+              <div className="carousel-inner">
+                <div className="carousel-item active">
                   <LazyLoadImage
-                    key={index}
-                    src={image}
-                    className="card-img-top primary-image me-2 mb-1"
-                    alt={`更多圖片${index}`}
-                    style={{
-                      width: "250px",
-                      height: "250px",
-                      objectFit: "cover",
-                      cursor: "pointer", // 這裡設置光標為手指圖樣
-                    }}
-                    onClick={() => handleImageClick(image)}
+                    src={product.imageUrl}
+                    className="d-block w-100"
+                    alt={product.title}
                     placeholderSrc={PlaceholderImage}
                     effect="blur" // 可選，添加模糊效果
+                    width="100%"
+                    height="400%"
                   />
-                ))}
+                </div>
+                {/* <div className="carousel-item">
+                  <img
+                    src="https://images.unsplash.com/photo-1502743780242-f10d2ce370f3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1916&q=80"
+                    className="d-block w-100"
+                    alt="..."
+                  />
+                </div>
+                <div className="carousel-item">
+                  <img
+                    src="https://images.unsplash.com/photo-1502743780242-f10d2ce370f3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1916&q=80"
+                    className="d-block w-100"
+                    alt="..."
+                  />
+                </div> */}
+              </div>
+              <a
+                className="carousel-control-prev"
+                href="#carouselExampleControls"
+                role="button"
+                data-slide="prev"
+              >
+                <span
+                  className="carousel-control-prev-icon"
+                  aria-hidden="true"
+                ></span>
+                <span className="sr-only">Previous</span>
+              </a>
+              <a
+                className="carousel-control-next"
+                href="#carouselExampleControls"
+                role="button"
+                data-slide="next"
+              >
+                <span
+                  className="carousel-control-next-icon"
+                  aria-hidden="true"
+                ></span>
+                <span className="sr-only">Next</span>
+              </a>
+            </div>
+          </div>
+          <div className="col-md-5">
+            <nav aria-label="breadcrumb">
+              <ol className="breadcrumb bg-white px-0 mb-0 py-3">
+                <li className="breadcrumb-item">
+                  <Link className="text-muted" to='/'>
+                      首頁
+                  </Link>
+                </li>
+                <li className="breadcrumb-item">
+                  <Link className="text-muted" to='/products'>
+                      產品列表
+                  </Link>
+                </li>
+                <li className="breadcrumb-item active" aria-current="page">
+                    產品資訊
+                </li>
+              </ol>
+            </nav>
+            <h2 className="fw-bold h1 mb-1">{product.title}</h2>
+            <span className="badge text-bg-success">{product.category}</span>
+            <p className="mb-3">描述:{product.description}</p>
+            {/* <p className="mb-3">內容:{product.content}</p> */}
+            <p className="mb-0 text-muted text-end">
+              <del className="text-danger">NT${product.origin_price}</del>
+            </p>
+            <p className="h4 fw-bold text-end">NT${product.price}</p>
+            <div className="row align-items-center">
+              <div className="col-6">
+                <div className="input-group my-3 bg-light rounded">
+                  {/* <div className="input-group-prepend">
+                    <button
+                      className="btn btn-outline-dark border-0 py-2"
+                      type="button"
+                      id="button-addon1"
+                      onClick={()=>setQtySelect((prev)=>prev - 1)}
+                      disabled={qtySelect <= 1}
+                    >
+                      <i className="fas fa-minus"></i>
+                    </button>
+                  </div>
+                  <span
+                    className="form-control border-0 text-center my-auto shadow-none bg-light"
+                  >{qtySelect}</span>
+                  <div className="input-group-append">
+                    <button
+                      className="btn btn-outline-dark border-0 py-2"
+                      type="button"
+                      id="button-addon2"
+                      onClick={()=>setQtySelect((prev)=>prev + 1)}
+                    >
+                      <i className="fas fa-plus"></i>
+                    </button>
+                  </div> */}
+                  <select
+                    value={qtySelect}
+                    onChange={(e) => setQtySelect(parseInt(e.target.value))}
+                    id="qtySelect"
+                    className="form-select border-secondary"
+                  >
+                    {Array.from({ length: 10 }).map((_, index) => (
+                      <option key={index} value={index + 1}>
+                        {index + 1}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="col-6">
+                <button 
+                  type='button'
+                  className="btn btn-dark align-items-center w-100" 
+                  onClick={addProductTocart}>
+                  <div className="d-flex justify-content-center">加入購物車
+                    {isButtonLoading && (
+                      <ReactLoading
+                        type={"spin"}
+                        color={"#000"}
+                        height={"1.5rem"}
+                        width={"1.5rem"}
+                        className="ms-2"
+                      />
+                    )}
+                  </div> 
+                </button>
+              </div>            
             </div>
           </div>
         </div>
+        <div className="row my-5">
+          <div className="col-md-4">
+            <p>
+                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+                nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+                erat, sed diam voluptua. At vero eos et accusam et
+            </p>
+          </div>
+          <div className="col-md-3">
+            <p className="text-muted">
+                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+                nonumy eirmod tempor
+            </p>
+          </div>
+        </div>
+        <SwiperComponent product={product}/>
       </div>
-      <Modal
-        ref={modalRef}
-        modalBodyText="商品放大圖"
-        modalSize={{ width: "600px", height: "600px" }}
-        modalImgSize={{ width: "500px", height: "500px" }}
-      />
-    </>
+    </div>
   );
 }
+  

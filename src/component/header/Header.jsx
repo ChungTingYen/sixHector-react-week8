@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { Fragment } from "react";
-
+import { useState } from 'react';
 export default function Header() {
   const routes = [
     { path: "/", name: "首頁" },
@@ -9,6 +9,11 @@ export default function Header() {
     { path: "/customerInfo", name: "訂購者資料" },
     { path: "/login", name: "登入後台" },
   ];
+  const [toggle,setToggle] = useState(false);
+  const handleToggle = () => {
+    setToggle((prev)=>!prev);
+  };
+  
   return (
     <div className="container d-flex flex-column">
       <nav className="navbar navbar-expand-lg navbar-light">
@@ -16,17 +21,17 @@ export default function Header() {
         <button
           className="navbar-toggler"
           type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNavAltMarkup"
+          // data-bs-toggle="collapse"
+          // data-bs-target="#navbarNavAltMarkup"
           aria-controls="navbarNavAltMarkup"
           aria-expanded="false"
           aria-label="Toggle navigation"
+          onClick={handleToggle}
         >
           <span className="navbar-toggler-icon"></span>
         </button>
         <div
-          className="collapse navbar-collapse justify-content-end"
-          id="navbarNavAltMarkup"
+          className={`collapse navbar-collapse justify-content-end ${toggle ? 'show' : ''}`}
         >
           <div className="navbar-nav">
             {routes.map((route) => (

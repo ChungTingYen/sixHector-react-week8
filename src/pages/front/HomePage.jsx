@@ -9,9 +9,9 @@ export default function HomePage() {
           left: 0,
           right: 0,
           backgroundImage:
-            "url(https://images.unsplash.com/photo-1480399129128-2066acb5009e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80)",
+            "url(https://images.unsplash.com/photo-1613837295512-0375f9cb6159?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)",
           backgroundPosition: "center center",
-          opacity: 0.1,
+          opacity: 0.2,
           zIndex: -1,
         }}
       ></div>
@@ -20,15 +20,11 @@ export default function HomePage() {
         style={{ minHeight: "calc(100vh - 56px)" }}
       >
         <div className="row justify-content-center my-auto">
-          <div className="col-md-4 text-center">
-            <h2>Lorem ipsum.</h2>
+          <div className="col-md-6 text-center">
+            <h2>歡迎來到一個簡單的樂器行</h2>
             <p className="text-muted mb-0">
-              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-              nonumy eirmod.
+              進來看看吧~
             </p>
-            <button className="btn btn-dark rounded-0 mt-6">
-              Lorem ipsum.
-            </button>
           </div>
         </div>
       </div>

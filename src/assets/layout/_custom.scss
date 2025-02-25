@@ -63,3 +63,17 @@
       width: 50% !important;
     }
   }
+
+  .no-underline {
+    text-decoration: none;
+  }
+
+  .collapsible-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease;
+}
+
+.collapsible-content.show {
+  max-height: 1000px; /* 設置一個足夠大的值以確保內容能完全展開 */
+}

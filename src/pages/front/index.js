@@ -6,4 +6,3 @@ export { default as CartPage } from './CartPage';
 export { default as CustomerInfoPage } from './CustomerInfoPage';
 export { default as LoginPage } from './LoginPage';
 export { default as ProductDetailPageBySide } from './ProductDetailPageBySide';
-
