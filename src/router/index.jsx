@@ -4,7 +4,9 @@ import BackLayout from "../layouts/BackLayout";
 import {
   HomePage,ProductsPage,ProductDetailPage,
   NotFoundPage,CartPage,CustomerInfoPage,
-  LoginPage ,ProductDetailPageBySide
+  LoginPage ,ProductDetailPageBySide,
+  CheckoutFormPage,Checkout,
+  OrderListsPage
 } from "../pages/front";
 import{ ProductLitPage,AdminHomePage,OrderListPage } from "../pages/back";
 const routes = [
@@ -23,7 +25,10 @@ const routes = [
       },
       { path:'cart',element:<CartPage/> },
       { path:'customerInfo',element:<CustomerInfoPage/> },
-      { path:'login',element:<LoginPage/> , }
+      { path:'login',element:<LoginPage/> , },
+      { path:'checkout-form',element:<CheckoutFormPage/> },
+      { path:'checkout',element:<Checkout/> },
+      { path:'OrderLists',element:<OrderListsPage/> },
     ]
   },
   {

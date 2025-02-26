@@ -42,85 +42,77 @@ const Carts = (props) => {
       setIsLoading(false);
     }
   };
-  return (
-    <>
-      <tr>
-        <td style={{ height: "100px" }}>
-          <button
-            type="button"
-            className="btn btn-outline-danger"
-            onClick={() => handleDeleteCart(cart.id)}
-            style={{ width: "80%", height: "80%" }}
-          >
-            刪除
-          </button>
-        </td>
-        <td>{cart.product.title}</td>
-        <td
+
+  return(
+    <tr className="border-bottom border-top">
+      <th
+        scope="row"
+        className="border-0 px-0 font-weight-normal py-4"
+      >
+        <img
+          src={cart.product.imageUrl}
+          alt={cart.product.title}
           style={{
-            width: "100px",
-            height: "100px",
-            overflow: "hidden",
-            position: "relative",
+            width: "72px",
+            height: "72px",
+            objectFit: "cover",
           }}
-        >
-          <img
-            className="img-fluid"
-            src={cart.product.imageUrl}
-            alt={cart.product.title}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-            }}
-          />
-        </td>
-        <td>
-          <div className="d-flex justify-content-center">
-            <div className="row">
-              <div className="col-6">
-                <div>
-                  <button
-                    type="button"
-                    className="btn btn-outline-danger btn-sm"
-                    style={{ width: "50px" }}
-                    onClick={() => handleIncreDecreProduct(cart.id, "+")}
-                  >
-                    🡅
-                  </button>
-                </div>
-                <div>
-                  <span
-                    className="btn border border-dark"
-                    style={{ width: "50px", cursor: "auto" }}
-                  >
-                    {cart.qty}
-                  </span>
-                </div>
-                <div>
-                  <button
-                    type="button"
-                    className={`btn btn-outline-primary btn-sm ${
-                      cart.qty <= 1 ? "bg-secondary" : ""
-                    }`}
-                    onClick={() => handleIncreDecreProduct(cart.id, "-")}
-                    style={{ width: "50px" }}
-                    disabled={cart.qty <= 1 && true}
-                  >
-                    🡇
-                  </button>
-                </div>
-              </div>
-              <div className="col-6 d-flex align-items-center">
-                <span className="ml-3">{cart.product.unit}</span>
-              </div>
-            </div>
+        />
+        <p className="mb-0 fw-bold ms-3 d-inline-block">
+          {cart.product.title}
+        </p>
+      </th>
+      <td
+        className="border-0 align-middle"
+        style={{ maxWidth: "160px" }}
+      >
+        <div className="input-group pe-5">
+          <div className="input-group-prepend">
+            <button
+              className={`btn btn-outline-dark border-0 py-2 ${
+                cart.qty <= 1 ? "bg-secondary" : ""
+              }`}
+              disabled={cart.qty <= 1 && true}
+              type="button"
+              id="button-addon1"
+              onClick={() => handleIncreDecreProduct(cart.id, "-")}
+            >
+              <i className="fas fa-minus"></i>
+            </button>
           </div>
-        </td>
-        <td className="text-end">{cart.total}</td>
-      </tr>
-    </>
+          <span
+            className="form-control border-0 text-center my-auto shadow-none"
+            placeholder=""
+            aria-label="Example text with button addon"
+            aria-describedby="button-addon1">
+            {cart.qty}
+          </span>
+          <div className="input-group-append">
+            <button
+              className="btn btn-outline-dark border-0 py-2"
+              type="button"
+              id="button-addon2"
+              onClick={() => handleIncreDecreProduct(cart.id, "+")}
+            >
+              <i className="fas fa-plus"></i>
+            </button>
+          </div>
+        </div>
+      </td>
+      <td className="border-0 align-middle">
+        <p className="mb-0 ms-auto">NT${cart.total.toLocaleString()}</p>
+      </td>
+      <td className="border-0 align-middle">
+        <button
+          className="btn btn-outline-dark border-0 py-2"
+          type="button"
+          id="button-addon2"
+          onClick={() => handleDeleteCart(cart.id)}
+        >
+          <i className="fas fa-times"></i>
+        </button>
+      </td>
+    </tr>
   );
 };
-
 export default Carts;

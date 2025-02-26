@@ -7,3 +7,4 @@ export { default as CustomerInfoWithNoCart } from './CustomerInfoWithNoCart';
 export { default as CustomerInfoWithNoCartNavbar } from './CustomerInfoWithNoCartNavbar';
 export { default as SwiperComponent } from './SwiperComponent';
 export { default as Pagination } from '../front/Pagination';
+export { default as Orders } from '../front/Orders';

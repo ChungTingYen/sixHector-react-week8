@@ -201,10 +201,19 @@ export default function ProductDetailPage() {
                     )}
                   </div> 
                 </button>
-              </div>            
+              </div>  
+              <div className="col-6">
+                <Link
+                  to='/products'
+                  className="btn btn-primary w-100"
+                >
+                回到商品頁
+                </Link>          
+              </div>
             </div>
           </div>
         </div>
+        
         <div className="row my-5">
           <div className="col-md-4">
             <p>

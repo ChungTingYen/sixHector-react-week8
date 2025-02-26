@@ -74,6 +74,7 @@ const Product = (props) => {
         >
             加到購物車
         </button>
+        
         <hr />
       </div>
     </div>

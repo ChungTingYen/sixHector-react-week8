@@ -45,10 +45,13 @@ export default function ProductsPage() {
     }
   };
   console.log('products=',products);
-  
+  const scroll = ()=>{
+    window.scrollTo(0, 100); 
+    console.log('scroll');
+  };
   useEffect(() => {
     getProducts();
-    window.scrollTo(0, 500); 
+    scroll();
   }, []);
   const handleToggle = (id) => {
     // 找到目標對象
@@ -64,7 +67,6 @@ export default function ProductsPage() {
       setToggle(newToggle);
     }
   };
-  
   return (<>
     <div className="container-fluid">
       <div

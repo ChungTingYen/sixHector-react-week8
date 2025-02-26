@@ -4,10 +4,9 @@ const Pagination = (props) => {
   const { getData, pageInfo } = props;
   const handlePageChange = (e,page) => {
     e.preventDefault();
-    console.log('Page change to:', page); // 調試信息
+    console.log('Page change to:', page);
     getData(page);
-    window.scrollTo(0, 0); 
-   
+    window.scrollTo(0, 400); 
   };
   return (
     <>
