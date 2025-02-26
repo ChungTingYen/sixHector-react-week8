@@ -1,10 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { apiService } from "../../apiService/apiService";
 import { Link } from "react-router-dom";
-import {
-  Carts,
-  LoadingOverlay,
-} from "../../component/front";
+import { Carts, LoadingOverlay } from "../../component/front";
 // import { useNavigatePage } from "../../hook";
 const APIPath = import.meta.env.VITE_API_PATH;
 import { useToast } from "../../hook";
@@ -80,20 +77,22 @@ export default function CartPage() {
             <h3 className="mt-3 mb-4">購物車</h3>
             <div className="row">
               <div className="col-md-8">
-                {cart.carts?.length > 0 ?
+                {cart.carts?.length > 0 ? (
                   <table className="table">
                     <thead>
                       <tr>
                         <th scope="col" className="border-0 ps-0">
-                      商品
+                          商品
                         </th>
                         <th scope="col" className="border-0">
-                      數量
+                          數量
                         </th>
                         <th scope="col" className="border-0">
-                      總價
+                          總價
                         </th>
-                        <th scope="col" className="border-0">刪除</th>
+                        <th scope="col" className="border-0">
+                          刪除
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -105,44 +104,44 @@ export default function CartPage() {
                           setIsLoading={setIsLoading}
                           setReload={setReload}
                         />
-                      )) 
-                      }
+                      ))}
                     </tbody>
                   </table>
-                  : <p>購物車沒有商品</p>}
-                {cart.carts?.length > 0 &&
-                <div className="d-flex">
-                  <div className="input-group w-50 mb-3">
-                    <input
-                      type="text"
-                      className="form-control rounded-0 border-bottom border-top-0 border-start-0 border-end-0 shadow-none"
-                      placeholder="Coupon Code"
-                      aria-label="Recipient's username"
-                      aria-describedby="button-addon2"
-                    />
-                    <div className="input-group-append">
+                ) : (
+                  <p>購物車沒有商品</p>
+                )}
+                {cart.carts?.length > 0 && (
+                  <div className="d-flex">
+                    <div className="input-group w-50 mb-3">
+                      <input
+                        type="text"
+                        className="form-control rounded-0 border-bottom border-top-0 border-start-0 border-end-0 shadow-none"
+                        placeholder="Coupon Code"
+                        aria-label="Recipient's username"
+                        aria-describedby="button-addon2"
+                      />
+                      <div className="input-group-append">
+                        <button
+                          className="btn btn-outline-dark border-bottom border-top-0 border-start-0 border-end-0 rounded-0"
+                          type="button"
+                          id="button-addon2"
+                        >
+                          <i className="fas fa-paper-plane"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div className="input-group w-50 mb-3">
                       <button
-                        className="btn btn-outline-dark border-bottom border-top-0 border-start-0 border-end-0 rounded-0"
+                        className="btn border-bottom border-top-0  btn-dark ms-auto"
                         type="button"
-                        id="button-addon2"
+                        onClick={() => handleDeleteCart()}
+                        disabled={cart.carts?.length <= 0}
                       >
-                        <i className="fas fa-paper-plane"></i>
+                        刪除購物車
                       </button>
                     </div>
-
                   </div>
-                  <div className="input-group w-50 mb-3">
-                    <button
-                      className="btn border-bottom border-top-0  btn-dark ms-auto"
-                      type="button"
-                      onClick={() => handleDeleteCart()}
-                      disabled={cart.carts?.length <= 0}
-                    >
-                    刪除購物車
-                    </button>
-                  </div>
-                </div>
-                }
+                )}
               </div>
               <div className="col-md-4">
                 <div className="border p-4 mb-4">
@@ -154,9 +153,11 @@ export default function CartPage() {
                           scope="row"
                           className="border-0 px-0 pt-4 font-weight-normal"
                         >
-                        小計
+                          小計
                         </th>
-                        <td className="text-end border-0 px-0 pt-4">NT${cart.total && cart.total.toLocaleString()}</td>
+                        <td className="text-end border-0 px-0 pt-4">
+                          NT${cart.total && cart.total.toLocaleString()}
+                        </td>
                       </tr>
                       {/* <tr>
                         <th
@@ -173,15 +174,20 @@ export default function CartPage() {
                   </table>
                   <div className="d-flex justify-content-between mt-4">
                     <p className="mb-0 h4 fw-bold">總價</p>
-                    <p className="mb-0 h4 fw-bold">NT${cart.final_total && cart.final_total.toLocaleString()}</p>
+                    <p className="mb-0 h4 fw-bold">
+                      NT${cart.final_total && cart.final_total.toLocaleString()}
+                    </p>
                   </div>
                   {cart.carts?.length > 0 ? (
-                    <Link to="/checkout-form" className="btn btn-dark w-100 mt-4">
-                      前往結帳
+                    <Link
+                      to="/checkout-form"
+                      className="btn btn-dark w-100 mt-4"
+                    >
+                      建立訂單
                     </Link>
                   ) : (
                     <button className="btn btn-dark w-100 mt-4" disabled>
-                      前往結帳
+                      建立訂單
                     </button>
                   )}
                 </div>

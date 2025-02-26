@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { LoadingOverlay, Pagination, Orders } from "../../component/front";
+import { useCallback, useEffect, useState } from "react";
+import { LoadingOverlay, Pagination, OrderModal } from "../../component/front";
 import { apiService } from "../../apiService/apiService";
 import { useToast } from "../../hook";
 
@@ -10,7 +10,8 @@ export default function OrderListsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [pageInfo, setPageInfo] = useState({});
   const updateToast = useToast();
-
+  const [tempOrder, setTempOrder] = useState();
+  const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
   const getOrders = async (page = 1) => {
     setIsLoading(true);
     try {
@@ -20,39 +21,54 @@ export default function OrderListsPage() {
         params: { page: page },
       });
       console.log(orders, pagination);
-      setOrders(orders
-        .filter((order) => order.id !== undefined && order.id !== null)
-        .sort((a, b) => {
-          return new Date(b.create_at) - new Date(a.create_at);
-        }));
+      setOrders(
+        orders
+          .filter((order) => order.id !== undefined && order.id !== null)
+          .sort((a, b) => {
+            return new Date(b.create_at) - new Date(a.create_at);
+          })
+      );
       setPageInfo(pagination);
-      console.log('pagination=', pagination);
+      console.log("pagination=", pagination);
     } catch (error) {
       console.log(error);
     } finally {
       setIsLoading(false);
     }
   };
-  const handleCreateTime = (time)=>{
+  const handleCreateTime = (time) => {
     const timestamp = time * 1000;
     const date = new Date(timestamp);
-    const options = { 
-      year: 'numeric', 
-      month: '2-digit', 
-      day: '2-digit', 
-      hour: '2-digit', 
-      minute: '2-digit', 
-      second: '2-digit', 
-      hour12: false, 
-      timeZone: 'Asia/Taipei' 
+    const options = {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+      timeZone: "Asia/Taipei",
     };
-    
-    const taiwanTime = date.toLocaleString('zh-TW', options).replace(/\//g, '-');
+    const taiwanTime = date
+      .toLocaleString("zh-TW", options)
+      .replace(/\//g, "-");
     return taiwanTime;
-
   };
+  const openProductDetailModal = () => {
+    setIsOrderModalOpen(true);
+  };
+  const handleOpenOrderModal = useCallback(
+    (OrderId) => {
+      const temp = orders.find((item) => item.id === OrderId);
+      console.log("temp:", temp);
+      setTempOrder(temp);
+      openProductDetailModal();
+    },
+    [orders]
+  );
   useEffect(() => {
     getOrders();
+    console.log("orders:", orders);
   }, []);
 
   return (
@@ -66,25 +82,36 @@ export default function OrderListsPage() {
             <>
               <div className="container mt-md-5 mt-3 mb-7">
                 <div className="row">
-                  {orders.map((product) => (
-                    <div className="col-md-4" key={product.id}>
+                  {orders.map((order) => (
+                    <div className="col-md-4" key={order.id}>
                       <div className="row">
-                        <div className="card border-1 mb-4 position-relative bg-light text-black" style={{ width: "230px", height: "100px" }}>
-
-                          <span>{product.id}</span>
+                        <div
+                          className="card border-1 mb-4 position-relative bg-light text-black"
+                          style={{
+                            width: "230px",
+                            height: "100px",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => handleOpenOrderModal(order.id)}
+                        >
+                          <span>{order.id}</span>
                           <div className="card-body p-0">
                             <p className="card-text mb-0">
-                              {handleCreateTime(product.create_at)}
+                              {handleCreateTime(order.create_at)}
                             </p>
                           </div>
                           <div className="card-body p-0">
                             <p className="card-text mb-0">
-                              NT${product.total.toLocaleString()}
+                              NT${order.total.toLocaleString()}
                             </p>
                           </div>
                           <div className="card-body p-0">
-                            <p className={`card-text mb-0 ${product.is_paid ? 'text-success' : 'text-danger'}`}>
-                              {product.is_paid ? '已付款' : '未付款'}
+                            <p
+                              className={`card-text mb-0 ${
+                                order.is_paid ? "text-success" : "text-danger"
+                              }`}
+                            >
+                              {order.is_paid ? "已付款" : "未付款"}
                             </p>
                           </div>
                         </div>
@@ -101,6 +128,11 @@ export default function OrderListsPage() {
           {isLoading && <LoadingOverlay />}
         </div>
       </div>
+      <OrderModal
+        tempProduct={tempOrder}
+        isProductModalOpen={isOrderModalOpen}
+        setIsProductModalOpen={setIsOrderModalOpen}
+      />
     </>
   );
 }

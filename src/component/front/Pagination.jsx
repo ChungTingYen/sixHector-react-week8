@@ -1,12 +1,17 @@
 /* eslint-disable react/prop-types */
-import { memo } from 'react';
+import { memo } from "react";
 const Pagination = (props) => {
   const { getData, pageInfo } = props;
-  const handlePageChange = (e,page) => {
+  const handlePageChange = (e, page) => {
     e.preventDefault();
-    console.log('Page change to:', page);
     getData(page);
-    window.scrollTo(0, 400); 
+    // 滾動到文件高度的40%
+    let scrollPercentage = 0.1;
+    let scrollHeight = document.documentElement.scrollHeight;
+    // console.log("scrollHeight:", scrollHeight);
+    scrollHeight > 1000
+      ? window.scrollTo(0, scrollPercentage * scrollHeight)
+      : window.scrollTo(0, 0);
   };
   return (
     <>
@@ -17,7 +22,7 @@ const Pagination = (props) => {
               <a
                 className="page-link"
                 href="#"
-                onClick={(e) => handlePageChange(e,pageInfo.current_page - 1)}
+                onClick={(e) => handlePageChange(e, pageInfo.current_page - 1)}
               >
                 上一頁
               </a>
@@ -32,7 +37,7 @@ const Pagination = (props) => {
                 >
                   <a
                     className="page-link"
-                    onClick={(e) => handlePageChange(e,index + 1)}
+                    onClick={(e) => handlePageChange(e, index + 1)}
                     href="#"
                   >
                     {index + 1}
@@ -44,7 +49,7 @@ const Pagination = (props) => {
               <a
                 className="page-link"
                 href="#"
-                onClick={(e) => handlePageChange(e,pageInfo.current_page + 1)}
+                onClick={(e) => handlePageChange(e, pageInfo.current_page + 1)}
               >
                 下一頁
               </a>
