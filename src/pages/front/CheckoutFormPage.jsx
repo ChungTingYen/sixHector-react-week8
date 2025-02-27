@@ -1,4 +1,4 @@
-import { useState, useEffect,Fragment } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { apiService } from "../../apiService/apiService";
 import {
   LoadingOverlay,
@@ -10,7 +10,7 @@ export default function CheckoutFormPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [cart, setCart] = useState({});
   const [reload, setReload] = useState(true);
-  
+
   useEffect(() => {
     const getCart = async () => {
       try {
@@ -29,7 +29,6 @@ export default function CheckoutFormPage() {
       setReload(false);
     }
   }, [reload]);
-  console.log('cart:',cart);
   return (
     <>
       <div className="container-fluid">
@@ -44,8 +43,12 @@ export default function CheckoutFormPage() {
                     <span className="text-nowrap ms-1">購物車</span>
                   </li>
                   <li className="me-md-6 me-3 position-relative custom-step-line">
+                    <i className="fas fa-check-circle d-md-inline d-block text-center"></i>
+                    <span className="text-nowrap ms-1">收件人資料</span>
+                  </li>
+                  <li className="me-md-6 me-3 position-relative custom-step-line">
                     <i className="fas fa-dot-circle d-md-inline d-block text-center"></i>
-                    <span className="text-nowrap ms-1">訂購人資料</span>
+                    <span className="text-nowrap ms-1">建立訂單</span>
                   </li>
                   <li>
                     <i className="fas fa-dot-circle d-md-inline d-block text-center"></i>
@@ -57,42 +60,54 @@ export default function CheckoutFormPage() {
           </div>
           <div className="row justify-content-center">
             <div className="col-md-10">
-              <h3 className="fw-bold mb-4 pt-3">建立訂單</h3>
+              <h3 className="fw-bold mb-4 pt-3">收件人資訊</h3>
             </div>
           </div>
           <div className="row flex-row-reverse justify-content-center pb-5">
             <div className="col-md-4">
               <div className="border p-4 mb-4">
-                {
-                  cart.carts?.map((cart)=>
-                    <Fragment key={cart.id}>
-                      <div className="d-flex mt-2" >
-                        <img
-                          src={cart.product.imageUrl}
-                          alt={cart.product.title}
-                          className="me-2"
-                          style={{ width: "48px", height: "48px", objectFit: "cover" }}
-                        />
-                        <div className="w-100">
-                          <div>
-                            <div className="mb-0 fw-bold">{cart.product.title}</div>
-                            <div className="mb-0">NT${cart.final_total.toLocaleString()}</div>
+                {cart.carts?.map((cart) => (
+                  <Fragment key={cart.id}>
+                    <div className="d-flex mt-2">
+                      <img
+                        src={cart.product.imageUrl}
+                        alt={cart.product.title}
+                        className="me-2"
+                        style={{
+                          width: "48px",
+                          height: "48px",
+                          objectFit: "cover",
+                        }}
+                      />
+                      <div className="w-100">
+                        <div>
+                          <div className="mb-0 fw-bold">
+                            {cart.product.title}
                           </div>
-                          <p className="mb-0 fw-bold">{cart.aty}</p>
+                          <div className="mb-0">
+                            NT${cart.final_total.toLocaleString()}
+                          </div>
                         </div>
+                        <p className="mb-0 fw-bold">{cart.aty}</p>
                       </div>
-                    </Fragment>)
-                }
+                    </div>
+                  </Fragment>
+                ))}
                 <hr />
                 <div className="d-flex justify-content-between mt-4">
                   <p className="mb-0 h4 fw-bold">總計</p>
-                  <p className="mb-0 h4 fw-bold">NT${cart.final_total && cart.final_total}</p>
+                  <p className="mb-0 h4 fw-bold">
+                    NT${cart.final_total && cart.final_total}
+                  </p>
                 </div>
               </div>
             </div>
             <div className="col-md-6">
               {cart.carts?.length > 0 ? (
-                <CustomerInfo setIsLoading={setIsLoading} setReload={setReload} />
+                <CustomerInfo
+                  setIsLoading={setIsLoading}
+                  setReload={setReload}
+                />
               ) : (
                 <CustomerInfoWithNoCartNavbar />
               )}
@@ -104,4 +119,3 @@ export default function CheckoutFormPage() {
     </>
   );
 }
-  

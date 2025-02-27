@@ -1,20 +1,23 @@
 /* eslint-disable indent */
 /* eslint-disable react/prop-types */
-import { useRef, useEffect, useState, Fragment } from "react";
-import ReactLoading from "react-loading";
-import { apiService } from "../../apiService/apiService";
+import { useRef, useEffect, useState } from "react";
+// import ReactLoading from "react-loading";
+// import { apiService } from "../../apiService/apiService";
+// const APIPath = import.meta.env.VITE_API_PATH;
+//import { Modal as PicModal } from "../../component/common";
+// import { Link } from "react-router-dom";
+// import { useToast } from "../../hook";
 import { Modal } from "bootstrap";
-import { Modal as PicModal } from "../../component/common";
-const APIPath = import.meta.env.VITE_API_PATH;
-import { useToast } from "../../hook";
-// import { Carts } from "../front";
+import { useNavigatePage } from "../../hook";
+
 const OrderModal = (props) => {
   const { tempProduct, setIsProductModalOpen, isProductModalOpen } = props;
   const [modalProduct, setModalProduct] = useState(tempProduct);
-  const updateToast = useToast();
+  const navigate = useNavigatePage();
   const productModalRef = useRef(null);
-  const picModalRef = useRef(null);
-  const [isLoading, setIsLoading] = useState(false);
+  // const updateToast = useToast();
+  // const picModalRef = useRef(null);
+  // const [isLoading, setIsLoading] = useState(false);
   const closeProductModal = () => {
     const modalInstance = Modal.getInstance(productModalRef.current);
     modalInstance.hide();
@@ -24,7 +27,11 @@ const OrderModal = (props) => {
     const modalInstance = Modal.getInstance(productModalRef.current);
     modalInstance.show();
   };
-  console.log("setModalProduct:", modalProduct);
+  const linkToPayment = () => {
+    closeProductModal();
+    navigate(`/payment/${modalProduct.id}`);
+  };
+  // console.log("setModalProduct:", modalProduct);
   useEffect(() => {
     if (productModalRef.current) {
       const modalElement = productModalRef.current;
@@ -142,11 +149,11 @@ const OrderModal = (props) => {
                   取消
                 </button>
                 <button
-                  type="button"
+                  to="/payment"
                   className="btn btn-primary"
-                  // onClick={handleUpdateOrder}
+                  onClick={linkToPayment}
                 >
-                  確認
+                  前往結帳
                 </button>
               </div>
             </div>

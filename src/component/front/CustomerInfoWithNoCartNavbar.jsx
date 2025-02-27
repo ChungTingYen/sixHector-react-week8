@@ -8,7 +8,7 @@ export default function CustomerInfoWithNoCartNavbar() {
       setTime((prev) => {
         if (prev === 0) {
           clearInterval(interval);
-          navigate("/products");
+          navigate("/payment");
           return prev;
         }
         return prev - 1;

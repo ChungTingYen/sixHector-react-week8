@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { LoadingOverlay, Pagination, OrderModal } from "../../component/front";
 import { apiService } from "../../apiService/apiService";
-import { useToast } from "../../hook";
+// import { useToast } from "../../hook";
 
 const APIPath = import.meta.env.VITE_API_PATH;
 
@@ -9,10 +9,12 @@ export default function OrderListsPage() {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [pageInfo, setPageInfo] = useState({});
-  const updateToast = useToast();
+  // const updateToast = useToast();
   const [tempOrder, setTempOrder] = useState();
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
+  // console.log("OrderListsPage");
   const getOrders = async (page = 1) => {
+    // console.log("getOrders");
     setIsLoading(true);
     try {
       const {
@@ -20,7 +22,7 @@ export default function OrderListsPage() {
       } = await apiService.axiosGetByConfig(`/api/${APIPath}/orders`, {
         params: { page: page },
       });
-      console.log(orders, pagination);
+      // console.log(orders, pagination);
       setOrders(
         orders
           .filter((order) => order.id !== undefined && order.id !== null)
@@ -29,7 +31,7 @@ export default function OrderListsPage() {
           })
       );
       setPageInfo(pagination);
-      console.log("pagination=", pagination);
+      // console.log("pagination=", pagination);
     } catch (error) {
       console.log(error);
     } finally {
@@ -60,9 +62,9 @@ export default function OrderListsPage() {
   const handleOpenOrderModal = useCallback(
     (OrderId) => {
       const temp = orders.find((item) => item.id === OrderId);
-      console.log("temp:", temp);
       setTempOrder(temp);
       openProductDetailModal();
+      setIsLoading(false);
     },
     [orders]
   );

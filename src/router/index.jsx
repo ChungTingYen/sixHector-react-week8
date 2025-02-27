@@ -2,13 +2,19 @@ import { createHashRouter } from "react-router-dom";
 import FrontLayout from "../layouts/FrontLayout";
 import BackLayout from "../layouts/BackLayout";
 import {
-  HomePage,ProductsPage,ProductDetailPage,
-  NotFoundPage,CartPage,CustomerInfoPage,
-  LoginPage ,ProductDetailPageBySide,
-  CheckoutFormPage,Checkout,
-  OrderListsPage,CheckoutPaymentPage
+  HomePage,
+  ProductsPage,
+  ProductDetailPage,
+  NotFoundPage,
+  CartPage,
+  CustomerInfoPage,
+  LoginPage,
+  ProductDetailPageBySide,
+  CheckoutFormPage,
+  OrderListsPage,
+  CheckoutPaymentPage,
 } from "../pages/front";
-import{ ProductLitPage,AdminHomePage,OrderListPage } from "../pages/back";
+import { ProductLitPage, AdminHomePage, OrderListPage } from "../pages/back";
 const routes = [
   {
     path: "/",
@@ -16,35 +22,38 @@ const routes = [
     children: [
       { path: "", element: <HomePage /> },
       {
-        path: "products", element: <ProductsPage />,
-        children:[{ path:'productBySide/:id',element:<ProductDetailPageBySide/> }]
+        path: "products",
+        element: <ProductsPage />,
+        children: [
+          { path: "productBySide/:id", element: <ProductDetailPageBySide /> },
+        ],
       },
       {
         path: "product/:id",
-        element: <ProductDetailPage />
+        element: <ProductDetailPage />,
       },
-      { path:'cart',element:<CartPage/> },
-      { path:'customerInfo',element:<CustomerInfoPage/> },
-      { path:'login',element:<LoginPage/> , },
-      { path:'checkout-form',element:<CheckoutFormPage/> },
-      { path:'checkout',element:<Checkout/> },
-      { path:'OrderLists',element:<OrderListsPage/> },
-      { path:'payment',element:<CheckoutPaymentPage/> },
-    ]
+      { path: "cart", element: <CartPage /> },
+      { path: "customerInfo", element: <CustomerInfoPage /> },
+      { path: "login", element: <LoginPage /> },
+      { path: "checkout-form", element: <CheckoutFormPage /> },
+      { path: "orderLists", element: <OrderListsPage /> },
+      { path: "payment", element: <CheckoutPaymentPage /> },
+      { path: "payment/:id", element: <CheckoutPaymentPage /> },
+    ],
   },
   {
-    path:'admin',
-    element:<BackLayout/>,
-    children:[
-      { path:'',element:<AdminHomePage/> },
-      { path:'productList',element:<ProductLitPage/> },
-      { path:'orderList',element:<OrderListPage/> },
-    ]
+    path: "admin",
+    element: <BackLayout />,
+    children: [
+      { path: "", element: <AdminHomePage /> },
+      { path: "productList", element: <ProductLitPage /> },
+      { path: "orderList", element: <OrderListPage /> },
+    ],
   },
   {
     path: "*",
-    element: <NotFoundPage />
-  }
+    element: <NotFoundPage />,
+  },
 ];
 
 const router = createHashRouter(routes);

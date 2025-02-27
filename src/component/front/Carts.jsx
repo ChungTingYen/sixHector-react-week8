@@ -43,12 +43,9 @@ const Carts = (props) => {
     }
   };
 
-  return(
+  return (
     <tr className="border-bottom border-top">
-      <th
-        scope="row"
-        className="border-0 px-0 font-weight-normal py-4"
-      >
+      <th scope="row" className="border-0 px-0 font-weight-normal py-4">
         <img
           src={cart.product.imageUrl}
           alt={cart.product.title}
@@ -58,14 +55,9 @@ const Carts = (props) => {
             objectFit: "cover",
           }}
         />
-        <p className="mb-0 fw-bold ms-3 d-inline-block">
-          {cart.product.title}
-        </p>
+        <p className="mb-0 fw-bold ms-3 d-inline-block">{cart.product.title}</p>
       </th>
-      <td
-        className="border-0 align-middle"
-        style={{ maxWidth: "160px" }}
-      >
+      <td className="border-0 align-middle" style={{ maxWidth: "160px" }}>
         <div className="input-group pe-5">
           <div className="input-group-prepend">
             <button
@@ -84,7 +76,8 @@ const Carts = (props) => {
             className="form-control border-0 text-center my-auto shadow-none"
             placeholder=""
             aria-label="Example text with button addon"
-            aria-describedby="button-addon1">
+            aria-describedby="button-addon1"
+          >
             {cart.qty}
           </span>
           <div className="input-group-append">
