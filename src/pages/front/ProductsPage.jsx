@@ -37,14 +37,12 @@ export default function ProductsPage() {
       );
       setProducts(products);
       setPageInfo(pagination);
-      console.log('pagination=',pagination);
     } catch (error) {
       console.log(error);
     } finally {
       setIsLoading(false);
     }
   };
-  console.log('products=',products);
   const scroll = ()=>{
     window.scrollTo(0, 100); 
     console.log('scroll');

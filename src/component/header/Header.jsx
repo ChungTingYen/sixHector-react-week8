@@ -7,7 +7,8 @@ export default function Header() {
     { path: "/products", name: "產品列表" },
     { path: "/cart", name: "購物車/訂購者資料" },
     // { path: "/customerInfo", name: "訂購者資料" },
-    { path: "/OrderLists", name: "訂單清單" },
+    { path: "/orderLists", name: "訂單清單" },
+    { path: "/payment", name: "結帳" },
     { path: "/login", name: "登入後台" },
   ];
   const [toggle,setToggle] = useState(false);

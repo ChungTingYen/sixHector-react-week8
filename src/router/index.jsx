@@ -6,7 +6,7 @@ import {
   NotFoundPage,CartPage,CustomerInfoPage,
   LoginPage ,ProductDetailPageBySide,
   CheckoutFormPage,Checkout,
-  OrderListsPage
+  OrderListsPage,CheckoutPaymentPage
 } from "../pages/front";
 import{ ProductLitPage,AdminHomePage,OrderListPage } from "../pages/back";
 const routes = [
@@ -29,6 +29,7 @@ const routes = [
       { path:'checkout-form',element:<CheckoutFormPage/> },
       { path:'checkout',element:<Checkout/> },
       { path:'OrderLists',element:<OrderListsPage/> },
+      { path:'payment',element:<CheckoutPaymentPage/> },
     ]
   },
   {
