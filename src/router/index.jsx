@@ -12,7 +12,8 @@ import {
   ProductDetailPageBySide,
   CheckoutFormPage,
   OrderListsPage,
-  CheckoutPaymentPage,
+  CheckoutPaymentPageFromOrders,
+  CheckoutPaymentPageFromCart,
 } from "../pages/front";
 import { ProductLitPage, AdminHomePage, OrderListPage } from "../pages/back";
 const routes = [
@@ -37,8 +38,9 @@ const routes = [
       { path: "login", element: <LoginPage /> },
       { path: "checkout-form", element: <CheckoutFormPage /> },
       { path: "orderLists", element: <OrderListsPage /> },
-      { path: "payment", element: <CheckoutPaymentPage /> },
-      { path: "payment/:id", element: <CheckoutPaymentPage /> },
+      // { path: "payment", element: <CheckoutPaymentPageFromCart /> },
+      // { path: "payment/:id", element: <CheckoutPaymentPageFromCart /> },
+      { path: "payment/:id", element: <CheckoutPaymentPageFromOrders /> },
     ],
   },
   {

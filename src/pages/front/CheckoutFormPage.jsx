@@ -65,42 +65,44 @@ export default function CheckoutFormPage() {
           </div>
           <div className="row flex-row-reverse justify-content-center pb-5">
             <div className="col-md-4">
-              <div className="border p-4 mb-4">
-                {cart.carts?.map((cart) => (
-                  <Fragment key={cart.id}>
-                    <div className="d-flex mt-2">
-                      <img
-                        src={cart.product.imageUrl}
-                        alt={cart.product.title}
-                        className="me-2"
-                        style={{
-                          width: "48px",
-                          height: "48px",
-                          objectFit: "cover",
-                        }}
-                      />
-                      <div className="w-100">
-                        <div>
-                          <div className="mb-0 fw-bold">
-                            {cart.product.title}
+              {cart.carts?.length > 0 && (
+                <div className="border p-4 mb-4">
+                  {cart.carts?.map((cart) => (
+                    <Fragment key={cart.id}>
+                      <div className="d-flex mt-2">
+                        <img
+                          src={cart.product.imageUrl}
+                          alt={cart.product.title}
+                          className="me-2"
+                          style={{
+                            width: "48px",
+                            height: "48px",
+                            objectFit: "cover",
+                          }}
+                        />
+                        <div className="w-100">
+                          <div>
+                            <div className="mb-0 fw-bold">
+                              {cart.product.title}
+                            </div>
+                            <div className="mb-0">
+                              NT${cart.final_total.toLocaleString()}
+                            </div>
                           </div>
-                          <div className="mb-0">
-                            NT${cart.final_total.toLocaleString()}
-                          </div>
+                          <p className="mb-0 fw-bold">數量:{cart.qty}</p>
                         </div>
-                        <p className="mb-0 fw-bold">{cart.aty}</p>
                       </div>
-                    </div>
-                  </Fragment>
-                ))}
-                <hr />
-                <div className="d-flex justify-content-between mt-4">
-                  <p className="mb-0 h4 fw-bold">總計</p>
-                  <p className="mb-0 h4 fw-bold">
-                    NT${cart.final_total && cart.final_total}
-                  </p>
+                    </Fragment>
+                  ))}
+                  <hr />
+                  <div className="d-flex justify-content-between mt-4">
+                    <p className="mb-0 h4 fw-bold">總計</p>
+                    <p className="mb-0 h4 fw-bold">
+                      NT${cart.final_total && cart.final_total.toLocaleString()}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
             <div className="col-md-6">
               {cart.carts?.length > 0 ? (

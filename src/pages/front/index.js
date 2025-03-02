@@ -8,4 +8,5 @@ export { default as LoginPage } from './LoginPage';
 export { default as ProductDetailPageBySide } from './ProductDetailPageBySide';
 export { default as CheckoutFormPage } from './CheckoutFormPage';
 export { default as OrderListsPage } from './OrderListsPage';
-export { default as CheckoutPaymentPage } from './CheckoutPaymentPage';
+export { default as CheckoutPaymentPageFromCart } from './CheckoutPaymentPageFromCart';
+export { default as CheckoutPaymentPageFromOrders } from './CheckoutPaymentPageFromOrders';

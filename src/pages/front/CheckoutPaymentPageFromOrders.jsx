@@ -61,12 +61,12 @@ const RadioCollapse = (props) => {
   );
 };
 
-export default function CheckoutPaymentPage() {
+export default function CheckoutPaymentPageFromOrders() {
   const contentRef = useRef([]);
-  const { id: orderId } = useParams();
+  const { id: inputId } = useParams();
   const [activeKey, setActiveKey] = useState("0");
   const [isLoading, setIsLoading] = useState(true);
-  const [cart, setCart] = useState({});
+  const [goods, setGoods] = useState({});
   const [reload, setReload] = useState(true);
   const handleToggle = useCallback(
     (e) => {
@@ -85,27 +85,31 @@ export default function CheckoutPaymentPage() {
     },
     [activeKey]
   );
+  const getOrder = async (id) => {
+    setIsLoading(true);
+    console.log(id);
+    try {
+      const {
+        data: { order, pagination, success, message },
+      } = await apiService.axiosGet(`/api/${APIPath}/order/${id}`);
+      setGoods(order);
+      console.log("orders:", order);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   useEffect(() => {
-    const getCart = async () => {
-      try {
-        const {
-          data: { data, success, message },
-        } = await apiService.axiosGet(`/api/${APIPath}/cart`);
-        setCart(data);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    console.log("inputId in payment=", inputId);
     if (reload) {
-      getCart();
+      console.log("getOrder");
+      getOrder(inputId);
       setReload(false);
     }
-  }, [reload]);
+  }, []);
   useEffect(() => {
     contentRef.current[0].classList.toggle("show");
-    console.log("id=", orderId);
   }, []);
   return (
     <>
@@ -141,38 +145,40 @@ export default function CheckoutPaymentPage() {
             <div className="col-md-4">
               <div className="border p-4 mb-4">
                 <h4 className="fw-bold mb-4">購物清單</h4>
-                {cart.carts?.map((cart) => (
-                  <Fragment key={cart.id}>
-                    <div className="d-flex mt-2">
-                      <img
-                        src={cart.product.imageUrl}
-                        alt={cart.product.title}
-                        className="me-2"
-                        style={{
-                          width: "48px",
-                          height: "48px",
-                          objectFit: "cover",
-                        }}
-                      />
-                      <div className="w-100">
-                        <div>
-                          <div className="mb-0 fw-bold">
-                            {cart.product.title}
-                          </div>
-                          <p className="mb-0 fw-bold">數量:{cart.qty}</p>
-                          <div className="mb-0">
-                            NT${cart.final_total && cart.final_total}
+                {goods &&
+                  goods.products &&
+                  Object.entries(goods.products).map(([key, value]) => (
+                    <Fragment key={key}>
+                      <div className="d-flex mt-2">
+                        <img
+                          src={value.product.imageUrl}
+                          alt={value.product.title}
+                          className="me-2"
+                          style={{
+                            width: "48px",
+                            height: "48px",
+                            objectFit: "cover",
+                          }}
+                        />
+                        <div className="w-100">
+                          <div>
+                            <div className="mb-0 fw-bold">
+                              {value.product.title}
+                            </div>
+                            <p className="mb-0 fw-bold">數量:{value.qty}</p>
+                            <div className="mb-0">
+                              NT${value.total && value.total.toLocaleString()}
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </Fragment>
-                ))}
+                    </Fragment>
+                  ))}
                 <hr />
                 <div className="d-flex justify-content-between mt-4">
                   <p className="mb-0 h4 fw-bold">總計</p>
                   <p className="mb-0 h4 fw-bold">
-                    NT${cart.final_total && cart.final_total}
+                    NT${goods.total && goods.total.toLocaleString()}
                   </p>
                 </div>
               </div>

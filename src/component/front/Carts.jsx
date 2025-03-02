@@ -55,7 +55,7 @@ const Carts = (props) => {
             objectFit: "cover",
           }}
         />
-        <p className="mb-0 fw-bold ms-3 d-inline-block">{cart.product.title}</p>
+        <p className="mb-0 fw-bold  d-inline-block">{cart.product.title}</p>
       </th>
       <td className="border-0 align-middle" style={{ maxWidth: "160px" }}>
         <div className="input-group pe-5">
@@ -72,14 +72,16 @@ const Carts = (props) => {
               <i className="fas fa-minus"></i>
             </button>
           </div>
-          <span
-            className="form-control border-0 text-center my-auto shadow-none"
-            placeholder=""
-            aria-label="Example text with button addon"
-            aria-describedby="button-addon1"
-          >
-            {cart.qty}
-          </span>
+          <div className="input-group-append">
+            <span
+              className="form-control border-0 text-center my-auto shadow-none"
+              placeholder=""
+              aria-label="Example text with button addon"
+              aria-describedby="button-addon1"
+            >
+              {cart.qty}
+            </span>
+          </div>
           <div className="input-group-append">
             <button
               className="btn btn-outline-dark border-0 py-2"

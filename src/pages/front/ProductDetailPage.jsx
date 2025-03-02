@@ -1,14 +1,14 @@
-import { useEffect, useState,useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
-import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { LazyLoadImage } from "react-lazy-load-image-component";
 import ReactLoading from "react-loading";
 import { apiService } from "../../apiService/apiService";
 import { Link } from "react-router-dom";
 const APIPath = import.meta.env.VITE_API_PATH;
-import 'react-lazy-load-image-component/src/effects/blur.css'; // 引入模糊效果的 CSS
-import PlaceholderImage from '../../img/loading.jpg'; 
+import "react-lazy-load-image-component/src/effects/blur.css"; // 引入模糊效果的 CSS
+import PlaceholderImage from "../../img/loading.jpg";
 import { useToast } from "../../hook";
-import { SwiperComponent } from '../../component/front';
+import { SwiperComponent } from "../../component/front";
 export default function ProductDetailPage() {
   const { id: productId } = useParams();
   const [product, setProduct] = useState({});
@@ -16,7 +16,7 @@ export default function ProductDetailPage() {
   const [isButtonLoading, setIsButtonLoading] = useState(false);
   useEffect(() => {
     window.scrollTo(0, 0); // 自動滾動到頂部
-  }, []); // 
+  }, []); //
   const updateToast = useToast();
   //   const modalRef = useRef(null);
   //   const handleImageClick = (imageSrc) => {
@@ -31,7 +31,7 @@ export default function ProductDetailPage() {
       setProduct(product);
     } catch (error) {
       console.log(error);
-    } 
+    }
   };
   const addProductTocart = async () => {
     setIsButtonLoading(true);
@@ -42,11 +42,11 @@ export default function ProductDetailPage() {
           qty: qtySelect,
         },
       };
-      await apiService.axiosPost(`/api/${APIPath}/cart`,postData);
-      updateToast("裝備加入購物車完成","success",true);
+      await apiService.axiosPost(`/api/${APIPath}/cart`, postData);
+      updateToast("裝備加入購物車完成", "success", true);
     } catch (error) {
       console.log(error);
-      updateToast("加入失敗","success",true);
+      updateToast("加入失敗", "success", true);
     } finally {
       setIsButtonLoading(false);
     }
@@ -121,17 +121,17 @@ export default function ProductDetailPage() {
             <nav aria-label="breadcrumb">
               <ol className="breadcrumb bg-white px-0 mb-0 py-3">
                 <li className="breadcrumb-item">
-                  <Link className="text-muted" to='/'>
-                      首頁
+                  <Link className="text-muted" to="/">
+                    首頁
                   </Link>
                 </li>
                 <li className="breadcrumb-item">
-                  <Link className="text-muted" to='/products'>
-                      產品列表
+                  <Link className="text-muted" to="/products">
+                    產品列表
                   </Link>
                 </li>
                 <li className="breadcrumb-item active" aria-current="page">
-                    產品資訊
+                  產品資訊
                 </li>
               </ol>
             </nav>
@@ -140,9 +140,13 @@ export default function ProductDetailPage() {
             <p className="mb-3">描述:{product.description}</p>
             {/* <p className="mb-3">內容:{product.content}</p> */}
             <p className="mb-0 text-muted text-end">
-              <del className="text-danger">NT${product.origin_price}</del>
+              <del className="text-danger">
+                NT${product.origin_price?.toLocaleString()}
+              </del>
             </p>
-            <p className="h4 fw-bold text-end">NT${product.price}</p>
+            <p className="h4 fw-bold text-end">
+              NT${product.price?.toLocaleString()}
+            </p>
             <div className="row align-items-center">
               <div className="col-6">
                 <div className="input-group my-3 bg-light rounded">
@@ -185,11 +189,13 @@ export default function ProductDetailPage() {
                 </div>
               </div>
               <div className="col-6">
-                <button 
-                  type='button'
-                  className="btn btn-dark align-items-center w-100" 
-                  onClick={addProductTocart}>
-                  <div className="d-flex justify-content-center">加入購物車
+                <button
+                  type="button"
+                  className="btn btn-dark align-items-center w-100"
+                  onClick={addProductTocart}
+                >
+                  <div className="d-flex justify-content-center">
+                    加入購物車
                     {isButtonLoading && (
                       <ReactLoading
                         type={"spin"}
@@ -199,39 +205,35 @@ export default function ProductDetailPage() {
                         className="ms-2"
                       />
                     )}
-                  </div> 
+                  </div>
                 </button>
-              </div>  
+              </div>
               <div className="col-6">
-                <Link
-                  to='/products'
-                  className="btn btn-primary w-100"
-                >
-                回到商品頁
-                </Link>          
+                <Link to="/products" className="btn btn-primary w-100">
+                  回到商品頁
+                </Link>
               </div>
             </div>
           </div>
         </div>
-        
+
         <div className="row my-5">
           <div className="col-md-4">
             <p>
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-                nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-                erat, sed diam voluptua. At vero eos et accusam et
+              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+              nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+              erat, sed diam voluptua. At vero eos et accusam et
             </p>
           </div>
           <div className="col-md-3">
             <p className="text-muted">
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-                nonumy eirmod tempor
+              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+              nonumy eirmod tempor
             </p>
           </div>
         </div>
-        <SwiperComponent product={product}/>
+        <SwiperComponent product={product} />
       </div>
     </div>
   );
 }
-  

@@ -126,7 +126,7 @@ export default function CartPage() {
                       placeholder="不給你用折扣碼"
                       aria-label="Recipient's username"
                       aria-describedby="button-addon2"
-                      disabled="true"
+                      disabled={true}
                     />
                     <div className="input-group-append">
                       <button

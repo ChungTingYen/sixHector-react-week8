@@ -65,6 +65,7 @@ export default function OrderListsPage() {
       setTempOrder(temp);
       openProductDetailModal();
       setIsLoading(false);
+      console.log("OrderId=", OrderId);
     },
     [orders]
   );
