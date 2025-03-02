@@ -5,6 +5,8 @@ import { LoadingOverlay } from "../../component/front";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 const APIPath = import.meta.env.VITE_API_PATH;
+import { useToast } from "../../hook";
+import { useNavigatePage } from "../../hook";
 const RadioCollapse = (props) => {
   const { index, activeKey, handleToggle, title, id, contentRef, contents } =
     props;
@@ -68,6 +70,8 @@ export default function CheckoutPaymentPageFromOrders() {
   const [isLoading, setIsLoading] = useState(true);
   const [goods, setGoods] = useState({});
   const [reload, setReload] = useState(true);
+  const navigate = useNavigatePage();
+  const updateToast = useToast();
   const handleToggle = useCallback(
     (e) => {
       contentRef.current.forEach((ref, index) => {
@@ -85,25 +89,41 @@ export default function CheckoutPaymentPageFromOrders() {
     },
     [activeKey]
   );
-  const getOrder = async (id) => {
+  const getOrder = async () => {
     setIsLoading(true);
-    console.log(id);
     try {
       const {
         data: { order, pagination, success, message },
-      } = await apiService.axiosGet(`/api/${APIPath}/order/${id}`);
+      } = await apiService.axiosGet(`/api/${APIPath}/order/${inputId}`);
       setGoods(order);
-      console.log("orders:", order);
     } catch (error) {
       console.log(error);
     } finally {
       setIsLoading(false);
     }
   };
+  const handlePay = async () => {
+    setIsLoading(true);
+    console.log("inputId:", inputId);
+    try {
+      const {
+        data: { success, message },
+      } = await apiService.axiosPost(`/api/${APIPath}/pay/${inputId}`);
+      if (success) {
+        updateToast("付款完成", "primary", true);
+        navigate("/orderLists");
+      }
+    } catch (error) {
+      console.log(error);
+      updateToast("付款失敗", "danger", true);
+      alert(error);
+    } finally {
+      setIsLoading(false);
+      setReload(false);
+    }
+  };
   useEffect(() => {
-    console.log("inputId in payment=", inputId);
     if (reload) {
-      console.log("getOrder");
       getOrder(inputId);
       setReload(false);
     }
@@ -126,11 +146,15 @@ export default function CheckoutPaymentPageFromOrders() {
                   </li>
                   <li className="me-md-6 me-3 position-relative custom-step-line">
                     <i className="fas fa-check-circle d-md-inline d-block text-center"></i>
+                    <span className="text-nowrap ms-1">收件人資料</span>
+                  </li>
+                  <li className="me-md-6 me-3 position-relative custom-step-line">
+                    <i className="fas fa-check-circle d-md-inline d-block text-center"></i>
                     <span className="text-nowrap ms-1">建立訂單</span>
                   </li>
                   <li>
                     <i className="fas fa-dot-circle d-md-inline d-block text-center"></i>
-                    <span className="text-nowrap ms-1">Lorem ipsum</span>
+                    <span className="text-nowrap ms-1">付款</span>
                   </li>
                 </ul>
               </div>
@@ -235,6 +259,9 @@ export default function CheckoutPaymentPageFromOrders() {
                   <i className="fas fa-chevron-left me-2"></i>
                   回到產品頁
                 </Link>
+                <button className="btn btn-dark py-3 px-5" onClick={handlePay}>
+                  付款
+                </button>
               </div>
             </div>
           </div>

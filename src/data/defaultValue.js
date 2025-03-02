@@ -33,16 +33,25 @@ export const orderDefaultValue =
       num: "",
     },
   };
-
+//原本的單一toast寫法
+// export const toastSliceDefaultValue = {
+//   toastInfo:
+//   {
+//     text: '',
+//     type: '',
+//     isShowToast: false,
+//   }
+// };
 export const toastSliceDefaultValue = {
-  toastInfo:
-  {
-    text: '',
-    type: '',
-    isShowToast: false,
-  }
+  toastInfo:[
+    // {
+    // id:new Date(),
+    // text: '測試',
+    // type: 'success',
+    // isShowToast: false, 
+    // }
+  ]
 };
-
 export const flashModalDefaultValue = {
   flashModalInfo:{
     isShowFlashModal:false,

@@ -23,8 +23,8 @@ export default function CustomerInfoWithNoCartNavbar() {
           return new Date(b.create_at) - new Date(a.create_at);
         })
         .filter((item, index) => index === 0);
-      console.log("orders:", orders);
-      console.log("orders:", order[0].id);
+      // console.log("orders:", orders);
+      // console.log("orders:", order[0].id);
       setOrder(order[0].id);
     } catch (error) {
       console.log(error);

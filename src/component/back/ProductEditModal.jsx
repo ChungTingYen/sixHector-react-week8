@@ -5,7 +5,7 @@ import { Modal } from "bootstrap";
 import { apiServiceAdmin } from "../../apiService/apiService";
 const APIPath = import.meta.env.VITE_API_PATH;
 import { tempProductDefaultValue } from "../../data/defaultValue";
-import { useToast,useFlashModal } from '../../hook';
+import { useToast, useFlashModal } from "../../hook";
 const ProductEditModal = (props) => {
   const {
     editProduct,
@@ -70,7 +70,7 @@ const ProductEditModal = (props) => {
     modalInstance.show();
   };
   const handleImgUpload = async (e) => {
-    updateFlashModal('loading',true,);
+    updateFlashModal("loading", true);
     try {
       const formData = new FormData();
       formData.append("file-to-upload", e.target.files[0]);
@@ -83,7 +83,7 @@ const ProductEditModal = (props) => {
     } catch (error) {
       console.log(error);
     } finally {
-      updateFlashModal('closing',false);
+      updateFlashModal("closing", false);
     }
   };
   const handleEditDataChange = (e) => {
@@ -131,7 +131,7 @@ const ProductEditModal = (props) => {
       alert("未取得product ID");
       return;
     }
-    updateFlashModal('loading',true);
+    updateFlashModal("loading", true);
     try {
       const result = await implementEditProduct(modalMode, modalProduct);
       if (result) {
@@ -139,14 +139,18 @@ const ProductEditModal = (props) => {
         getProductData();
         setModalProduct(tempProductDefaultValue);
         uploadRef.current.value = "";
-        updateToast(modalMode === "create" ? "新增完成" : "更新完成","warning",true);
+        updateToast(
+          modalMode === "create" ? "新增完成" : "更新完成",
+          "warning",
+          true
+        );
       } else {
-        alert(modalMode === "create" ? "新增失敗:" : "更新失敗:");
+        // alert(modalMode === "create" ? "新增失敗:" : "更新失敗:");
       }
     } catch (error) {
       console.log(error);
     } finally {
-      updateFlashModal('closing',false);
+      updateFlashModal("closing", false);
     }
   };
   return (

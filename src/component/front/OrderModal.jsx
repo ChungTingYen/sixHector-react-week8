@@ -146,15 +146,17 @@ const OrderModal = (props) => {
                   aria-label="Close"
                   onClick={closeProductModal}
                 >
-                  取消
+                  關閉視窗
                 </button>
-                <button
-                  to="/payment"
-                  className="btn btn-primary"
-                  onClick={linkToPayment}
-                >
-                  前往結帳
-                </button>
+                {modalProduct !== undefined && !modalProduct.is_paid && (
+                  <button
+                    to="/payment"
+                    className="btn btn-primary"
+                    onClick={linkToPayment}
+                  >
+                    前往結帳
+                  </button>
+                )}
               </div>
             </div>
           </div>

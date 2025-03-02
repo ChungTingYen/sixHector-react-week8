@@ -65,13 +65,12 @@ export default function OrderListsPage() {
       setTempOrder(temp);
       openProductDetailModal();
       setIsLoading(false);
-      console.log("OrderId=", OrderId);
+      // console.log("OrderId=", OrderId);
     },
     [orders]
   );
   useEffect(() => {
     getOrders();
-    console.log("orders:", orders);
   }, []);
 
   return (

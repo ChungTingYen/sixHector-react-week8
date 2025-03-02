@@ -32,8 +32,8 @@ export default function ProductsPage() {
           return new Date(b.create_at) - new Date(a.create_at);
         })
         .filter((item, index) => index === 0);
-      console.log("orders:", orders);
-      console.log("orders:", order);
+      // console.log("orders:", orders);
+      // console.log("orders:", order);
       // setOrder(order);
     } catch (error) {
       console.log(error);
