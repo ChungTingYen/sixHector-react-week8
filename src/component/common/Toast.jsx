@@ -48,7 +48,7 @@ const ToastComponent = () => {
   const closeToast = (messageId) => {
     // dispatch(removeMessage(messageId));
     //2種做法
-    console.log("messageId:", messageId);
+    // console.log("messageId:", messageId);
     const toastElement = toastDivRef.current[messageId];
     if (toastElement) {
       const toastInstance = new Toast(toastElement);

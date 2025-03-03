@@ -1,53 +1,59 @@
 import { useEffect, useState, useCallback } from "react";
-import { Link } from "react-router-dom";
 import { apiService } from "../../apiService/apiService";
 import { Product, LoadingOverlay, Pagination } from "../../component/front";
-
-import { useNavigatePage } from "../../hook";
 const APIPath = import.meta.env.VITE_API_PATH;
+import { useSelector,useDispatch } from "react-redux";
+import { getWishList } from '../../slice/wishListSlice';
 // import { ProductModal } from "../../component/front";
 // import { tempProductDefaultValue } from "../../data/data";
 export default function ProductsPage() {
   const [toggle, setToggle] = useState([
-    { id: 1, toggle: false },
-    { id: 2, toggle: false },
+    { id: 1, toggle: true },
   ]);
   const [products, setProducts] = useState([]);
-  // const [tempProduct, setTempProduct] = useState(tempProductDefaultValue);
-  // const [isProductModalOpen, setIsProductModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [pageInfo, setPageInfo] = useState({});
-  const navigate = useNavigatePage();
-  const getOrder = async () => {
-    // setIsLoading(true);
-    try {
-      const {
-        data: { orders, pagination, success, message },
-      } = await apiService.axiosGetByConfig(`/api/${APIPath}/orders`, {
-        params: { page: 1 },
-      });
-      const order = orders
-        .filter((item) => item.id !== undefined)
-        .sort((a, b) => {
-          return new Date(b.create_at) - new Date(a.create_at);
-        })
-        .filter((item, index) => index === 0);
-      // console.log("orders:", orders);
-      // console.log("orders:", order);
-      // setOrder(order);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      // setIsLoading(false);
-    }
-  };
+  const [category,setCategory] = useState([]);
+  const [selectedCategory,setSelectedCategory] = useState('');
+  const dispatch = useDispatch();
+  const wishList = useSelector(state => {
+    console.log(state.wishListAtStore);
+    return state.wishListAtStore;
+  });
+
+  useEffect(() => {
+    dispatch(getWishList()); // 在組件加載時調用 getWishList action
+  }, [dispatch]);
+  // const [tempProduct, setTempProduct] = useState(tempProductDefaultValue);
+  // const [isProductModalOpen, setIsProductModalOpen] = useState(false);
+  // const navigate = useNavigatePage();
+  // const getOrder = async () => {
+  //   // setIsLoading(true);
+  //   try {
+  //     const {
+  //       data: { orders, pagination, success, message },
+  //     } = await apiService.axiosGetByConfig(`/api/${APIPath}/orders`, {
+  //       params: { page: 1 },
+  //     });
+  //     const order = orders
+  //       .filter((item) => item.id !== undefined)
+  //       .sort((a, b) => {
+  //         return new Date(b.create_at) - new Date(a.create_at);
+  //       })
+  //       .filter((item, index) => index === 0);
+  //   } catch (error) {
+  //     console.log(error);
+  //   } finally {
+  //     // setIsLoading(false);
+  //   }
+  // };
   const getProducts = async (page = 1) => {
     setIsLoading(true);
     try {
       const {
         data: { products, pagination, success, message },
       } = await apiService.axiosGetByConfig(`/api/${APIPath}/products`, {
-        params: { page: page },
+        params: { page: page,category: selectedCategory === '全部' ? '' : selectedCategory },
       });
       setProducts(products);
       setPageInfo(pagination);
@@ -57,15 +63,19 @@ export default function ProductsPage() {
       setIsLoading(false);
     }
   };
+  const handleSelectedCategory = (category)=>{
+    setSelectedCategory(category);
+  };
   const scroll = () => {
-    window.scrollTo(0, 100);
-    // console.log("scroll");
+    window.scrollTo(0, 500);
   };
   useEffect(() => {
     getProducts();
     scroll();
-    getOrder();
-  }, []);
+  }, [selectedCategory]);
+  useEffect(()=>{
+    getCategory();
+  },[]);
   const handleToggle = (id) => {
     // 找到目標對象
     const targetIndex = toggle.findIndex((item) => item.id === id);
@@ -79,6 +89,17 @@ export default function ProductsPage() {
       // 設置新的狀態
       setToggle(newToggle);
     }
+  };
+  const getCategory = async () => {
+    try {
+      const {
+        data: { products, success, message },
+      } = await apiService.axiosGet(`/api/${APIPath}/products/all`);
+      const category = ['全部',...new Set(products.map((item)=>item.category))];
+      setCategory(category);
+    } catch (error) {
+      console.log(error);
+    } 
   };
   return (
     <>
@@ -118,7 +139,7 @@ export default function ProductsPage() {
                       className="d-flex justify-content-between align-items-center pe-1"
                       onClick={() => handleToggle(1)}
                     >
-                      <h4 className="mb-0">Lorem ipsum</h4>
+                      <h4 className="mb-0">產品分類</h4>
                       <i className="fas fa-chevron-down"></i>
                     </div>
                   </div>
@@ -130,123 +151,17 @@ export default function ProductsPage() {
                   >
                     <div className="card-body py-0">
                       <ul className="list-unstyled">
-                        <li>
-                          <a href="#" className="py-2 d-block text-muted">
-                            Lorem ipsum
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" className="py-2 d-block text-muted">
-                            Lorem ipsum
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" className="py-2 d-block text-muted">
-                            Lorem ipsum
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" className="py-2 d-block text-muted">
-                            Lorem ipsum
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" className="py-2 d-block text-muted">
-                            Lorem ipsum
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <div className="card border-0">
-                  <div
-                    className="card-header px-0 py-4 bg-white border border-bottom-0 border-top border-start-0 border-end-0 rounded-0"
-                    id="headingTwo"
-                  >
-                    <div
-                      className="d-flex justify-content-between align-items-center pe-1"
-                      onClick={() => handleToggle(2)}
-                    >
-                      <h4 className="mb-0">Lorem ipsum</h4>
-                      <i className="fas fa-chevron-down"></i>
-                    </div>
-                  </div>
-                  <div
-                    id="collapseTwo"
-                    className={`collapsible-content ${
-                      toggle[1].toggle ? "show" : ""
-                    }`}
-                  >
-                    <div className="card-body py-0">
-                      <ul className="list-unstyled">
-                        <li>
-                          <a href="#" className="py-2 d-block text-muted">
-                            Lorem ipsum
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" className="py-2 d-block text-muted">
-                            Lorem ipsum
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" className="py-2 d-block text-muted">
-                            Lorem ipsum
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" className="py-2 d-block text-muted">
-                            Lorem ipsum
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" className="py-2 d-block text-muted">
-                            Lorem ipsum
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <div className="card border-0">
-                  <div
-                    className="card-header px-0 py-4 bg-white border border-bottom-0 border-top border-start-0 border-end-0 rounded-0"
-                    id="headingThree"
-                  >
-                    <div className="d-flex justify-content-between align-items-center pe-1">
-                      <h4 className="mb-0">Lorem ipsum</h4>
-                      <i className="fas fa-chevron-down"></i>
-                    </div>
-                  </div>
-                  <div id="collapseThree" className="collapse">
-                    <div className="card-body py-0">
-                      <ul className="list-unstyled">
-                        <li>
-                          <a href="#" className="py-2 d-block text-muted">
-                            Lorem ipsum
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" className="py-2 d-block text-muted">
-                            Lorem ipsum
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" className="py-2 d-block text-muted">
-                            Lorem ipsum
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" className="py-2 d-block text-muted">
-                            Lorem ipsum
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" className="py-2 d-block text-muted">
-                            Lorem ipsum
-                          </a>
-                        </li>
+                        {
+                          category.map((item)=> {
+                            return <li key={item}>
+                              <button type='button' onClick={()=>handleSelectedCategory(item)} 
+                                className={`btn btn-border-none py-2 d-block text-muted 
+                                ${item === selectedCategory ? 'bg-warning' : ''}`}>
+                                {item}
+                              </button>
+                            </li>;
+                          })
+                        }
                       </ul>
                     </div>
                   </div>
@@ -260,38 +175,12 @@ export default function ProductsPage() {
                     key={product.id}
                     product={product}
                     setIsLoading={setIsLoading}
+                    wishList={wishList}
                   ></Product>
                 ))}
               </div>
               <nav className="d-flex justify-content-center">
                 <Pagination getData={getProducts} pageInfo={pageInfo} />
-                {/* <ul className="pagination">
-                <li className="page-item">
-                  <a className="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                  </a>
-                </li>
-                <li className="page-item active">
-                  <a className="page-link" href="#">
-                      1
-                  </a>
-                  {/* </li>
-                <li className="page-item">
-                  <a className="page-link" href="#">
-                      2
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="#">
-                      3
-                  </a>
-                </li> 
-                <li className="page-item">
-                  <a className="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                  </a>
-                </li>
-              </ul> */}
               </nav>
             </div>
           </div>

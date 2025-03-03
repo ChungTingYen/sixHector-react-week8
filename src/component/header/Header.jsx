@@ -8,6 +8,7 @@ export default function Header() {
     { path: "/cart", name: "購物車/訂購者資料" },
     // { path: "/customerInfo", name: "訂購者資料" },
     { path: "/orderLists", name: "訂單清單" },
+    { path: "/wishList", name: "願望清單" },
     { path: "/payment", name: "結帳" },
     { path: "/login", name: "登入後台" },
   ];

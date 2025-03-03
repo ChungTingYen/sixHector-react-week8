@@ -4,7 +4,7 @@ export default function Footer() {
       <div className="bg-light py-4">
         <div className="container">
           <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center align-items-start">
-            <p className="mb-0 fw-bold">這是footer</p>
+            <p className="mb-0 fw-bold">不想錯失最新商品與折扣嗎?來訂閱電子報吧</p>
             <div className="input-group w-md-50 mt-md-0 mt-3">
               <input
                 type="text"
@@ -17,7 +17,7 @@ export default function Footer() {
                   type="button"
                   id="search"
                 >
-                  Lorem ipsum
+                  輸入Email
                 </button>
               </div>
             </div>

@@ -4,6 +4,8 @@ const Pagination = (props) => {
   const { getData, pageInfo } = props;
   const handlePageChange = (e, page) => {
     e.preventDefault();
+    if(page === pageInfo.current_page) 
+      return;
     getData(page);
     // 滾動到文件高度的40%
     let scrollPercentage = 0.1;

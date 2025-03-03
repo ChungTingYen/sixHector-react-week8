@@ -7,13 +7,12 @@ import {
   ProductDetailPage,
   NotFoundPage,
   CartPage,
-  CustomerInfoPage,
   LoginPage,
   ProductDetailPageBySide,
   CheckoutFormPage,
   OrderListsPage,
   CheckoutPaymentPageFromOrders,
-  CheckoutPaymentPageFromCart,
+  ProductsPageFromWishList
 } from "../pages/front";
 import { ProductLitPage, AdminHomePage, OrderListPage } from "../pages/back";
 const routes = [
@@ -34,13 +33,11 @@ const routes = [
         element: <ProductDetailPage />,
       },
       { path: "cart", element: <CartPage /> },
-      { path: "customerInfo", element: <CustomerInfoPage /> },
       { path: "login", element: <LoginPage /> },
       { path: "checkout-form", element: <CheckoutFormPage /> },
       { path: "orderLists", element: <OrderListsPage /> },
-      // { path: "payment", element: <CheckoutPaymentPageFromCart /> },
-      // { path: "payment/:id", element: <CheckoutPaymentPageFromCart /> },
       { path: "payment/:id", element: <CheckoutPaymentPageFromOrders /> },
+      { path: "wishList", element: <ProductsPageFromWishList /> },
     ],
   },
   {

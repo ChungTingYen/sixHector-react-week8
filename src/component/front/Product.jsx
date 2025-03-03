@@ -4,8 +4,12 @@ import { apiService } from "../../apiService/apiService";
 import { useNavigatePage } from "../../hook";
 const APIPath = import.meta.env.VITE_API_PATH;
 import { useToast } from "../../hook";
+import { useEffect, useState } from "react";
+
 const Product = (props) => {
-  const { product, setIsLoading } = props;
+  const { product, setIsLoading,wishList } = props;
+  const [isShowHart,setIsShowHart] = useState(false);
+
   const navigate = useNavigatePage();
   const updateToastInfo = useToast();
   const handleAddProductToCart = async () => {
@@ -26,20 +30,41 @@ const Product = (props) => {
       setIsLoading(false);
     }
   };
+  const handleWishList = (e,productId)=>{
+    e.preventDefault();
+    const wishListStorage = JSON.parse(localStorage.getItem('wishList')) || {};
+    if(!wishListStorage[productId]){
+      const newWishList = { ...wishListStorage,[productId]:true };
+      localStorage.setItem('wishList',JSON.stringify(newWishList));
+      setIsShowHart(true);
+    }else{
+      const newWishList = { ...wishListStorage };
+      delete newWishList[productId];
+      localStorage.setItem('wishList',JSON.stringify(newWishList));
+      setIsShowHart(false);
+    }
+  };
+  useEffect(()=>{
+    (()=>{
+      console.log(wishList[product.id]);
+      wishList[product.id] && setIsShowHart(true);
+    }
+    )();
+  },[]);
   return (
     <>
       <div className="col-md-6" key={product.id}>
         <div
           className="card border-0 mb-4 position-relative position-relative"
-          style={{ width: "300px", height: "500px" }}
+          style={{ width: "100%", height: "100%", maxWidth: "300px", maxHeight: "500px" }}
         >
           <span>{product.title}</span>
-          <a href="#" className="text-dark">
+          <a href="#" className="text-dark" onClick={(e)=>handleWishList(e,product.id)}>
             <i
-              className="far fa-heart position-absolute"
+              className={`${isShowHart ? 'fas' : 'far'} fa-heart position-absolute`}
               style={{
-                right: "16px",
-                top: "50px",
+                right: "10%",
+                top: "10%",
                 color: "red",
                 fontSize: "20px",
               }}

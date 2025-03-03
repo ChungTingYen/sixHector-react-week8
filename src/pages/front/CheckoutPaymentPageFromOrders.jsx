@@ -1,67 +1,12 @@
-/* eslint-disable react/prop-types */
+ 
 import { useRef, useState, useEffect, useCallback, Fragment } from "react";
 import { apiService } from "../../apiService/apiService";
-import { LoadingOverlay } from "../../component/front";
+import { LoadingOverlay,RadioCollapse } from "../../component/front";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 const APIPath = import.meta.env.VITE_API_PATH;
 import { useToast } from "../../hook";
 import { useNavigatePage } from "../../hook";
-const RadioCollapse = (props) => {
-  const { index, activeKey, handleToggle, title, id, contentRef, contents } =
-    props;
-  const handleDivClick = (index) => {
-    const radio = document.querySelector(`#radio-${index}`);
-    if (radio) {
-      radio.click();
-    } else {
-      console.error(`Radio button with id #radio-${index} not found`);
-    }
-  };
-  return (
-    <>
-      <div className="card rounded-0" onClick={() => handleDivClick(index)}>
-        <div className={`card-header bg-white border-0 py-3 `}>
-          <label className="me-3">
-            <input
-              type="radio"
-              id={`radio-${index}`}
-              name="accordion"
-              className="form-check-input"
-              value={index}
-              checked={activeKey === index}
-              onChange={(e) => handleToggle(e)}
-            />
-            <span className="ms-2">{title}</span>
-          </label>
-        </div>
-        <div
-          id={id}
-          className="collapsible-content"
-          ref={(el) => (contentRef.current[index] = el)}
-        >
-          {contents.length > 0 && (
-            <div className="card-body bg-light ps-5 py-4">
-              {contents.map((content) => (
-                <div className="mb-2" key={content.id}>
-                  <label htmlFor={content.id} className="text-muted mb-0">
-                    {content.title}
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id={content.id}
-                    placeholder={content.placeholder}
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-    </>
-  );
-};
 
 export default function CheckoutPaymentPageFromOrders() {
   const contentRef = useRef([]);
@@ -104,7 +49,6 @@ export default function CheckoutPaymentPageFromOrders() {
   };
   const handlePay = async () => {
     setIsLoading(true);
-    console.log("inputId:", inputId);
     try {
       const {
         data: { success, message },
@@ -127,9 +71,6 @@ export default function CheckoutPaymentPageFromOrders() {
       getOrder(inputId);
       setReload(false);
     }
-  }, []);
-  useEffect(() => {
-    contentRef.current[0].classList.toggle("show");
   }, []);
   return (
     <>
