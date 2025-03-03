@@ -4,11 +4,11 @@ import { apiService } from "../../apiService/apiService";
 import { useNavigatePage } from "../../hook";
 const APIPath = import.meta.env.VITE_API_PATH;
 import { useToast } from "../../hook";
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 
 const Product = (props) => {
-  const { product, setIsLoading,wishList } = props;
-  const [isShowHart,setIsShowHart] = useState(false);
+  const { product, setIsLoading, wishList, setWishList } = props;
+  const [isShowHart, setIsShowHart] = useState(false);
 
   const navigate = useNavigatePage();
   const updateToastInfo = useToast();
@@ -30,38 +30,54 @@ const Product = (props) => {
       setIsLoading(false);
     }
   };
-  const handleWishList = (e,productId)=>{
+  const handleWishList = (e, productId) => {
     e.preventDefault();
-    const wishListStorage = JSON.parse(localStorage.getItem('wishList')) || {};
-    if(!wishListStorage[productId]){
-      const newWishList = { ...wishListStorage,[productId]:true };
-      localStorage.setItem('wishList',JSON.stringify(newWishList));
+    const wishListStorage = JSON.parse(localStorage.getItem("wishList")) || {};
+    if (!wishListStorage[productId]) {
+      const newWishList = { ...wishListStorage, [productId]: true };
+      localStorage.setItem("wishList", JSON.stringify(newWishList));
       setIsShowHart(true);
-    }else{
+    } else {
       const newWishList = { ...wishListStorage };
       delete newWishList[productId];
-      localStorage.setItem('wishList',JSON.stringify(newWishList));
+      localStorage.setItem("wishList", JSON.stringify(newWishList));
       setIsShowHart(false);
+      setWishList((prev) =>
+        prev.filter((item) => {
+          console.log(item);
+          return item.includes(newWishList);
+        })
+      );
     }
   };
-  useEffect(()=>{
-    (()=>{
-      console.log(wishList[product.id]);
-      wishList[product.id] && setIsShowHart(true);
-    }
-    )();
-  },[]);
+  useEffect(() => {
+    (() => {
+      wishList.includes(product.id) && setIsShowHart(true);
+    })();
+  }, []);
+
   return (
     <>
       <div className="col-md-6" key={product.id}>
         <div
           className="card border-0 mb-4 position-relative position-relative"
-          style={{ width: "100%", height: "100%", maxWidth: "300px", maxHeight: "500px" }}
+          style={{
+            width: "100%",
+            height: "100%",
+            maxWidth: "300px",
+            maxHeight: "500px",
+          }}
         >
           <span>{product.title}</span>
-          <a href="#" className="text-dark" onClick={(e)=>handleWishList(e,product.id)}>
+          <a
+            href="#"
+            className="text-dark"
+            onClick={(e) => handleWishList(e, product.id)}
+          >
             <i
-              className={`${isShowHart ? 'fas' : 'far'} fa-heart position-absolute`}
+              className={`${
+                isShowHart ? "fas" : "far"
+              } fa-heart position-absolute`}
               style={{
                 right: "10%",
                 top: "10%",
@@ -111,11 +127,10 @@ const Product = (props) => {
           >
             加到購物車
           </button>
-
           <hr />
         </div>
       </div>
     </>
   );
 };
-export default Product;
+export default memo(Product);

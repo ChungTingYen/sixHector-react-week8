@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { Fragment } from "react";
-import { useState } from 'react';
+import { useState } from "react";
 export default function Header() {
   const routes = [
     { path: "/", name: "首頁" },
@@ -8,15 +8,15 @@ export default function Header() {
     { path: "/cart", name: "購物車/訂購者資料" },
     // { path: "/customerInfo", name: "訂購者資料" },
     { path: "/orderLists", name: "訂單清單" },
-    { path: "/wishList", name: "願望清單" },
+    { path: "/wishList", name: "心願清單" },
     { path: "/payment", name: "結帳" },
     { path: "/login", name: "登入後台" },
   ];
-  const [toggle,setToggle] = useState(false);
+  const [toggle, setToggle] = useState(false);
   const handleToggle = () => {
-    setToggle((prev)=>!prev);
+    setToggle((prev) => !prev);
   };
-  
+
   return (
     <div className="container d-flex flex-column">
       <nav className="navbar navbar-expand-lg navbar-light">
@@ -34,7 +34,9 @@ export default function Header() {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div
-          className={`collapse navbar-collapse justify-content-end ${toggle ? 'show' : ''}`}
+          className={`collapse navbar-collapse justify-content-end ${
+            toggle ? "show" : ""
+          }`}
         >
           <div className="navbar-nav">
             {routes.map((route) => (

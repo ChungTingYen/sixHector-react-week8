@@ -1,59 +1,33 @@
+/* eslint-disable indent */
 import { useEffect, useState, useCallback } from "react";
 import { apiService } from "../../apiService/apiService";
 import { Product, LoadingOverlay, Pagination } from "../../component/front";
 const APIPath = import.meta.env.VITE_API_PATH;
-import { useSelector,useDispatch } from "react-redux";
-import { getWishList } from '../../slice/wishListSlice';
-// import { ProductModal } from "../../component/front";
-// import { tempProductDefaultValue } from "../../data/data";
+
 export default function ProductsPage() {
-  const [toggle, setToggle] = useState([
-    { id: 1, toggle: true },
-  ]);
+  const [toggle, setToggle] = useState([{ id: 1, toggle: true }]);
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [pageInfo, setPageInfo] = useState({});
-  const [category,setCategory] = useState([]);
-  const [selectedCategory,setSelectedCategory] = useState('');
-  const dispatch = useDispatch();
-  const wishList = useSelector(state => {
-    console.log(state.wishListAtStore);
-    return state.wishListAtStore;
-  });
+  const [category, setCategory] = useState(["全部"]);
+  const [selectedCategory, setSelectedCategory] = useState("全部");
+  const [wishList, setWishList] = useState([]);
 
-  useEffect(() => {
-    dispatch(getWishList()); // 在組件加載時調用 getWishList action
-  }, [dispatch]);
-  // const [tempProduct, setTempProduct] = useState(tempProductDefaultValue);
-  // const [isProductModalOpen, setIsProductModalOpen] = useState(false);
-  // const navigate = useNavigatePage();
-  // const getOrder = async () => {
-  //   // setIsLoading(true);
-  //   try {
-  //     const {
-  //       data: { orders, pagination, success, message },
-  //     } = await apiService.axiosGetByConfig(`/api/${APIPath}/orders`, {
-  //       params: { page: 1 },
-  //     });
-  //     const order = orders
-  //       .filter((item) => item.id !== undefined)
-  //       .sort((a, b) => {
-  //         return new Date(b.create_at) - new Date(a.create_at);
-  //       })
-  //       .filter((item, index) => index === 0);
-  //   } catch (error) {
-  //     console.log(error);
-  //   } finally {
-  //     // setIsLoading(false);
-  //   }
-  // };
+  const getWishList = () => {
+    const wishListStorage = JSON.parse(localStorage.getItem("wishList")) || {};
+    setWishList(Object.keys(wishListStorage));
+  };
+
   const getProducts = async (page = 1) => {
     setIsLoading(true);
     try {
       const {
         data: { products, pagination, success, message },
       } = await apiService.axiosGetByConfig(`/api/${APIPath}/products`, {
-        params: { page: page,category: selectedCategory === '全部' ? '' : selectedCategory },
+        params: {
+          page: page,
+          category: selectedCategory === "全部" ? "" : selectedCategory,
+        },
       });
       setProducts(products);
       setPageInfo(pagination);
@@ -63,19 +37,30 @@ export default function ProductsPage() {
       setIsLoading(false);
     }
   };
-  const handleSelectedCategory = (category)=>{
+  const handleSelectedCategory = (category) => {
     setSelectedCategory(category);
   };
   const scroll = () => {
     window.scrollTo(0, 500);
   };
+  // useEffect(() => {
+  //   getProducts();
+  //   scroll();
+  // }, [selectedCategory]);
   useEffect(() => {
-    getProducts();
-    scroll();
-  }, [selectedCategory]);
-  useEffect(()=>{
     getCategory();
-  },[]);
+    getWishList();
+  }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      await getProducts();
+      scroll();
+    };
+    fetchData();
+  }, [selectedCategory]);
+
+  useEffect(() => console.log("wishList:", wishList));
+
   const handleToggle = (id) => {
     // 找到目標對象
     const targetIndex = toggle.findIndex((item) => item.id === id);
@@ -95,11 +80,14 @@ export default function ProductsPage() {
       const {
         data: { products, success, message },
       } = await apiService.axiosGet(`/api/${APIPath}/products/all`);
-      const category = ['全部',...new Set(products.map((item)=>item.category))];
+      const category = [
+        "全部",
+        ...new Set(products.map((item) => item.category)),
+      ];
       setCategory(category);
     } catch (error) {
       console.log(error);
-    } 
+    }
   };
   return (
     <>
@@ -151,17 +139,22 @@ export default function ProductsPage() {
                   >
                     <div className="card-body py-0">
                       <ul className="list-unstyled">
-                        {
-                          category.map((item)=> {
-                            return <li key={item}>
-                              <button type='button' onClick={()=>handleSelectedCategory(item)} 
+                        {category.map((item) => {
+                          return (
+                            <li key={item}>
+                              <button
+                                type="button"
+                                onClick={() => handleSelectedCategory(item)}
                                 className={`btn btn-border-none py-2 d-block text-muted 
-                                ${item === selectedCategory ? 'bg-warning' : ''}`}>
+                                ${
+                                  item === selectedCategory ? "bg-warning" : ""
+                                }`}
+                              >
                                 {item}
                               </button>
-                            </li>;
-                          })
-                        }
+                            </li>
+                          );
+                        })}
                       </ul>
                     </div>
                   </div>
@@ -176,6 +169,7 @@ export default function ProductsPage() {
                     product={product}
                     setIsLoading={setIsLoading}
                     wishList={wishList}
+                    setWishList={setWishList}
                   ></Product>
                 ))}
               </div>

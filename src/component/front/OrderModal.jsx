@@ -51,7 +51,7 @@ const OrderModal = (props) => {
       if (Object.keys(tempProduct).length > 0) setModalProduct(tempProduct);
       openProductModal();
     }
-    console.log('modalProduct:',modalProduct);
+    // console.log('modalProduct:',modalProduct);
   }, [isProductModalOpen, tempProduct]);
   return (
     <>
@@ -138,15 +138,22 @@ const OrderModal = (props) => {
                         )}
                       </tbody>
                       <tfoot>
-                      <tr className="border-top">
-                          <th colSpan="2" className="text-end border-0">總價</th>
-                          <td  className="text-end border-0">NT${modalProduct.total?.toLocaleString()} </td>
+                        <tr className="border-top">
+                          <th colSpan="2" className="text-end border-0">
+                            總價
+                          </th>
+                          <td className="text-end border-0">
+                            NT${modalProduct.total?.toLocaleString()}{" "}
+                          </td>
                         </tr>
                       </tfoot>
                     </table>
                   )}
               </div>
-              <div className="modal-footer bg-light"  style={{ borderTop: "none" }}>
+              <div
+                className="modal-footer bg-light"
+                style={{ borderTop: "none" }}
+              >
                 <button
                   type="button"
                   className="btn btn-secondary"

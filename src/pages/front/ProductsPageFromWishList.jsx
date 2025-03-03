@@ -1,35 +1,35 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { apiService } from "../../apiService/apiService";
 import { Product, LoadingOverlay, Pagination } from "../../component/front";
 const APIPath = import.meta.env.VITE_API_PATH;
-import { useSelector,useDispatch } from "react-redux";
-import { getWishList } from '../../slice/wishListSlice';
-export default function ProProductsPageFromWishList() {
-  // const [toggle, setToggle] = useState([
-  //   { id: 1, toggle: true },
-  // ]);
+
+export default function ProductsPageFromWishList() {
+  // const [toggle, setToggle] = useState([{ id: 1, toggle: true }]);
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   // const [pageInfo, setPageInfo] = useState({});
-  // const [category,setCategory] = useState([]);
-  // const [selectedCategory,setSelectedCategory] = useState('');
-  const dispatch = useDispatch();
-  const wishList = useSelector(state => {
-    console.log(Object.keys(state.wishListAtStore));
-    return Object.keys(state.wishListAtStore);
-  });
-  const wishListFromStore = useSelector(state => {
-    return state.wishListAtStore;
-  });
+  // const [category, setCategory] = useState([]);
+  // const [selectedCategory, setSelectedCategory] = useState("");
+  const [wishList, setWishList] = useState([]);
+
+  const getWishList = () => {
+    const wishListStorage = JSON.parse(localStorage.getItem("wishList")) || {};
+    setWishList(Object.keys(wishListStorage));
+  };
+
   const getProducts = async () => {
     setIsLoading(true);
     try {
       const {
-        data: { products, pagination, success, message },
+        data: { products, success, message },
       } = await apiService.axiosGet(`/api/${APIPath}/products/all`);
-      // console.log(products.filter((item)=>wishList.includes(item.id) ));
-      // console.log(products.filter((item)=>wishList.includes(item.id) ));
-      setProducts(products.filter((item)=>wishList.includes(item.id) ));
+      const wishListStorage = Object.keys(
+        JSON.parse(localStorage.getItem("wishList")) || {}
+      );
+      const newWishList = products.filter((item) =>
+        wishListStorage.includes(item.id)
+      );
+      setProducts(newWishList);
     } catch (error) {
       console.log(error);
     } finally {
@@ -37,18 +37,15 @@ export default function ProProductsPageFromWishList() {
     }
   };
   const scroll = () => {
-    window.scrollTo(0, 500);
+    window.scrollTo(0, 200);
   };
   useEffect(() => {
-    dispatch(getWishList()); // 在組件加載時調用 getWishList action
-  }, [dispatch]);
-  useEffect(()=>{
-    getProducts();
-  },[]);
-  useEffect(() => {
-    scroll();
+    getWishList();
   }, []);
-
+  useEffect(() => {
+    getProducts();
+    scroll();
+  }, [wishList]);
   return (
     <>
       <div className="container-fluid">
@@ -69,15 +66,17 @@ export default function ProProductsPageFromWishList() {
               opacity: 0.1,
             }}
           ></div>
-          <h2 className="fw-bold">產品列表</h2>
+          <h2 className="fw-bold">心願清單</h2>
         </div>
         <div className="container mt-md-5 mt-3 mb-7">
           <div className="row">
             <div className="col-md-4">
-              <div
-                className="accordion border border-bottom border-top-0 border-start-0 border-end-0 mb-3"
-                id="accordionExample"
-              >
+              <div className="accordion mb-3 fw-bold" id="accordionExample">
+                {products.length <= 0 ? (
+                  <p>趕快加入回到商品頁加入心願商品吧~~</p>
+                ) : (
+                  <p>趕快手刀購買裝備吧~~</p>
+                )}
               </div>
             </div>
             <div className="col-md-8">
@@ -87,7 +86,8 @@ export default function ProProductsPageFromWishList() {
                     key={product.id}
                     product={product}
                     setIsLoading={setIsLoading}
-                    wishList={wishListFromStore}
+                    wishList={wishList}
+                    setWishList={setWishList}
                   ></Product>
                 ))}
               </div>
