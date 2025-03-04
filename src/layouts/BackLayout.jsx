@@ -10,9 +10,9 @@ const routes = [
 ];
 export default function BackLayout() {
   const isLogin = useCheckLogin();
-  useEffect(()=>{
-    isLogin;
-  },[]);
+  useEffect(() => {
+    isLogin();
+  }, []);
   // const NavLinkWithCheck = WithLoginCheck(NavLink);
   return (
     <>
@@ -45,6 +45,6 @@ export default function BackLayout() {
         </div>
       </nav>
       <Outlet />
-    </> 
+    </>
   );
 }

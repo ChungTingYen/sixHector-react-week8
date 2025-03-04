@@ -1,14 +1,14 @@
-import { useState,useEffect } from "react";
-import { useNavigatePage } from '../../hook';
+import { useState, useEffect } from "react";
+import { useNavigatePage } from "../../hook";
 // import { useLogin } from "../component/LoginContext";
-import { apiService,apiServiceAdmin } from "../../apiService/apiService";
-import { sweetalert,getHeadersFromCookie } from "../../utils/utils";
+import { apiService, apiServiceAdmin } from "../../apiService/apiService";
+import { sweetalert, getHeadersFromCookie } from "../../utils/utils";
 const LoginBackendPage = () => {
   const [account, setAccount] = useState({
     username: "",
     password: "",
   });
-  const navigate = useNavigatePage();
+  const navigate = useNavigatePage("/admin");
   const changeInput = (e) => {
     setAccount({
       ...account,
@@ -24,7 +24,7 @@ const LoginBackendPage = () => {
         const { token, expired } = res.data;
         document.cookie = `hexToken=${token}; expires=${new Date(expired)}`;
         sweetalert(res.data.message, "", "success", "確認");
-        navigate('/admin');
+        navigate();
       }
     } catch (error) {
       sweetalert(error, "", "error", "確認");
@@ -33,16 +33,15 @@ const LoginBackendPage = () => {
   };
   const handleCheckLogin = async () => {
     try {
-      await apiServiceAdmin.axiosPost("/api/user/check",{});
-      navigate('/admin');
+      await apiServiceAdmin.axiosPost("/api/user/check", {});
+      navigate();
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
-    if(getHeadersFromCookie().Authorization !== null)
-      handleCheckLogin();
-  },[]);
+    if (getHeadersFromCookie().Authorization !== null) handleCheckLogin();
+  }, []);
   return (
     <>
       <div className="d-flex flex-column justify-content-center align-items-center vh-100">

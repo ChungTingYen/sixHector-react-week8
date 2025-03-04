@@ -1,5 +1,4 @@
 import { useEffect, useCallback, useState, useMemo, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import { apiServiceAdmin } from "../../apiService/apiService";
 import { useNavigatePage } from "../../hook";
 import {
@@ -17,11 +16,9 @@ import { tempProductDefaultValue } from "../../data/defaultValue";
 import { productDataAtLocal } from "../../data/productDataAtLocal";
 import { useDebounce } from "@uidotdev/usehooks";
 const APIPath = import.meta.env.VITE_API_PATH;
-import { useFlashModal,useToast } from '../../hook';
+import { useFlashModal, useToast } from "../../hook";
 
 export default function ProductListsPage() {
-  // const navigate = useNavigate();
-  // const [isLoging, setIsLogin] = useState(false);
   const [productData, setProductData] = useState([]);
   const [editProduct, setEditProduct] = useState(tempProductDefaultValue);
   const [pageInfo, setPageInfo] = useState({});
@@ -58,31 +55,17 @@ export default function ProductListsPage() {
     // if (isLoging) {
     debouncedSearchTerm
       ? getCategoryProducts(debouncedSearchTerm)
-      : handleGetProducts('check');
+      : handleGetProducts("check");
     // }
-  }, [debouncedSearchTerm, ]);
-  // const handleCheckLogin = async () => {
-  //   updateFlashModal('checking',true);
-  //   try {
-  //     await apiServiceAdmin.axiosPost("/api/user/check", {});
-  //     setIsLogin(true);
-  //   } catch (error) {
-  //     console.log(error);
-  //     navigate("/loginBackend");
-  //   } finally {
-  //     updateFlashModal('closing',false);
-  //   }
-  // };
+  }, [debouncedSearchTerm]);
   const handleGetProducts = async (type = null) => {
     try {
-      if(type)
-        updateFlashModal("loadingData",true);
+      if (type) updateFlashModal("loadingData", true);
       await getProductData();
     } catch (error) {
       console.log(error);
     } finally {
-      if(type)
-        updateFlashModal("closing",false);
+      if (type) updateFlashModal("closing", false);
     }
   };
   const getProductData = useCallback(
@@ -101,8 +84,8 @@ export default function ProductListsPage() {
         setPageInfo(resProduct.data.pagination);
       } catch (error) {
         console.log(error);
-        navigate('/loginBackEnd');
-      } 
+        navigate("/loginBackEnd");
+      }
     },
     [navigate, pageInfo]
   );
@@ -138,7 +121,7 @@ export default function ProductListsPage() {
   );
   //上傳內建資料隨機一項產品
   const handleAddProduct = async () => {
-    updateFlashModal("creating",true);
+    updateFlashModal("creating", true);
     const productIndex = parseInt(Date.now()) % productDataAtLocal.length;
     const temp = { ...productDataAtLocal[productIndex], buyerNumber: 100 };
     const wrapData = {
@@ -150,49 +133,49 @@ export default function ProductListsPage() {
         wrapData
       );
       resProduct.data.success && getProductData();
-      updateToast("成功上傳!","success",true);
+      updateToast("成功上傳!", "success", true);
     } catch (error) {
       console.log(error);
-      navigate('/loginBackEnd');
+      navigate("/loginBackEnd");
     } finally {
-      updateFlashModal("closing",false);
+      updateFlashModal("closing", false);
     }
   };
   //上傳全部內建資料產品
   const handleAddAllProducts = async () => {
-    updateFlashModal("loading",true);
+    updateFlashModal("loading", true);
     const results = await utils.AddProductsSequentially(productDataAtLocal);
     setEditProduct(tempProductDefaultValue);
     if (!results.length) {
-      updateToast("成功上傳!","success",true);
+      updateToast("成功上傳!", "success", true);
       getProductData();
     } else alert(results.join(","));
-    updateFlashModal("closing",false);
+    updateFlashModal("closing", false);
   };
   //刪除第一頁全部產品
   const handleDeleteAllProducts = async () => {
     //舊context寫法，暫保留
     // setProductDetailModalType("deleting");
     // utils.modalStatus(ProductDetailModalRef, "", null, false);
-    updateFlashModal("deleting",true);
+    updateFlashModal("deleting", true);
     if (productData.length > 0) {
       const results = await utils.deleteProductsSequentially(productData);
       setEditProduct(tempProductDefaultValue);
       if (!results.length) {
-        updateToast("刪除完成!","danger",true);
+        updateToast("刪除完成!", "danger", true);
         getProductData();
       } else alert(results.join(","));
     }
     //舊context寫法，暫保留
     // ProductDetailModalRef.current.close();
-    updateFlashModal("closing",false);
+    updateFlashModal("closing", false);
   };
 
   const handleSearchCategory = (e) => {
     setCategory(e.target.value);
   };
   const getCategoryProducts = async (query) => {
-    updateFlashModal("loadingData",true);
+    updateFlashModal("loadingData", true);
     try {
       const resProduct = await apiServiceAdmin.axiosGetProductDataByConfig(
         `/api/${APIPath}/admin/products`,
@@ -205,9 +188,9 @@ export default function ProductListsPage() {
       setProductData(resProduct.data.products);
     } catch (error) {
       console.log("error:", error);
-      navigate('/loginBackEnd');
+      navigate("/loginBackEnd");
     }
-    updateFlashModal("closing",false);
+    updateFlashModal("closing", false);
   };
   return (
     <>
@@ -219,7 +202,7 @@ export default function ProductListsPage() {
             <button
               type="button"
               className="btn btn-warning mx-1"
-              onClick={()=>handleGetProducts('check')}
+              onClick={() => handleGetProducts("check")}
             >
               更新產品清單
             </button>
