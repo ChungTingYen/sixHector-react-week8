@@ -1,6 +1,7 @@
 import { useEffect, useCallback, useState, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiServiceAdmin } from "../../apiService/apiService";
+import { useNavigatePage } from "../../hook";
 import {
   Products,
   ProductEditModal,
@@ -19,8 +20,8 @@ const APIPath = import.meta.env.VITE_API_PATH;
 import { useFlashModal,useToast } from '../../hook';
 
 export default function ProductListsPage() {
-  const navigate = useNavigate();
-  const [isLoging, setIsLogin] = useState(false);
+  // const navigate = useNavigate();
+  // const [isLoging, setIsLogin] = useState(false);
   const [productData, setProductData] = useState([]);
   const [editProduct, setEditProduct] = useState(tempProductDefaultValue);
   const [pageInfo, setPageInfo] = useState({});
@@ -31,7 +32,7 @@ export default function ProductListsPage() {
   const [isProductDeleteModalOpen, setIsProductDeleteModalOpen] =
     useState(false);
   const [isProductEditModalOpen, setIsProductEditModalOpen] = useState(false);
- 
+  const navigate = useNavigatePage();
   const debouncedSearchTerm = useDebounce(category, 1000);
   //舊context寫法，暫保留
   // const ProductDetailModalRef = useRef(null);
@@ -50,28 +51,28 @@ export default function ProductListsPage() {
         .sort((a, b) => priceAscending && a.price - b.price)
     );
   }, [productData, search, priceAscending]);
+  // useEffect(() => {
+  //   handleCheckLogin();
+  // }, []);
   useEffect(() => {
-    handleCheckLogin();
-  }, []);
-  useEffect(() => {
-    if (isLoging) {
-      debouncedSearchTerm
-        ? getCategoryProducts(debouncedSearchTerm)
-        : handleGetProducts();
-    }
-  }, [debouncedSearchTerm, isLoging]);
-  const handleCheckLogin = async () => {
-    updateFlashModal('checking',true);
-    try {
-      await apiServiceAdmin.axiosPost("/api/user/check", {});
-      setIsLogin(true);
-    } catch (error) {
-      console.log(error);
-      navigate("/login");
-    } finally {
-      updateFlashModal('closing',false);
-    }
-  };
+    // if (isLoging) {
+    debouncedSearchTerm
+      ? getCategoryProducts(debouncedSearchTerm)
+      : handleGetProducts('check');
+    // }
+  }, [debouncedSearchTerm, ]);
+  // const handleCheckLogin = async () => {
+  //   updateFlashModal('checking',true);
+  //   try {
+  //     await apiServiceAdmin.axiosPost("/api/user/check", {});
+  //     setIsLogin(true);
+  //   } catch (error) {
+  //     console.log(error);
+  //     navigate("/loginBackend");
+  //   } finally {
+  //     updateFlashModal('closing',false);
+  //   }
+  // };
   const handleGetProducts = async (type = null) => {
     try {
       if(type)
@@ -100,7 +101,7 @@ export default function ProductListsPage() {
         setPageInfo(resProduct.data.pagination);
       } catch (error) {
         console.log(error);
-        navigate("/login");
+        navigate('/loginBackEnd');
       } 
     },
     [navigate, pageInfo]
@@ -152,6 +153,7 @@ export default function ProductListsPage() {
       updateToast("成功上傳!","success",true);
     } catch (error) {
       console.log(error);
+      navigate('/loginBackEnd');
     } finally {
       updateFlashModal("closing",false);
     }
@@ -203,12 +205,13 @@ export default function ProductListsPage() {
       setProductData(resProduct.data.products);
     } catch (error) {
       console.log("error:", error);
+      navigate('/loginBackEnd');
     }
     updateFlashModal("closing",false);
   };
   return (
     <>
-      <AppFunction setIsLogin={setIsLogin} />
+      <AppFunction setIsLogin={true} />
       <div className="row mt-1 mb-2 mx-1">
         <div className="d-flex justify-content-between">
           <div className="d-flex align-items-center mb-2">

@@ -26,6 +26,7 @@ const Carts = (props) => {
           },
         })
       );
+      getCartSign(dispatch);
     } catch (error) {
       console.log(error);
       dispatch(
@@ -55,13 +56,13 @@ const Carts = (props) => {
             objectFit: "cover",
           }}
         />
-        <p className="mb-0 fw-bold  d-inline-block">{cart.product.title}</p>
+        <p className="ms-1 mb-0 fw-bold  d-inline-block">{cart.product.title}</p>
       </th>
-      <td className="border-0 align-middle" style={{ maxWidth: "160px" }}>
-        <div className="input-group pe-5">
+      <td className="border-0 align-middle" style={{ maxWidth: "120px" }}>
+        <div className="input-group">
           <div className="input-group-prepend">
             <button
-              className={`btn btn-outline-dark border-0 py-2 ${
+              className={`btn btn-outline-dark border-0 ${
                 cart.qty <= 1 ? "bg-secondary" : ""
               }`}
               disabled={cart.qty <= 1 && true}
@@ -84,7 +85,7 @@ const Carts = (props) => {
           </div>
           <div className="input-group-append">
             <button
-              className="btn btn-outline-dark border-0 py-2"
+              className="btn btn-outline-dark border-0"
               type="button"
               id="button-addon2"
               onClick={() => handleIncreDecreProduct(cart.id, "+")}
@@ -99,7 +100,7 @@ const Carts = (props) => {
       </td>
       <td className="border-0 align-middle">
         <button
-          className="btn btn-outline-dark border-0 py-2"
+          className="btn btn-outline-dark border-0"
           type="button"
           id="button-addon2"
           onClick={() => handleDeleteCart(cart.id)}

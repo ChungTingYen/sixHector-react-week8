@@ -3,15 +3,17 @@ import { Link } from "react-router-dom";
 import { apiService } from "../../apiService/apiService";
 import { useNavigatePage } from "../../hook";
 const APIPath = import.meta.env.VITE_API_PATH;
-import { useToast } from "../../hook";
+import { useToast , useGetCart } from "../../hook";
 import { useEffect, useState, memo } from "react";
-
+import { getCartSign } from '../../utils/utils';
+import { useDispatch } from "react-redux";
 const Product = (props) => {
   const { product, setIsLoading, wishList, setWishList } = props;
   const [isShowHart, setIsShowHart] = useState(false);
-
   const navigate = useNavigatePage();
   const updateToastInfo = useToast();
+  const updateCartSign = useGetCart();
+  const dispatch = useDispatch();
   const handleAddProductToCart = async () => {
     setIsLoading(true);
     try {
@@ -23,6 +25,8 @@ const Product = (props) => {
       };
       await apiService.axiosPost(`/api/${APIPath}/cart`, postData);
       updateToastInfo("你的裝備已加入購物車", "secondary", true);
+      // getCartSign(dispatch);
+      updateCartSign();
     } catch (error) {
       console.log(error);
       updateToastInfo(`加入失敗:${error}`, "danger", true);
@@ -36,12 +40,14 @@ const Product = (props) => {
     if (!wishListStorage[productId]) {
       const newWishList = { ...wishListStorage, [productId]: true };
       localStorage.setItem("wishList", JSON.stringify(newWishList));
+      updateToastInfo("已加入心願清單", "success", true);
       setIsShowHart(true);
     } else {
       const newWishList = { ...wishListStorage };
       delete newWishList[productId];
       localStorage.setItem("wishList", JSON.stringify(newWishList));
       setIsShowHart(false);
+      updateToastInfo("已從心願清單移除", "success", true);
       setWishList((prev) =>
         prev.filter((item) => {
           console.log(item);

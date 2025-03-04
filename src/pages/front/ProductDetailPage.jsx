@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import ReactLoading from "react-loading";
@@ -9,8 +9,11 @@ import "react-lazy-load-image-component/src/effects/blur.css"; // 引入模糊�
 import PlaceholderImage from "../../img/loading.jpg";
 import { useToast } from "../../hook";
 import { SwiperComponent } from "../../component/front";
+import { getCartSign } from '../../utils/utils';
+import { useDispatch } from "react-redux";
 export default function ProductDetailPage() {
   const { id: productId } = useParams();
+  const dispatch = useDispatch();
   const [product, setProduct] = useState({});
   const [qtySelect, setQtySelect] = useState(1);
   const [isButtonLoading, setIsButtonLoading] = useState(false);
@@ -18,11 +21,6 @@ export default function ProductDetailPage() {
     window.scrollTo(0, 0); // 自動滾動到頂部
   }, []); //
   const updateToast = useToast();
-  //   const modalRef = useRef(null);
-  //   const handleImageClick = (imageSrc) => {
-  //     modalRef.current.setModalImage(imageSrc);
-  //     modalRef.current.open();
-  //   };
   const getProductById = async () => {
     try {
       const {
@@ -44,6 +42,7 @@ export default function ProductDetailPage() {
       };
       await apiService.axiosPost(`/api/${APIPath}/cart`, postData);
       updateToast("裝備加入購物車完成", "success", true);
+      getCartSign(dispatch);
     } catch (error) {
       console.log(error);
       updateToast("加入失敗", "success", true);

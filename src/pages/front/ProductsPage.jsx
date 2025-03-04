@@ -41,7 +41,7 @@ export default function ProductsPage() {
     setSelectedCategory(category);
   };
   const scroll = () => {
-    window.scrollTo(0, 500);
+    window.scrollTo(0, 200);
   };
   // useEffect(() => {
   //   getProducts();
@@ -59,7 +59,7 @@ export default function ProductsPage() {
     fetchData();
   }, [selectedCategory]);
 
-  useEffect(() => console.log("wishList:", wishList));
+  // useEffect(() => console.log("wishList:", wishList));
 
   const handleToggle = (id) => {
     // 找到目標對象

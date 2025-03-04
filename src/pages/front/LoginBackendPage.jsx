@@ -3,7 +3,7 @@ import { useNavigatePage } from '../../hook';
 // import { useLogin } from "../component/LoginContext";
 import { apiService,apiServiceAdmin } from "../../apiService/apiService";
 import { sweetalert,getHeadersFromCookie } from "../../utils/utils";
-const LoginPage = () => {
+const LoginBackendPage = () => {
   const [account, setAccount] = useState({
     username: "",
     password: "",
@@ -27,13 +27,14 @@ const LoginPage = () => {
         navigate('/admin');
       }
     } catch (error) {
+      sweetalert(error, "", "error", "確認");
       console.log(error);
     }
   };
   const handleCheckLogin = async () => {
     try {
       await apiServiceAdmin.axiosPost("/api/user/check",{});
-      navigate('/admin/productList');
+      navigate('/admin');
     } catch (error) {
       console.log(error);
     }
@@ -81,4 +82,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default LoginBackendPage;

@@ -7,8 +7,8 @@ import {
   ProductDetailPage,
   NotFoundPage,
   CartPage,
-  LoginPage,
-  ProductDetailPageBySide,
+  LoginBackendPage,
+  // ProductDetailPageBySide,
   CheckoutFormPage,
   OrderListsPage,
   CheckoutPaymentPageFromOrders,
@@ -24,20 +24,24 @@ const routes = [
       {
         path: "products",
         element: <ProductsPage />,
-        children: [
-          { path: "productBySide/:id", element: <ProductDetailPageBySide /> },
-        ],
+        // children: [
+        //   { path: "productBySide/:id", element: <ProductDetailPageBySide /> },
+        // ],
       },
       {
         path: "product/:id",
         element: <ProductDetailPage />,
       },
       { path: "cart", element: <CartPage /> },
-      { path: "login", element: <LoginPage /> },
-      { path: "checkout-form", element: <CheckoutFormPage /> },
-      { path: "orderLists", element: <OrderListsPage /> },
+      { path: "checkout", element: <CheckoutFormPage /> },
+      { path: "orderList", element: <OrderListsPage /> },
       { path: "payment/:id", element: <CheckoutPaymentPageFromOrders /> },
       { path: "wishList", element: <ProductsPageFromWishList /> },
+      { path: "loginBackend", element: <LoginBackendPage /> },
+      {
+        path: "*",
+        element: <NotFoundPage />,
+      },
     ],
   },
   {
@@ -47,6 +51,10 @@ const routes = [
       { path: "", element: <AdminHomePage /> },
       { path: "productList", element: <ProductLitPage /> },
       { path: "orderList", element: <OrderListPage /> },
+      {
+        path: "*",
+        element: <NotFoundPage />,
+      },
     ],
   },
   {

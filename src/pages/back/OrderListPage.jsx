@@ -50,7 +50,7 @@ export default function OrderListPage() {
       setIsLogin(true);
     } catch (error) {
       console.log(error);
-      navigate("/login");
+      navigate('/loginBackEnd');
     } finally {
       updateFlashModal("closing",false);
       // 舊context寫法，暫保留
@@ -62,9 +62,11 @@ export default function OrderListPage() {
       await getOrderData();
     } catch (error) {
       console.log(error);
+      navigate('/loginBackEnd');
     } 
   };
   const getOrderData = useCallback(async (page = 1) => {
+    updateFlashModal("loadingData",true);
     try {
       const resOrder = await apiServiceAdmin.axiosGetProductDataByConfig(
         `/api/${APIPath}/admin/orders`,
@@ -78,8 +80,10 @@ export default function OrderListPage() {
       setPageInfo(resOrder.data.pagination);
     } catch (error) {
       console.log(error);
+      navigate('/loginBackEnd');
     } finally {
       editOrderId.current = null;
+      updateFlashModal("closing",false);
     }
   }, []);
   const handleDeleteModal = useCallback(
@@ -111,13 +115,16 @@ export default function OrderListPage() {
     [orderData]
   );
   useEffect(() => {
-    handleCheckLogin();
+    handleGetOrders();
   }, []);
-  useEffect(() => {
-    if (isLoging) {
-      handleGetOrders();
-    }
-  }, [isLoging]);
+  // useEffect(() => {
+  //   handleCheckLogin();
+  // }, []);
+  // useEffect(() => {
+  //   if (isLoging) {
+  //     handleGetOrders();
+  //   }
+  // }, [isLoging]);
   return (
     <>
       {orderData.length > 0 ? (

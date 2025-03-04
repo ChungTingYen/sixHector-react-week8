@@ -46,11 +46,8 @@ export default function CustomerInfoWithNoCartNavbar() {
     return () => clearInterval(interval);
   }, []);
   useEffect(() => {
-    console.log("order:", order);
-  });
-  useEffect(() => {
     getOrder();
-    console.log("order:", order);
+    // console.log("order:", order);
   }, []);
   return (
     <div className="d-flex flex-column flex-md-row mt-4 justify-content-between align-items-md-center align-items-end w-100">

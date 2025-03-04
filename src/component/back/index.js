@@ -11,4 +11,5 @@ export { default as OrderViewModal } from './OrderViewModal';
 export { default as OrderDeleteModal } from './OrderDeleteModal';
 export { default as OrderEditModal } from './OrderEditModal';
 export { default as InputField } from './InputField';
+export { default as WithLoginCheck } from './WithLoginCheck';
 

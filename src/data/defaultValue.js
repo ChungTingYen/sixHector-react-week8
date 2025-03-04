@@ -58,3 +58,8 @@ export const flashModalDefaultValue = {
     text:''
   }
 };
+export const cartDefaultValue = {
+  carts:[],
+  final_total:0,
+  total:0
+};

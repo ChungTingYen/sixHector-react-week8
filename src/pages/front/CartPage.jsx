@@ -2,15 +2,18 @@ import { useEffect, useState, useCallback } from "react";
 import { apiService } from "../../apiService/apiService";
 import { Link } from "react-router-dom";
 import { Carts, LoadingOverlay } from "../../component/front";
+import { clearCartSlice } from "../../slice/cartSlice";
 // import { useNavigatePage } from "../../hook";
 const APIPath = import.meta.env.VITE_API_PATH;
+import { getCartSign } from '../../utils/utils';
+import { useDispatch } from "react-redux";
 import { useToast } from "../../hook";
 export default function CartPage() {
   const [cart, setCart] = useState({});
   const [reload, setReload] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const updateToast = useToast();
-  // const navigate = useNavigatePage();
+  const dispatch = useDispatch();
   const handleDeleteCart = useCallback(async (cartId = null) => {
     //如果有cardId就是刪除一個，沒有就是刪除全部
     const path = `api/${APIPath}/cart` + (cartId ? `/${cartId}` : "s");
@@ -19,6 +22,7 @@ export default function CartPage() {
       await apiService.axiosDelete(path);
       setReload(true);
       updateToast("刪除完成", "light", true);
+      cartId === null ? dispatch(clearCartSlice())  : getCartSign(dispatch);
     } catch (error) {
       console.log(error);
       alert(error);
@@ -32,7 +36,6 @@ export default function CartPage() {
       const {
         data: { data, success, message },
       } = await apiService.axiosGet(`/api/${APIPath}/cart`);
-      // console.log('data:',data);
       setCart(data);
     } catch (error) {
       console.log(error);
@@ -88,16 +91,16 @@ export default function CartPage() {
                 <table className="table">
                   <thead>
                     <tr>
-                      <th scope="col" className="border-0 ps-0">
+                      <th scope="col" className="border-0 ps-0" style={{ width:'50%' }}>
                         商品
                       </th>
-                      <th scope="col" className="border-0">
+                      <th scope="col" className="border-0"  style={{ width:'40%' }}>
                         數量
                       </th>
-                      <th scope="col" className="border-0">
+                      <th scope="col" className="border-0"  style={{ width:'10%' }}>
                         總價
                       </th>
-                      <th scope="col" className="border-0">
+                      <th scope="col" className="border-0"  style={{ width:'10%' }}>
                         刪除
                       </th>
                     </tr>
@@ -156,7 +159,7 @@ export default function CartPage() {
                   回到產品頁
                 </Link>
                 {cart.carts?.length > 0 ? (
-                  <Link to="/checkout-form" className="btn btn-dark py-3 px-5">
+                  <Link to="/checkout" className="btn btn-dark py-3 px-5">
                     填寫收件人資訊
                   </Link>
                 ) : (

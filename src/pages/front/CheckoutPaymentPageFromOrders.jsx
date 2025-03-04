@@ -7,6 +7,8 @@ import { useParams } from "react-router-dom";
 const APIPath = import.meta.env.VITE_API_PATH;
 import { useToast } from "../../hook";
 import { useNavigatePage } from "../../hook";
+import { getCartSign } from '../../utils/utils';
+import { useDispatch } from "react-redux";
 
 export default function CheckoutPaymentPageFromOrders() {
   const contentRef = useRef([]);
@@ -17,6 +19,7 @@ export default function CheckoutPaymentPageFromOrders() {
   const [reload, setReload] = useState(true);
   const navigate = useNavigatePage();
   const updateToast = useToast();
+  const dispatch = useDispatch();
   const handleToggle = useCallback(
     (e) => {
       contentRef.current.forEach((ref, index) => {
@@ -55,7 +58,8 @@ export default function CheckoutPaymentPageFromOrders() {
       } = await apiService.axiosPost(`/api/${APIPath}/pay/${inputId}`);
       if (success) {
         updateToast("付款完成", "primary", true);
-        navigate("/orderLists");
+        getCartSign(dispatch);
+        navigate("/orderList");
       }
     } catch (error) {
       console.log(error);

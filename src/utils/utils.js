@@ -72,3 +72,19 @@ export const modalStatus = (appModalRef,imgAlt, modalImg, toggleFooter) => {
   appModalRef.current.toggleFooter(toggleFooter);
   appModalRef.current.open();
 };
+
+import { apiService } from '../apiService/apiService';
+import { updateCartSlice } from '../slice/cartSlice';
+
+export const getCartSign = async (dispatch) => {
+  try {
+    const {
+      data: { data, success, message },
+    } = await apiService.axiosGet(`/api/${APIPath}/cart`);
+    if (data) {
+      dispatch(updateCartSlice(data));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};

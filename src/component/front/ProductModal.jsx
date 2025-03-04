@@ -5,7 +5,7 @@ import { apiService } from "../../apiService/apiService";
 import { Modal } from "bootstrap";
 import { Modal as PicModal } from "../../component/common";
 const APIPath = import.meta.env.VITE_API_PATH;
-import { useToast } from '../../hook';
+import { useToast ,useGetCart } from "../../hook";
 const ProductModal = (props) => {
   const {
     tempProduct,
@@ -17,6 +17,7 @@ const ProductModal = (props) => {
   const picModalRef = useRef(null);
   const [qtySelect, setQtySelect] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+
   const closeProductModal = () => {
     const modalInstance = Modal.getInstance(productModalRef.current);
     modalInstance.hide();
