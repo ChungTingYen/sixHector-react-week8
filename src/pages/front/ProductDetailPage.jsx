@@ -53,6 +53,9 @@ export default function ProductDetailPage() {
   useEffect(() => {
     getProductById();
   }, []);
+  useEffect(()=>{
+    console.log('product:',product);
+  });
   return (
     <div className="container-fluid">
       <div className="container">
@@ -75,20 +78,6 @@ export default function ProductDetailPage() {
                     height="400%"
                   />
                 </div>
-                {/* <div className="carousel-item">
-                  <img
-                    src="https://images.unsplash.com/photo-1502743780242-f10d2ce370f3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1916&q=80"
-                    className="d-block w-100"
-                    alt="..."
-                  />
-                </div>
-                <div className="carousel-item">
-                  <img
-                    src="https://images.unsplash.com/photo-1502743780242-f10d2ce370f3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1916&q=80"
-                    className="d-block w-100"
-                    alt="..."
-                  />
-                </div> */}
               </div>
               <a
                 className="carousel-control-prev"
@@ -149,30 +138,6 @@ export default function ProductDetailPage() {
             <div className="row align-items-center">
               <div className="col-6">
                 <div className="input-group my-3 bg-light rounded">
-                  {/* <div className="input-group-prepend">
-                    <button
-                      className="btn btn-outline-dark border-0 py-2"
-                      type="button"
-                      id="button-addon1"
-                      onClick={()=>setQtySelect((prev)=>prev - 1)}
-                      disabled={qtySelect <= 1}
-                    >
-                      <i className="fas fa-minus"></i>
-                    </button>
-                  </div>
-                  <span
-                    className="form-control border-0 text-center my-auto shadow-none bg-light"
-                  >{qtySelect}</span>
-                  <div className="input-group-append">
-                    <button
-                      className="btn btn-outline-dark border-0 py-2"
-                      type="button"
-                      id="button-addon2"
-                      onClick={()=>setQtySelect((prev)=>prev + 1)}
-                    >
-                      <i className="fas fa-plus"></i>
-                    </button>
-                  </div> */}
                   <select
                     value={qtySelect}
                     onChange={(e) => setQtySelect(parseInt(e.target.value))}
@@ -231,7 +196,7 @@ export default function ProductDetailPage() {
             </p>
           </div>
         </div>
-        <SwiperComponent product={product} />
+        <SwiperComponent product={product} slidesPerView='3'/>
       </div>
     </div>
   );

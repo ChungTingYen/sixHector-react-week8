@@ -10,7 +10,8 @@ import 'swiper/css/scrollbar';
 import 'swiper/css/autoplay';
 
 const SwiperComponent = (props)=>{
-  const { product } = props;
+  const { product,slidesPerView } = props;
+  const hasUrlRef = useRef(null);
   // 一般JS版本
   // const swiperContainerRef = useRef(null);
   // useEffect(() => {
@@ -43,16 +44,23 @@ const SwiperComponent = (props)=>{
   //     swiperInstance.destroy();
   //   };
   // }, []);
-
+  hasUrlRef.current = product.imagesUrl?.some(item => typeof item === 'object');
+  useEffect(()=>{
+    console.log('hasUrlRef.current:',hasUrlRef.current);
+  });
   return (
     <>
-      <h3 className="fw-bold">產品細節</h3>
+      {
+        hasUrlRef.current ? ""
+          : <h3 className="fw-bold">產品細節</h3>
+      }
+      
       {/* 這裡是 swiper/react */}
       <div className="swiper-container mt-4 mb-5">
         <SwiperReact
-          modules={[Autoplay,Navigation, Pagination, Scrollbar, A11y]}
-          spaceBetween={10}
-          slidesPerView={2}
+          modules={[Autoplay, Navigation, Pagination, Scrollbar, A11y]}
+          // spaceBetween={5}
+          // slidesPerView={3} // 初始值設定為3張幻燈片
           loop={true}
           autoplay={{
             delay: 2500,
@@ -60,8 +68,12 @@ const SwiperComponent = (props)=>{
           }}
           breakpoints={{
             767: {
-              slidesPerView: 3,
-              spaceBetween: 30,
+              slidesPerView: 1, // 螢幕寬度小於767px時顯示1張幻燈片
+              spaceBetween: 0,
+            },
+            768: {
+              slidesPerView:  slidesPerView , // 螢幕寬度大於或等於768px時顯示3張幻燈片
+              spaceBetween: 5,
             },
           }}
           navigation={{
@@ -76,23 +88,51 @@ const SwiperComponent = (props)=>{
           }}
         >
           {
-            product.imagesUrl?.filter(image=>image !== '').map((image,index)=>(
-              <SwiperSlide key={index}>
-                <div style={{ width: "250px", height: "250px" }} >
-                  <img src={image} alt={`Slide${image}`} style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover", // 圖片充滿容器並保持比例
-                    overflow: "hidden",
-                  }}/>
-                </div>
-                <p className='fw-bold'>圖片{index + 1}</p>
-              </SwiperSlide>
-            ))
+            hasUrlRef.current
+              ?
+              product.imagesUrl?.filter(image=>image !== '').map((image,index)=>(
+                <SwiperSlide key={index}>
+                  <div className="container">
+                    <div className="row">
+                      <div className="col-lg-6 mt-3 fw-bold">
+                        <p className="">
+                          {image.content}
+                        </p>
+                      </div>
+                      <div className="col-lg-8" style={{ width: "100%", height: "500px" }}>
+                        <img
+                          src={image.url}
+                          alt={`Slide ${index + 1}`}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover", // 圖片充滿容器並保持比例
+                            overflow: "hidden",
+                          }}
+                        />
+                      </div>
+                      
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))
+              :
+              product.imagesUrl?.filter(image=>image !== '').map((image,index)=>(
+                <SwiperSlide key={index}>
+                  <div style={{ width: "250px", height: "250px" }} >
+                    <img src={image} alt={`Slide${image}`} style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover", // 圖片充滿容器並保持比例
+                      overflow: "hidden",
+                    }}/>
+                  </div>
+                  <p className='fw-bold'>圖片{index + 1}</p>
+                </SwiperSlide>
+              ))
           }
         </SwiperReact>
       </div> 
-      <hr />
       {/*  一般JS版本 */}
       {/* <div className="swiper mt-4 mb-5" ref={swiperContainerRef}>
         <div className="swiper-wrapper">
