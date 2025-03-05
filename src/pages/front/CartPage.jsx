@@ -73,7 +73,7 @@ export default function CartPage() {
                   </li>
                   <li>
                     <i className="fas fa-dot-circle d-md-inline d-block text-center"></i>
-                    <span className="text-nowrap ms-1">Lorem ipsum</span>
+                    <span className="text-nowrap ms-1">結帳</span>
                   </li>
                 </ul>
               </div>

@@ -22,7 +22,7 @@ const Product = (props) => {
       };
       await apiService.axiosPost(`/api/${APIPath}/cart`, postData);
       updateToastInfo("你的裝備已加入購物車", "secondary", true);
-      updateCartSign();
+      await updateCartSign();
     } catch (error) {
       console.log(error);
       updateToastInfo(`加入失敗:${error}`, "danger", true);

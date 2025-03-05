@@ -11,8 +11,12 @@ const routes = [
 export default function BackLayout() {
   const isLogin = useCheckLogin();
   useEffect(() => {
-    isLogin();
-  }, []);
+    const checkLoginStatus = async () => {
+      await isLogin(); // 使用 await 來等待 isLogin 完成
+    };
+    checkLoginStatus();
+  }, [isLogin]);//但不需要加上isLogin
+  //測試HOC
   // const NavLinkWithCheck = WithLoginCheck(NavLink);
   return (
     <>
