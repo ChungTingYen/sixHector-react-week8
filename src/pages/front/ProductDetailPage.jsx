@@ -1,4 +1,4 @@
-import { useEffect, useState,useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import ReactLoading from "react-loading";
@@ -9,7 +9,7 @@ import "react-lazy-load-image-component/src/effects/blur.css"; // 引入模糊�
 import PlaceholderImage from "../../img/loading.jpg";
 import { useToast } from "../../hook";
 import { SwiperComponent } from "../../component/front";
-import { getCartSign } from '../../utils/utils';
+import { getCartSign } from "../../utils/utils";
 import { useDispatch } from "react-redux";
 export default function ProductDetailPage() {
   const { id: productId } = useParams();
@@ -53,9 +53,6 @@ export default function ProductDetailPage() {
   useEffect(() => {
     getProductById();
   }, []);
-  useEffect(()=>{
-    console.log('product:',product);
-  });
   return (
     <>
       <div className="container-fluid">
@@ -91,16 +88,16 @@ export default function ProductDetailPage() {
                 <ol className="breadcrumb bg-white px-0 mb-0 py-3">
                   <li className="breadcrumb-item">
                     <Link className="text-muted" to="/">
-                    首頁
+                      首頁
                     </Link>
                   </li>
                   <li className="breadcrumb-item">
                     <Link className="text-muted" to="/products">
-                    產品列表
+                      產品列表
                     </Link>
                   </li>
                   <li className="breadcrumb-item active" aria-current="page">
-                  產品資訊
+                    產品資訊
                   </li>
                 </ol>
               </nav>
@@ -110,11 +107,11 @@ export default function ProductDetailPage() {
               {/* <p className="mb-3">內容:{product.content}</p> */}
               <p className="mb-0 text-muted text-end">
                 <del className="text-danger">
-                NT${product.origin_price?.toLocaleString()}
+                  NT${product.origin_price?.toLocaleString()}
                 </del>
               </p>
               <p className="h4 fw-bold text-end">
-              NT${product.price?.toLocaleString()}
+                NT${product.price?.toLocaleString()}
               </p>
               <div className="row align-items-center">
                 <div className="col-6">
@@ -140,7 +137,7 @@ export default function ProductDetailPage() {
                     onClick={addProductTocart}
                   >
                     <div className="d-flex justify-content-center">
-                    加入購物車
+                      加入購物車
                       {isButtonLoading && (
                         <ReactLoading
                           type={"spin"}
@@ -155,7 +152,7 @@ export default function ProductDetailPage() {
                 </div>
                 <div className="col-6">
                   <Link to="/products" className="btn btn-primary w-100">
-                  回到商品頁
+                    回到商品頁
                   </Link>
                 </div>
               </div>
@@ -177,7 +174,7 @@ export default function ProductDetailPage() {
             </p>
           </div>
         </div> */}
-          <SwiperComponent product={product} slidesPerView='3'/>
+          <SwiperComponent product={product} slidesPerView={3} />
         </div>
       </div>
     </>
