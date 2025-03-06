@@ -8,10 +8,11 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import 'swiper/css/autoplay';
-
+import { Modal } from "../common";
 const SwiperComponent = (props)=>{
   const { product,slidesPerView } = props;
   const hasUrlRef = useRef(null);
+  const modalRef = useRef(null);
   // 一般JS版本
   // const swiperContainerRef = useRef(null);
   // useEffect(() => {
@@ -45,7 +46,10 @@ const SwiperComponent = (props)=>{
   //   };
   // }, []);
   hasUrlRef.current = product.imagesUrl?.some(item => typeof item === 'object');
-
+  const handleImageClick = (imageSrc) => {
+    modalRef.current.setModalImage(imageSrc);
+    modalRef.current.open();
+  };
   return (
     <>
       {
@@ -124,7 +128,9 @@ const SwiperComponent = (props)=>{
                       height: "100%",
                       objectFit: "cover", // 圖片充滿容器並保持比例
                       overflow: "hidden",
-                    }}/>
+                      cursor: "pointer",
+                    }}
+                    onClick={() => handleImageClick(image)}/>
                   </div>
                   <p className='fw-bold'>圖片{index + 1}</p>
                 </SwiperSlide>
@@ -155,6 +161,12 @@ const SwiperComponent = (props)=>{
         <div className="swiper-button-prev"></div>
         <div className="swiper-pagination"></div>
       </div> */}
+      <Modal
+        ref={modalRef}
+        modalBodyText="商品放大圖"
+        modalSize={{ width: "800px", height:'800px' }}
+        // modalImgSize={{ width: "100%", height:'80%' }}可以不需要
+      />
     </>
   );
 };

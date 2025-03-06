@@ -91,7 +91,8 @@ const Modal = forwardRef((props, ref) => {
             </div>
             <div
               className="modal-body d-flex justify-content-center"
-              style={modalImgSize}
+              // style={modalImgSize}
+              style={{ width: "100%", height:'100%', maxWidth: '100%', maxHeight: '100%', overflow: 'hidden' }}
               id="modalBody"
             >
               <img
