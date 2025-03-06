@@ -20,6 +20,7 @@ const SwiperComponent = (props) => {
   const [image, setImage] = useState(0);
   const hasUrlRef = useRef(null);
   const modalRef = useRef(null);
+  const [shouldRenderSwiper, setShouldRenderSwiper] = useState(false);
   // 一般JS版本
   // const swiperContainerRef = useRef(null);
   // useEffect(() => {
@@ -67,11 +68,18 @@ const SwiperComponent = (props) => {
       product.imagesUrl?.filter((image) => image !== "").length > 0 &&
       setImage(product.imagesUrl?.filter((image) => image !== "").length - 1);
   }, [product]);
-  useEffect(() => console.log("image:", image));
+  useEffect(() => {
+    // 檢查 images 是否大於 0，然後設置應渲染 Swiper 的狀態
+    if (image > 0) {
+      setShouldRenderSwiper(true); // 設置為 true，啟用渲染
+    } else {
+      setShouldRenderSwiper(false); // 設置為 false，不渲染
+    }
+  }, [image]); // 當 images
   return (
     <>
       {hasUrlRef.current ? "" : <h3 className="fw-bold">產品細節</h3>}
-      {image > 0 && (
+      {shouldRenderSwiper && (
         <div className="swiper-container mt-4 mb-5">
           <SwiperReact
             modules={[Autoplay, Navigation, Pagination, Scrollbar, A11y]}
@@ -182,7 +190,7 @@ const SwiperComponent = (props) => {
         <div className="swiper-button-prev"></div>
         <div className="swiper-pagination"></div>
       </div> */}
-
+      {!shouldRenderSwiper && <p>沒有足夠的圖片，因此 Swiper 未啟用。</p>}
       <Modal
         ref={modalRef}
         modalBodyText="商品放大圖"
