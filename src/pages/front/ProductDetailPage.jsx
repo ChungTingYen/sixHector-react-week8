@@ -181,7 +181,7 @@ export default function ProductDetailPage() {
           </div>
         </div>
 
-        <div className="row my-5">
+        {/* <div className="row my-5">
           <div className="col-md-4">
             <p>
               Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
@@ -195,7 +195,7 @@ export default function ProductDetailPage() {
               nonumy eirmod tempor
             </p>
           </div>
-        </div>
+        </div> */}
         <SwiperComponent product={product} slidesPerView='3'/>
       </div>
     </div>

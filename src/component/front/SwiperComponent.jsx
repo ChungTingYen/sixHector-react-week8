@@ -45,9 +45,7 @@ const SwiperComponent = (props)=>{
   //   };
   // }, []);
   hasUrlRef.current = product.imagesUrl?.some(item => typeof item === 'object');
-  useEffect(()=>{
-    console.log('hasUrlRef.current:',hasUrlRef.current);
-  });
+
   return (
     <>
       {
@@ -61,6 +59,7 @@ const SwiperComponent = (props)=>{
           modules={[Autoplay, Navigation, Pagination, Scrollbar, A11y]}
           // spaceBetween={5}
           // slidesPerView={3} // 初始值設定為3張幻燈片
+          //這裡如果加了，下面breakpoints會失效
           loop={true}
           autoplay={{
             delay: 2500,
