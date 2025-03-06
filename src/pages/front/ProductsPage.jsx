@@ -5,7 +5,7 @@ import { Product, LoadingOverlay, Pagination } from "../../component/front";
 const APIPath = import.meta.env.VITE_API_PATH;
 
 export default function ProductsPage() {
-  const [toggle, setToggle] = useState([{ id: 1, toggle: true }]);
+  const [toggle, setToggle] = useState([{ id: 1, toggle: true },{ id: 2, toggle: true }]);
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [pageInfo, setPageInfo] = useState({});

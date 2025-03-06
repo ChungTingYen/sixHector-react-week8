@@ -24,7 +24,6 @@ const Carts = (props) => {
         setIsShowToastSlice({
           type: "warning",
           text: `${type === "+" ? "增加商品數量完成" : "減少商品數量完成"}`,
-          // text: "減少商品數量完成",
           isShowToast: true,
         })
       );
