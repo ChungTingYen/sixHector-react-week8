@@ -93,14 +93,14 @@ export default function CartPage() {
                       <th
                         scope="col"
                         className="border-0 ps-0"
-                        style={{ width: "50%" }}
+                        style={{ width: "40%" }}
                       >
                         商品
                       </th>
                       <th
                         scope="col"
                         className="border-0"
-                        style={{ width: "40%" }}
+                        style={{ width: "45%" }}
                       >
                         數量
                       </th>

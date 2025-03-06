@@ -3,9 +3,12 @@ import { apiService } from "../../apiService/apiService";
 const APIPath = import.meta.env.VITE_API_PATH;
 import { useDispatch } from "react-redux";
 import { setIsShowToastSlice } from "../../slice/toastSlice";
+// import { updateCartSlice } from "../../slice/cartSlice";
+// import {  useGetCart } from "../../hook";
 const Carts = (props) => {
   const { cart, handleDeleteCart, setIsLoading, setReload } = props;
   const dispatch = useDispatch();
+  // const updateCartSign = useGetCart(updateCartSlice);
   const handleIncreDecreProduct = async (cartId, type) => {
     setIsLoading(true);
     try {
@@ -19,14 +22,12 @@ const Carts = (props) => {
       setReload(true);
       dispatch(
         setIsShowToastSlice({
-          toastInfo: {
-            type: "warning",
-            text: `${type === "+" ? "增加商品數量完成" : "減少商品數量完成"}`,
-            isShowToast: true,
-          },
+          type: "warning",
+          text: `${type === "+" ? "增加商品數量完成" : "減少商品數量完成"}`,
+          // text: "減少商品數量完成",
+          isShowToast: true,
         })
       );
-      getCartSign(dispatch);
     } catch (error) {
       console.log(error);
       dispatch(
@@ -46,17 +47,19 @@ const Carts = (props) => {
 
   return (
     <tr className="border-bottom border-top">
-      <th scope="row" className="border-0 px-0 font-weight-normal py-4">
-        <img
-          src={cart.product.imageUrl}
-          alt={cart.product.title}
-          style={{
-            width: "72px",
-            height: "72px",
-            objectFit: "cover",
-          }}
-        />
-        <p className="ms-1 mb-0 fw-bold  d-inline-block">{cart.product.title}</p>
+      <th scope="row" className="border-0 px-0 font-weight-normal py-4" >
+        <div className="d-flex flex-column">
+          <p className="mb-0 fw-bold  d-inline-block">{cart.product.title}</p>
+          <img
+            src={cart.product.imageUrl}
+            alt={cart.product.title}
+            style={{
+              width: "120px",
+              height: "120px",
+              objectFit: "cover",
+            }}
+          />
+        </div>
       </th>
       <td className="border-0 align-middle" style={{ maxWidth: "120px" }}>
         <div className="input-group">
@@ -76,7 +79,6 @@ const Carts = (props) => {
           <div className="input-group-append">
             <span
               className="form-control border-0 text-center my-auto shadow-none"
-              placeholder=""
               aria-label="Example text with button addon"
               aria-describedby="button-addon1"
             >

@@ -125,7 +125,7 @@ export default function ProductDetailPage() {
             </nav>
             <h2 className="fw-bold h1 mb-1">{product.title}</h2>
             <span className="badge text-bg-success">{product.category}</span>
-            <p className="mb-3">描述:{product.description}</p>
+            <p className="mb-3">{product.description}</p>
             {/* <p className="mb-3">內容:{product.content}</p> */}
             <p className="mb-0 text-muted text-end">
               <del className="text-danger">
