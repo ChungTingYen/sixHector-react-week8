@@ -174,7 +174,7 @@ export default function ProductDetailPage() {
             </p>
           </div>
         </div> */}
-          <SwiperComponent product={product} slidesPerView={3} />
+          <SwiperComponent product={product} swiperType={1}/>
         </div>
       </div>
     </>

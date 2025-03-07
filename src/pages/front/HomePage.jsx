@@ -54,7 +54,7 @@ export default function HomePage() {
             data-ride="carousel"
           >
             <div className="carousel-inner">
-              <SwiperComponent product={product} slidesPerView='1'/>
+              <SwiperComponent product={product} swiperType={0}/>
             </div>
           </div>
         </div>
