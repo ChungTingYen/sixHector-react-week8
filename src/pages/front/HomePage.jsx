@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { SwiperComponent } from '../../component/front';
 export default function HomePage() {
   const product = {
@@ -17,6 +18,7 @@ export default function HomePage() {
       { url:'https://images.unsplash.com/photo-1568663041326-6348c761f7af?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',content:'進來一個簡單的樂器行吧，都可以幫你重溫喔~' }
     ]
   };
+  
   return (
     <div className="container-fluid">
       <div
@@ -62,11 +64,13 @@ export default function HomePage() {
       <div className="container my-2">
         <div className="row flex-row justify-content-between mt-4 ">
           <div className="col-md-6">
-            <img
-              src="https://images.unsplash.com/photo-1582188886038-0359ac9d69a5?q=80&w=1664&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="pic1"
-              className="img-fluid"
-            />
+            <Link to="/products">
+              <img
+                src="https://images.unsplash.com/photo-1582188886038-0359ac9d69a5?q=80&w=1664&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                alt="pic1"
+                className="img-fluid"
+              />
+            </Link>
           </div>
           <div className="col-md-4 m-auto text-center">
             <h4 className="mt-4 fw-bolder">樂器</h4>
@@ -77,11 +81,13 @@ export default function HomePage() {
         </div>
         <div className="row flex-row-reverse justify-content-between mt-4 bg-light">
           <div className="col-md-6">
-            <img
-              src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="pic2"
-              className="img-fluid"
-            />
+            <Link to="/products">
+              <img
+                src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                alt="pic2"
+                className="img-fluid"
+              />
+            </Link>
           </div>
           <div className="col-md-4 m-auto text-center bg-light">
             <h4 className="mt-4 fw-bolder">練團室,表演場地</h4>
@@ -92,11 +98,13 @@ export default function HomePage() {
         </div>
         <div className="row flex-row justify-content-between mt-4 ">
           <div className="col-md-6">
-            <img
-              src="https://plus.unsplash.com/premium_photo-1682097225321-86a911d37366?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="pic3"
-              className="img-fluid"
-            />
+            <Link to="/products">
+              <img
+                src="https://plus.unsplash.com/premium_photo-1682097225321-86a911d37366?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                alt="pic3"
+                className="img-fluid"
+              />
+            </Link>
           </div>
           <div className="col-md-4 m-auto text-center">
             <h4 className="mt-4 fw-bolder">專業課程</h4>
