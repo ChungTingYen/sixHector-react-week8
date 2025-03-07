@@ -1,47 +1,46 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, } from "react";
 import { Swiper as SwiperReact, SwiperSlide } from "swiper/react";
+import { useSwiperRender } from '../../hook';
 // import Swiper from "swiper";
-import {
-  Autoplay,
-  Navigation,
-  Pagination,
-  Scrollbar,
-  A11y,
-} from "swiper/modules";
+// import {
+//   Autoplay,Navigation,Pagination,Scrollbar,A11y,EffectCoverflow
+// } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import "swiper/css/autoplay";
 import { Modal } from "../common";
-const swiperConfig = {
-  modules: [Autoplay, Navigation, Pagination, Scrollbar, A11y],
-  loop: true,
-  autoplay: {
-    delay: 1000,
-    disableOnInteraction: false,
-  },
-  breakpoints: {
-    256: {
-      slidesPerView: 1, // 螢幕寬度小於 768px 時顯示 1 張幻燈片
-      spaceBetween: 0,
-    },
-    768: {
-      slidesPerView: 3, // 螢幕寬度大於或等於 768px 時顯示 3 張幻燈片
-      spaceBetween: 5,
-    },
-  },
-  pagination: {
-    clickable: true,
-  },
-  navigation: true,
-};
+
 const SwiperComponent = (props) => {
   const { product,swiperType } = props;
-  const [image, setImage] = useState(0);
   const modalRef = useRef(null);
-  const [shouldRenderSwiper, setShouldRenderSwiper] = useState(false);
+  const { shouldRenderSwiper,swiperConfig,key  } = useSwiperRender(product,swiperType);
+  // const swiperConfig = {
+  //   modules: [Autoplay, Navigation, Pagination, Scrollbar, A11y,EffectCoverflow],
+  //   // effect:"coverflow",
+  //   loop: true,
+  //   autoplay: {
+  //     delay: 1000,
+  //     disableOnInteraction: false,
+  //   },
+  //   breakpoints: {
+  //     256: {
+  //       slidesPerView: 1, // 螢幕寬度小於 768px 時顯示 1 張幻燈片
+  //       spaceBetween: 0,
+  //     },
+  //     768: {
+  //       slidesPerView: 3, // 螢幕寬度大於或等於 768px 時顯示 3 張幻燈片
+  //       spaceBetween: 5,
+  //     },
+  //   },
+  //   pagination: {
+  //     clickable: true,
+  //   },
+  //   navigation: true,
+  // };
+  // const [shouldRenderSwiper, setShouldRenderSwiper] = useState(false);
   // 一般JS版本
   // const swiperContainerRef = useRef(null);
   // useEffect(() => {
@@ -54,38 +53,13 @@ const SwiperComponent = (props) => {
     modalRef.current.setModalImage(imageSrc);
     modalRef.current.open();
   };
-  useEffect(() => {
-    if(product.imagesUrl){
-      let swiperLoopLength = 1;
-      if(swiperType){
-        const imageCount = product.imagesUrl?.filter((image) => image !== "").length || 0;
-        if(imageCount > 0){
-          swiperLoopLength = imageCount <= 2 ? imageCount : imageCount - 1;
-          setImage(swiperLoopLength);
-          setShouldRenderSwiper(true); // 設置為 true，啟用渲染
-        } else{
-          setImage(swiperLoopLength);
-          setShouldRenderSwiper(true); // 設置為 true，啟用渲染
-        }
-      }else{
-        setImage(swiperLoopLength);
-        setShouldRenderSwiper(true); // 設置為 true，啟用渲染
-      }
-      swiperConfig.breakpoints[768] =
-      {
-        slidesPerView: swiperLoopLength, // 螢幕寬度大於或等於 768px 時顯示 3 張幻燈片
-        spaceBetween: 5,
-      };
-    }else {
-      setShouldRenderSwiper(false); // 設置為 false，不渲染
-    } 
-  }, [product,swiperType]);
+
   return (
     <>
       {swiperType ?  <p className="badge text-bg-success fs-5">產品細節</p> : "" }
       {(shouldRenderSwiper) && (
-        <div className="swiper-container mt-1">
-          <SwiperReact {...swiperConfig} >
+        <div className="swiper-container mt-1 mb-3">
+          <SwiperReact {...swiperConfig} key={key} >
             {swiperType === 0
               ? product.imagesUrl
                 ?.filter((image) => image !== "")
@@ -119,9 +93,9 @@ const SwiperComponent = (props) => {
                 ?.filter((image) => image !== "")
                 .map((image, index) => (
                   <SwiperSlide key={index} style={{
-                    display: window.innerWidth < 768 ? 'flex' : 'block',
-                    justifyContent: window.innerWidth < 768 ? 'center' : 'unset',
-                    alignItems: window.innerWidth < 768 ? 'center' : 'unset' 
+                    display: window.innerWidth < 768 || swiperConfig.breakpoints[768].slidesPerView === 1 ? 'flex' : 'block',
+                    justifyContent: window.innerWidth < 768  || swiperConfig.breakpoints[768].slidesPerView === 1 ? 'center' : 'unset',
+                    alignItems: window.innerWidth < 768  || swiperConfig.breakpoints[768].slidesPerView === 1 ? 'center' : 'unset' 
                   }}>
                     <div style={{ width: "250px", height: "250px" , position: "relative" }}>
                       <p className="fw-bold" 
