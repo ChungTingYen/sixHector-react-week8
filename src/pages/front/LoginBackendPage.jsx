@@ -76,7 +76,7 @@ const LoginBackendPage = () => {
             登入
           </button>
         </form>
-        <p className="mt-5 mb-3 text-muted">&copy; 2024~∞ - 六角學院</p>
+        <p className="mt-5 mb-3 text-muted">&copy; 傲嬌廷的react練習</p>
       </div>
     </>
   );
