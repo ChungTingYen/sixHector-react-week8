@@ -1,19 +1,16 @@
 import { useDispatch } from "react-redux";
 import { setIsShowToastSlice, } from "../slice/toastSlice";
+import { useCallback } from "react";
 const useToast = ()=>{
   const dispatch = useDispatch();
-  const updateToastInfo = (text,type,isShowToast)=>{
+  const updateToastInfo = useCallback( (text,type,isShowToast)=>{
     dispatch(setIsShowToastSlice({
-      // toastInfo:{
       text: text,
       type:type,
       isShowToast: isShowToast,
-      // }
     }));
-  };
-  // const removeToastInfo = (messageId)=>{
-  //   dispatch(removeMessage(messageId));
-  // };
+  },[dispatch,]);
+
   return updateToastInfo;
 };
 export default useToast;
