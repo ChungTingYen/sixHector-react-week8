@@ -15,9 +15,6 @@ const OrderModal = (props) => {
   const [modalProduct, setModalProduct] = useState(tempProduct);
   const navigate = useNavigatePage();
   const productModalRef = useRef(null);
-  // const updateToast = useToast();
-  // const picModalRef = useRef(null);
-  // const [isLoading, setIsLoading] = useState(false);
   const closeProductModal = () => {
     const modalInstance = Modal.getInstance(productModalRef.current);
     modalInstance.hide();
@@ -44,14 +41,13 @@ const OrderModal = (props) => {
         modalElement.removeEventListener("hidden.bs.modal", handleClose);
       };
     }
-  }, []);
+  }, [setIsProductModalOpen]);
 
   useEffect(() => {
     if (isProductModalOpen) {
       if (Object.keys(tempProduct).length > 0) setModalProduct(tempProduct);
       openProductModal();
     }
-    // console.log('modalProduct:',modalProduct);
   }, [isProductModalOpen, tempProduct]);
   return (
     <>

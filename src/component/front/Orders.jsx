@@ -1,15 +1,9 @@
 /* eslint-disable react/prop-types */
 import { memo } from "react";
 const Orders = (props) => {
-  const { id, total, is_paid, handleOpenOrderModalWithValue,handleDeleteModal } = props;
+  const { id, total, is_paid, handleOpenOrderModalWithValue, } = props;
   const atOpenOrderMOdal = () => {
     handleOpenOrderModalWithValue("view", id);
-  };
-  const atOpenOrderDeleteMOdal = () => {
-    handleDeleteModal(id);
-  };
-  const atOpenOrderEditMOdal = ()=>{
-    handleOpenOrderModalWithValue('edit',id);
   };
   return (
     <>

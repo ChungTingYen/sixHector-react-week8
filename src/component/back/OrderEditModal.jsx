@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useRef, useState, useEffect, Fragment, memo } from "react";
+import { useRef, useState, useEffect, Fragment, memo, useCallback } from "react";
 import { Modal } from "bootstrap";
 import { apiServiceAdmin } from "../../apiService/apiService";
 import { orderDefaultValue } from "../../data/defaultValue";
@@ -53,7 +53,7 @@ function OrderEditModal(props) {
   ];
 
   const handleEditDataChange = (e, key = null) => {
-    const { name, type, value, checked } = e.target;
+    const { name, value, checked } = e.target;
     let temp = orderDefaultValue;
     if (key !== null) {
       const newQty = parseInt(value) <= 0 ? 1 : parseInt(value);
@@ -125,11 +125,11 @@ function OrderEditModal(props) {
       updateFlashModal("closing",false);
     }
   };
-  const openEditModal = () => {
+  const openEditModal = useCallback(() => {
     const modalInstance = Modal.getInstance(editModalDivRef.current);
     modalInstance.show();
     setIsModalOpen(false);
-  };
+  },[setIsModalOpen]);
   const closeEditModal = () => {
     const modalInstance = Modal.getInstance(editModalDivRef.current);
     modalInstance.hide();
@@ -147,7 +147,7 @@ function OrderEditModal(props) {
       if (Object.keys(editProduct).length > 0) setModalOrder(editProduct);
       openEditModal();
     }
-  }, [isModalOpen, editProduct]);
+  }, [isModalOpen, editProduct,openEditModal]);
 
   return (
     <>

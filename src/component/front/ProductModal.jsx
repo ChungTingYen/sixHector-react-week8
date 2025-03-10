@@ -5,7 +5,7 @@ import { apiService } from "../../apiService/apiService";
 import { Modal } from "bootstrap";
 import { Modal as PicModal } from "../../component/common";
 const APIPath = import.meta.env.VITE_API_PATH;
-import { useToast ,useGetCart } from "../../hook";
+import { useToast , } from "../../hook";
 const ProductModal = (props) => {
   const {
     tempProduct,
@@ -65,7 +65,7 @@ const ProductModal = (props) => {
         modalElement.removeEventListener('hidden.bs.modal', handleClose);
       };
     }
-  }, []);
+  }, [setIsProductModalOpen]);
   useEffect(() => {
     if (isProductModalOpen) {
       openProductModal();

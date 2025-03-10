@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
 import { Toast } from "bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsShowToastSlice, removeMessage } from "../../slice/toastSlice";
+import { removeMessage } from "../../slice/toastSlice";
 const { VITE_TOAST_SHOWTIME } = import.meta.env;
 // import { useToast } from "../../hook";
 // import { toastSliceDefaultValue } from "../../data/defaultValue";
@@ -44,7 +44,7 @@ const ToastComponent = () => {
         }, VITE_TOAST_SHOWTIME);
       }
     });
-  }, [toastSlice]);
+  }, [toastSlice,dispatch]);
   const closeToast = (messageId) => {
     // dispatch(removeMessage(messageId));
     //2種做法

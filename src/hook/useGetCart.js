@@ -6,7 +6,7 @@ function useGetCart(sliceMethod){
   const getCart = async () => {
     try {
       const {
-        data: { data, success, message },
+        data: { data },
       } = await apiService.axiosGet(`/api/${APIPath}/cart`);
       dispatch(sliceMethod(data));
     } catch (error) {

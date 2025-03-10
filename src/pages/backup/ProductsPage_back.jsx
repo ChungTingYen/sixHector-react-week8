@@ -3,7 +3,6 @@ import { Outlet } from "react-router-dom";
 import { apiService } from "../../apiService/apiService";
 import { Product, LoadingOverlay, ProductModal } from "../../component/front";
 import { tempProductDefaultValue } from "../../data/data";
-import { useNavigatePage } from "../../hook";
 const APIPath = import.meta.env.VITE_API_PATH;
 
 export default function ProductsPage() {
@@ -11,7 +10,6 @@ export default function ProductsPage() {
   const [tempProduct, setTempProduct] = useState(tempProductDefaultValue);
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigatePage();
   const openProductDetailModal = () => {
     setIsProductModalOpen(true);
   };
@@ -20,7 +18,6 @@ export default function ProductsPage() {
       const temp = products.find((item) => item.id === productId);
       setTempProduct(temp);
       openProductDetailModal();
-      // navigate(`/products/productBySide/${productId}`);
     },
     [products]
   );
@@ -28,7 +25,7 @@ export default function ProductsPage() {
     setIsLoading(true);
     try {
       const {
-        data: { products, pagination, success, message },
+        data: { products },
       } = await apiService.axiosGet(`/api/${APIPath}/products`);
       setProducts(products);
     } catch (error) {
@@ -37,7 +34,7 @@ export default function ProductsPage() {
       setIsLoading(false);
     }
   };
-  console.log('products=',products);
+
   useEffect(() => {
     getProducts();
   }, []);

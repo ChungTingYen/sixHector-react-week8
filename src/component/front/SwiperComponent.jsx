@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useRef, } from "react";
+import {  useRef, } from "react";
 import { Swiper as SwiperReact, SwiperSlide } from "swiper/react";
 import { useSwiperRender } from '../../hook';
 // import Swiper from "swiper";
@@ -97,9 +97,13 @@ const SwiperComponent = (props) => {
                     justifyContent: window.innerWidth < 768  || swiperConfig.breakpoints[768].slidesPerView === 1 ? 'center' : 'unset',
                     alignItems: window.innerWidth < 768  || swiperConfig.breakpoints[768].slidesPerView === 1 ? 'center' : 'unset' 
                   }}>
-                    <div style={{ width: "250px", height: "250px" , position: "relative" }}>
+                    <div style={{ width: "250px", height: "250px" , position: "relative" ,  }}>
                       <p className="fw-bold" 
-                        style={{ position: "absolute", top: 0, zIndex: 1, backgroundColor: "rgba(255, 255, 255, 0.7)", padding:'5px' }}>圖片{index + 1}</p>
+                        style={{
+                          position: "absolute", 
+                          top: 0, 
+                          zIndex: 1, backgroundColor: "rgba(255, 255, 255, 0.7)", padding:'5px' 
+                        }}>圖片{index + 1}</p>
                       <img
                         src={image}
                         alt={`Slide${image + 1}`}

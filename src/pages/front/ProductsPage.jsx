@@ -18,11 +18,11 @@ export default function ProductsPage() {
     setWishList(Object.keys(wishListStorage));
   };
 
-  const getProducts = async (page = 1) => {
+  const getProducts = useCallback(async (page = 1) => {
     setIsLoading(true);
     try {
       const {
-        data: { products, pagination, success, message },
+        data: { products, pagination, },
       } = await apiService.axiosGetByConfig(`/api/${APIPath}/products`, {
         params: {
           page: page,
@@ -36,17 +36,14 @@ export default function ProductsPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  },[selectedCategory]);
+  
   const handleSelectedCategory = (category) => {
     setSelectedCategory(category);
   };
   const scroll = () => {
     window.scrollTo(0, 200);
   };
-  // useEffect(() => {
-  //   getProducts();
-  //   scroll();
-  // }, [selectedCategory]);
   useEffect(() => {
     getCategory();
     getWishList();
@@ -57,7 +54,7 @@ export default function ProductsPage() {
       scroll();
     };
     fetchData();
-  }, [selectedCategory]);
+  }, [getProducts]);
 
   // useEffect(() => console.log("wishList:", wishList));
 
@@ -78,7 +75,7 @@ export default function ProductsPage() {
   const getCategory = async () => {
     try {
       const {
-        data: { products, success, message },
+        data: { products, },
       } = await apiService.axiosGet(`/api/${APIPath}/products/all`);
       const category = [
         "全部",

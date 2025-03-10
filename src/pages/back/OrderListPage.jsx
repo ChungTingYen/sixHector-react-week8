@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef, useMemo } from "react";
+import { useState, useCallback, useEffect, useRef,  } from "react";
 import { apiServiceAdmin } from "../../apiService/apiService";
 import { useNavigate } from "react-router-dom";
 import {
@@ -38,33 +38,33 @@ export default function OrderListPage() {
   const [isProductDeleteModalOpen, setIsProductDeleteModalOpen] =
     useState(false);
   const editOrderId = useRef(null);
-  const [isLoging, setIsLogin] = useState(false);
+  // const [isLoging, setIsLogin] = useState(false);
   const updateFlashModal = useFlashModal();
-  const handleCheckLogin = async () => {
-    // 舊context寫法，暫保留
-    // setProductDetailModalType("checking");
-    // utils.modalStatus(ProductDetailModalRef, "", null, false);
-    updateFlashModal("checking",true);
-    try {
-      await apiServiceAdmin.axiosPost("/api/user/check", {});
-      setIsLogin(true);
-    } catch (error) {
-      console.log(error);
-      navigate('/loginBackEnd');
-    } finally {
-      updateFlashModal("closing",false);
-      // 舊context寫法，暫保留
-      // ProductDetailModalRef.current.close();
-    }
-  };
-  const handleGetOrders = async () => {
+  // const handleCheckLogin = async () => {
+  //   // 舊context寫法，暫保留
+  //   // setProductDetailModalType("checking");
+  //   // utils.modalStatus(ProductDetailModalRef, "", null, false);
+  //   updateFlashModal("checking",true);
+  //   try {
+  //     await apiServiceAdmin.axiosPost("/api/user/check", {});
+  //     setIsLogin(true);
+  //   } catch (error) {
+  //     console.log(error);
+  //     navigate('/loginBackEnd');
+  //   } finally {
+  //     updateFlashModal("closing",false);
+  //     // 舊context寫法，暫保留
+  //     // ProductDetailModalRef.current.close();
+  //   }
+  // };
+  const handleGetOrders = useCallback(async () => {
     try {
       await getOrderData();
     } catch (error) {
       console.log(error);
       navigate('/loginBackEnd');
     } 
-  };
+  },[navigate,getOrderData]);
   const getOrderData = useCallback(async (page = 1) => {
     updateFlashModal("loadingData",true);
     try {
@@ -85,7 +85,7 @@ export default function OrderListPage() {
       editOrderId.current = null;
       updateFlashModal("closing",false);
     }
-  }, []);
+  }, [navigate,updateFlashModal]);
   const handleDeleteModal = useCallback(
     (orderId) => {
       const updatedOrder =
@@ -116,15 +116,7 @@ export default function OrderListPage() {
   );
   useEffect(() => {
     handleGetOrders();
-  }, []);
-  // useEffect(() => {
-  //   handleCheckLogin();
-  // }, []);
-  // useEffect(() => {
-  //   if (isLoging) {
-  //     handleGetOrders();
-  //   }
-  // }, [isLoging]);
+  }, [handleGetOrders]);
   return (
     <>
       {orderData.length > 0 ? (

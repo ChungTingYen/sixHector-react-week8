@@ -14,7 +14,7 @@ export default function CustomerInfoPage() {
     const getCart = async () => {
       try {
         const {
-          data: { data, success, message },
+          data: { data },
         } = await apiService.axiosGet(`/api/${APIPath}/cart`);
         setCart(data);
       } catch (error) {

@@ -37,7 +37,7 @@ export async function deleteProductsSequentially(productData) {
       await apiServiceAdmin.axiosDeleteProduct( `/api/${APIPath}/admin/product/${data.id}`, 
         headers ); 
     } catch (error) { 
-      console.error(`Error deleting product ${data.id}:`, error);
+      console.error(`Error adding product index ${index}, ${data.id}:`, error);
       const errorMessage = `Error adding product ${data.id}:`;
       results.push(errorMessage); 
       // 或其他適當的錯誤處理方式 
@@ -58,7 +58,7 @@ export async function AddProductsSequentially(productData) {
         headers
       );
     } catch (error) { 
-      console.error(`Error adding product ${data.id}:`, error);
+      console.error(`Error adding product index ${index}, ${data.id}:`, error);
       const errorMessage = `Error adding product ${data.id}:`;
       results.push(errorMessage); 
       // 或其他適當的錯誤處理方式 
@@ -79,7 +79,7 @@ import { updateCartSlice } from '../slice/cartSlice';
 export const getCartSign = async (dispatch) => {
   try {
     const {
-      data: { data, success, message },
+      data: { data, },
     } = await apiService.axiosGet(`/api/${APIPath}/cart`);
     if (data) {
       dispatch(updateCartSlice(data));

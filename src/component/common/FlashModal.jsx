@@ -1,5 +1,5 @@
  
-import { useRef,  useEffect,memo } from "react";
+import { useRef,  useEffect,memo, useCallback } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Modal } from "bootstrap";
 import { useSelector } from "react-redux";
@@ -7,14 +7,15 @@ const FlashModal = ()=> {
   const flashModalSlice = useSelector((state) => {
     return state.flashModalAtStore.flashModalInfo;
   });
-  useEffect(() => {
-    if(modalDivRef1.current){
-      new Modal(modalDivRef1.current, { backdrop: 'static' });
-    }
-  }, []);
-  useEffect(()=>{
-    flashModalSlice.isShowFlashModal ? openFlashModal() : closeFlashModal();
-  },[flashModalSlice.isShowFlashModal]);
+  const openFlashModal = useCallback(()=>{
+    const modalInstance = Modal.getInstance(modalDivRef1.current);
+    getMessage(flashModalSlice.text);
+    modalInstance.show();
+  },[flashModalSlice.text]);
+  const closeFlashModal = () => {
+    const modalInstance = Modal.getInstance(modalDivRef1.current);
+    modalInstance.hide();
+  };
 
   const modalDivRef1 = useRef(null);
   const getMessage = (flashlModalText = null) => {
@@ -35,16 +36,14 @@ const FlashModal = ()=> {
       return ".........";
     }
   };
-
-  const openFlashModal = ()=>{
-    const modalInstance = Modal.getInstance(modalDivRef1.current);
-    getMessage(flashModalSlice.text);
-    modalInstance.show();
-  };
-  const closeFlashModal = () => {
-    const modalInstance = Modal.getInstance(modalDivRef1.current);
-    modalInstance.hide();
-  };
+  useEffect(() => {
+    if(modalDivRef1.current){
+      new Modal(modalDivRef1.current, { backdrop: 'static' });
+    }
+  }, []);
+  useEffect(()=>{
+    flashModalSlice.isShowFlashModal ? openFlashModal() : closeFlashModal();
+  },[flashModalSlice.isShowFlashModal,openFlashModal]);
 
   return (
     <>

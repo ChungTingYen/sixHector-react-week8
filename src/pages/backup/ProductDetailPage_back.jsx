@@ -19,16 +19,7 @@ export default function ProductDetailPage() {
     modalRef.current.setModalImage(imageSrc);
     modalRef.current.open();
   };
-  const getProductById = async () => {
-    try {
-      const {
-        data: { product, success, message },
-      } = await apiService.axiosGet(`/api/${APIPath}/product/${productId}`);
-      setProduct(product);
-    } catch (error) {
-      console.log(error);
-    } 
-  };
+
   const addProductTocart = async () => {
     setIsButtonLoading(true);
     try {
@@ -48,8 +39,18 @@ export default function ProductDetailPage() {
     }
   };
   useEffect(() => {
+    const getProductById = async () => {
+      try {
+        const {
+          data: { product },
+        } = await apiService.axiosGet(`/api/${APIPath}/product/${productId}`);
+        setProduct(product);
+      } catch (error) {
+        console.log(error);
+      } 
+    };
     getProductById();
-  }, []);
+  }, [productId]);
   return (
     <>
       <div className="container p-5">

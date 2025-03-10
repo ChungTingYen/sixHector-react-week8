@@ -1,16 +1,16 @@
 /* eslint-disable react/prop-types */
-import { useRef, useState, useEffect, Fragment } from "react";
+import { useRef, useState, useEffect, Fragment, useCallback } from "react";
 import { Modal } from "bootstrap";
 function OrderEditModal(props) {
 
   const editModalDivRef = useRef();
   const { editProduct, setModalMode, isModalOpen, setIsModalOpen } = props;
   const [modalProduct, setModalProduct] = useState(editProduct);
-  const openEditModal = () => {
+  const openEditModal = useCallback(() => {
     const modalInstance = Modal.getInstance(editModalDivRef.current);
     modalInstance.show();
     setIsModalOpen(false);
-  };
+  },[setIsModalOpen]);
   const closeEditModal = () => {
     const modalInstance = Modal.getInstance(editModalDivRef.current);
     modalInstance.hide();
@@ -45,7 +45,7 @@ function OrderEditModal(props) {
       if (Object.keys(editProduct).length > 0) setModalProduct(editProduct);
       openEditModal();
     }
-  }, [isModalOpen, editProduct]);
+  }, [isModalOpen, editProduct,openEditModal]);
 
   return (
     <>

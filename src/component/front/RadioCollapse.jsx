@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useRef, useState, useEffect } from "react";
+import { useRef, } from "react";
 const RadioCollapse = (props) => {
   const { index, activeKey, handleToggle, title, id, contentRef, contents } =
       props;

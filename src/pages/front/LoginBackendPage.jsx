@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigatePage } from "../../hook";
 // import { useLogin } from "../component/LoginContext";
 import { apiService, apiServiceAdmin } from "../../apiService/apiService";
@@ -31,17 +31,18 @@ const LoginBackendPage = () => {
       console.log(error);
     }
   };
-  const handleCheckLogin = async () => {
+  const handleCheckLogin = useCallback( async () => {
     try {
       await apiServiceAdmin.axiosPost("/api/user/check", {});
       navigate();
     } catch (error) {
       console.log(error);
     }
-  };
+  },[navigate]);
   useEffect(() => {
-    if (getHeadersFromCookie().Authorization !== null) handleCheckLogin();
-  }, []);
+    if (getHeadersFromCookie().Authorization !== null) 
+      handleCheckLogin();
+  }, [handleCheckLogin]);
   return (
     <>
       <div className="d-flex flex-column justify-content-center align-items-center vh-100">

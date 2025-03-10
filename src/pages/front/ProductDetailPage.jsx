@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, } from "react";
 import { useParams } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import ReactLoading from "react-loading";
@@ -21,16 +21,7 @@ export default function ProductDetailPage() {
     window.scrollTo(0, 0); // 自動滾動到頂部
   }, []); //
   const updateToast = useToast();
-  const getProductById = async () => {
-    try {
-      const {
-        data: { product, success, message },
-      } = await apiService.axiosGet(`/api/${APIPath}/product/${productId}`);
-      setProduct(product);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
   const addProductTocart = async () => {
     setIsButtonLoading(true);
     try {
@@ -51,8 +42,18 @@ export default function ProductDetailPage() {
     }
   };
   useEffect(() => {
+    const getProductById = async () => {
+      try {
+        const {
+          data: { product },
+        } = await apiService.axiosGet(`/api/${APIPath}/product/${productId}`);
+        setProduct(product);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     getProductById();
-  }, []);
+  }, [productId]);
   return (
     <>
       <div className="container-fluid">

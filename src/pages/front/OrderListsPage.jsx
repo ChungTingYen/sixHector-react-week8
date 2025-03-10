@@ -18,7 +18,7 @@ export default function OrderListsPage() {
     setIsLoading(true);
     try {
       const {
-        data: { orders, pagination, success, message },
+        data: { orders, pagination },
       } = await apiService.axiosGetByConfig(`/api/${APIPath}/orders`, {
         params: { page: page },
       });

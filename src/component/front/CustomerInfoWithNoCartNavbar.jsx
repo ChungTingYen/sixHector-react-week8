@@ -1,19 +1,16 @@
 import { useEffect, useState } from "react";
 import { useNavigatePage } from "../../hook";
 import { apiService } from "../../apiService/apiService";
-import { LoadingOverlay } from "../../component/front";
 import { Link } from "react-router-dom";
-// import { useParams } from "react-router-dom";
 const APIPath = import.meta.env.VITE_API_PATH;
 export default function CustomerInfoWithNoCartNavbar() {
   const navigate = useNavigatePage();
   const [time, setTime] = useState(10);
   const [order, setOrder] = useState("");
   const getOrder = async () => {
-    // setIsLoading(true);
     try {
       const {
-        data: { orders, pagination, success, message },
+        data: { orders },
       } = await apiService.axiosGetByConfig(`/api/${APIPath}/orders`, {
         params: { page: 1 },
       });
@@ -23,14 +20,10 @@ export default function CustomerInfoWithNoCartNavbar() {
           return new Date(b.create_at) - new Date(a.create_at);
         })
         .filter((item, index) => index === 0);
-      // console.log("orders:", orders);
-      // console.log("orders:", order[0].id);
       setOrder(order[0].id);
     } catch (error) {
       console.log(error);
-    } finally {
-      // setIsLoading(false);
-    }
+    } 
   };
   useEffect(() => {
     const interval = setInterval(() => {
@@ -44,10 +37,9 @@ export default function CustomerInfoWithNoCartNavbar() {
       });
     }, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [navigate]);
   useEffect(() => {
     getOrder();
-    // console.log("order:", order);
   }, []);
   return (
     <div className="d-flex flex-column flex-md-row mt-4 justify-content-between align-items-md-center align-items-end w-100">

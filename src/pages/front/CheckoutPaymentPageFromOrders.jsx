@@ -16,7 +16,7 @@ export default function CheckoutPaymentPageFromOrders() {
   const [activeKey, setActiveKey] = useState("0");
   const [isLoading, setIsLoading] = useState(true);
   const [goods, setGoods] = useState({});
-  const [reload, setReload] = useState(true);
+  const firstLoadRef = useRef(true);
   const navigate = useNavigatePage();
   const updateToast = useToast();
   const dispatch = useDispatch();
@@ -37,24 +37,12 @@ export default function CheckoutPaymentPageFromOrders() {
     },
     [activeKey]
   );
-  const getOrder = async () => {
-    setIsLoading(true);
-    try {
-      const {
-        data: { order, pagination, success, message },
-      } = await apiService.axiosGet(`/api/${APIPath}/order/${inputId}`);
-      setGoods(order);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+
   const handlePay = async () => {
     setIsLoading(true);
     try {
       const {
-        data: { success, message },
+        data: { success,  },
       } = await apiService.axiosPost(`/api/${APIPath}/pay/${inputId}`);
       if (success) {
         updateToast("付款完成", "primary", true);
@@ -67,15 +55,27 @@ export default function CheckoutPaymentPageFromOrders() {
       alert(error);
     } finally {
       setIsLoading(false);
-      setReload(false);
     }
   };
+
   useEffect(() => {
-    if (reload) {
+    const getOrder = async () => {
+      setIsLoading(true);
+      try {
+        const {
+          data: { order },
+        } = await apiService.axiosGet(`/api/${APIPath}/order/${inputId}`);
+        setGoods(order);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    if(firstLoadRef.current)
       getOrder(inputId);
-      setReload(false);
-    }
-  }, []);
+  }, [inputId]);
+
   return (
     <>
       <div className="container-fluid">

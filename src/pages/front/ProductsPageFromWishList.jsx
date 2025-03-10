@@ -1,15 +1,11 @@
 import { useEffect, useState } from "react";
 import { apiService } from "../../apiService/apiService";
-import { Product, LoadingOverlay, Pagination } from "../../component/front";
+import { Product, LoadingOverlay,  } from "../../component/front";
 const APIPath = import.meta.env.VITE_API_PATH;
 
 export default function ProductsPageFromWishList() {
-  // const [toggle, setToggle] = useState([{ id: 1, toggle: true }]);
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  // const [pageInfo, setPageInfo] = useState({});
-  // const [category, setCategory] = useState([]);
-  // const [selectedCategory, setSelectedCategory] = useState("");
   const [wishList, setWishList] = useState([]);
 
   const getWishList = () => {
@@ -21,7 +17,7 @@ export default function ProductsPageFromWishList() {
     setIsLoading(true);
     try {
       const {
-        data: { products, success, message },
+        data: { products, },
       } = await apiService.axiosGet(`/api/${APIPath}/products/all`);
       const wishListStorage = Object.keys(
         JSON.parse(localStorage.getItem("wishList")) || {}

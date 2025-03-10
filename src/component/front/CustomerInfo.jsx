@@ -33,7 +33,6 @@ const CustomerInfo = (props) => {
     handleSubmit,
     formState: { errors, isValid },
     reset,
-    watch,
   } = useForm({
     defaultValues: {
       name: "",
@@ -58,9 +57,7 @@ const CustomerInfo = (props) => {
   const checkOrder = async (userInfo) => {
     setIsLoading(true);
     try {
-      const {
-        data: { total, orderId, success, message },
-      } = await apiService.axiosPost(`/api/${APIPath}/order`, userInfo);
+      await apiService.axiosPost(`/api/${APIPath}/order`, userInfo);
       reset();
       updateToast("填寫完成", "danger", true);
     } catch (error) {

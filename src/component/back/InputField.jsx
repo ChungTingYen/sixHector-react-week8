@@ -1,6 +1,6 @@
-import React, { useState } from "react";
 
 const InputField = (props) => {
+  // eslint-disable-next-line react/prop-types
   const { label, name, type, value, onChange, checked } = props;
   return (
     <>

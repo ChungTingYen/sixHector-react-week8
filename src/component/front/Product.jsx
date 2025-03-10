@@ -56,7 +56,7 @@ const Product = (props) => {
     (() => {
       wishList.includes(product.id) && setIsShowHart(true);
     })();
-  }, []);
+  }, [product.id,wishList]);
 
   return (
     <>

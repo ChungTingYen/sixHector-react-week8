@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useState, useMemo, useRef } from "react";
+import { useEffect, useCallback, useState, useMemo, } from "react";
 import { apiServiceAdmin } from "../../apiService/apiService";
 import { useNavigatePage } from "../../hook";
 import {
@@ -48,17 +48,12 @@ export default function ProductListsPage() {
         .sort((a, b) => priceAscending && a.price - b.price)
     );
   }, [productData, search, priceAscending]);
-  // useEffect(() => {
-  //   handleCheckLogin();
-  // }, []);
   useEffect(() => {
-    // if (isLoging) {
     debouncedSearchTerm
       ? getCategoryProducts(debouncedSearchTerm)
       : handleGetProducts("check");
-    // }
-  }, [debouncedSearchTerm]);
-  const handleGetProducts = async (type = null) => {
+  }, [debouncedSearchTerm,handleGetProducts,getCategoryProducts]);
+  const handleGetProducts = useCallback(async (type = null) => {
     try {
       if (type) updateFlashModal("loadingData", true);
       await getProductData();
@@ -67,7 +62,7 @@ export default function ProductListsPage() {
     } finally {
       if (type) updateFlashModal("closing", false);
     }
-  };
+  },[getProductData,updateFlashModal]);
   const getProductData = useCallback(
     async (page = 1) => {
       try {
@@ -174,7 +169,7 @@ export default function ProductListsPage() {
   const handleSearchCategory = (e) => {
     setCategory(e.target.value);
   };
-  const getCategoryProducts = async (query) => {
+  const getCategoryProducts = useCallback(async (query) => {
     updateFlashModal("loadingData", true);
     try {
       const resProduct = await apiServiceAdmin.axiosGetProductDataByConfig(
@@ -191,7 +186,7 @@ export default function ProductListsPage() {
       navigate("/loginBackEnd");
     }
     updateFlashModal("closing", false);
-  };
+  },[updateFlashModal,navigate]);
   return (
     <>
       <AppFunction setIsLogin={true} />

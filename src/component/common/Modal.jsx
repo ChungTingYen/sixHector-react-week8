@@ -10,7 +10,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import * as bootstrap from "bootstrap";
 
 const Modal = forwardRef((props, ref) => {
-  const { modalBodyText, modalSize, modalImgSize } = props;
+  const { modalBodyText, modalSize, } = props;
   const modalDivRef = useRef(null);
   const modalRef = useRef(null);
   const imageRef = useRef(null);
