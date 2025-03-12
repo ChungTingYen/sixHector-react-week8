@@ -68,12 +68,9 @@ export default function OrderListsPage() {
     },
     [orders]
   );
-  const fetchCurrentWeather = ()=>{
-    return { a:2 };
-  };
+
   const getOrders = useCallback(async (page = 1) => {
     setIsLoading(true);
-    fetchCurrentWeather();
     try {
       const {
         data: { orders, pagination },
