@@ -13,31 +13,31 @@ export default function OrderListsPage() {
   const [tempOrder, setTempOrder] = useState();
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
   // console.log("OrderListsPage");
-  const getOrders = async (page = 1) => {
-    // console.log("getOrders");
-    setIsLoading(true);
-    try {
-      const {
-        data: { orders, pagination },
-      } = await apiService.axiosGetByConfig(`/api/${APIPath}/orders`, {
-        params: { page: page },
-      });
-      // console.log(orders, pagination);
-      setOrders(
-        orders
-          .filter((order) => order.id !== undefined && order.id !== null)
-          .sort((a, b) => {
-            return new Date(b.create_at) - new Date(a.create_at);
-          })
-      );
-      setPageInfo(pagination);
-      // console.log("pagination=", pagination);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // const getOrders = async (page = 1) => {
+  //   // console.log("getOrders");
+  //   setIsLoading(true);
+  //   try {
+  //     const {
+  //       data: { orders, pagination },
+  //     } = await apiService.axiosGetByConfig(`/api/${APIPath}/orders`, {
+  //       params: { page: page },
+  //     });
+  //     // console.log(orders, pagination);
+  //     setOrders(
+  //       orders
+  //         .filter((order) => order.id !== undefined && order.id !== null)
+  //         .sort((a, b) => {
+  //           return new Date(b.create_at) - new Date(a.create_at);
+  //         })
+  //     );
+  //     setPageInfo(pagination);
+  //     // console.log("pagination=", pagination);
+  //   } catch (error) {
+  //     console.log(error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
   const handleCreateTime = (time) => {
     const timestamp = time * 1000;
     const date = new Date(timestamp);
@@ -68,9 +68,36 @@ export default function OrderListsPage() {
     },
     [orders]
   );
+  const fetchCurrentWeather = ()=>{
+    return { a:2 };
+  };
+  const getOrders = useCallback(async (page = 1) => {
+    setIsLoading(true);
+    fetchCurrentWeather();
+    try {
+      const {
+        data: { orders, pagination },
+      } = await apiService.axiosGetByConfig(`/api/${APIPath}/orders`, {
+        params: { page: page },
+      });
+      setOrders(
+        orders
+          .filter((order) => order.id !== undefined && order.id !== null)
+          .sort((a, b) => {
+            return new Date(b.create_at) - new Date(a.create_at);
+          })
+      );
+      setPageInfo(pagination);
+
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  },[]);
   useEffect(() => {
     getOrders();
-  }, []);
+  }, [getOrders]);
 
   return (
     <>

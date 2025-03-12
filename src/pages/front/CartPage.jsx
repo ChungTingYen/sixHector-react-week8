@@ -49,7 +49,6 @@ export default function CartPage() {
       setReload(false);
     }
   }, [reload]);
-
   return (
     <>
       <div className="container-fluid">
