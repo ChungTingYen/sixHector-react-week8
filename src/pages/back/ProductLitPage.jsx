@@ -48,21 +48,6 @@ export default function ProductListsPage() {
         .sort((a, b) => priceAscending && a.price - b.price)
     );
   }, [productData, search, priceAscending]);
-  useEffect(() => {
-    debouncedSearchTerm
-      ? getCategoryProducts(debouncedSearchTerm)
-      : handleGetProducts("check");
-  }, [debouncedSearchTerm,handleGetProducts,getCategoryProducts]);
-  const handleGetProducts = useCallback(async (type = null) => {
-    try {
-      if (type) updateFlashModal("loadingData", true);
-      await getProductData();
-    } catch (error) {
-      console.log(error);
-    } finally {
-      if (type) updateFlashModal("closing", false);
-    }
-  },[getProductData,updateFlashModal]);
   const getProductData = useCallback(
     async (page = 1) => {
       try {
@@ -71,7 +56,7 @@ export default function ProductListsPage() {
           {
             params: {
               page: page,
-              category: pageInfo.category,
+              category: category,
             },
           }
         );
@@ -82,8 +67,20 @@ export default function ProductListsPage() {
         navigate("/loginBackEnd");
       }
     },
-    [navigate, pageInfo]
+    [navigate,category]
   );
+  const handleGetProducts = useCallback(async (type = null) => {
+    console.log('handleGetProducts');
+    try {
+      if (type) updateFlashModal("loadingData", true);
+      await getProductData();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      if (type) updateFlashModal("closing", false);
+    }
+  },[getProductData,updateFlashModal]);
+  
   const handleDeleteModal = useCallback(
     (productId) => {
       const updatedProduct =
@@ -169,17 +166,20 @@ export default function ProductListsPage() {
   const handleSearchCategory = (e) => {
     setCategory(e.target.value);
   };
-  const getCategoryProducts = useCallback(async (query) => {
+  const getCategoryProducts = useCallback(async (query = '',page = 1) => {
     updateFlashModal("loadingData", true);
     try {
       const resProduct = await apiServiceAdmin.axiosGetProductDataByConfig(
         `/api/${APIPath}/admin/products`,
         {
           params: {
+            page,
             category: query,
           },
         }
       );
+      console.log('resProduct:',resProduct);
+      setPageInfo(resProduct.data.pagination);
       setProductData(resProduct.data.products);
     } catch (error) {
       console.log("error:", error);
@@ -187,6 +187,10 @@ export default function ProductListsPage() {
     }
     updateFlashModal("closing", false);
   },[updateFlashModal,navigate]);
+  useEffect(() => {
+    getCategoryProducts(debouncedSearchTerm);
+    
+  }, [debouncedSearchTerm,getCategoryProducts]);
   return (
     <>
       <AppFunction setIsLogin={true} />

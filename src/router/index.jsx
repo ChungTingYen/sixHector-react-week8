@@ -8,7 +8,6 @@ import {
   NotFoundPage,
   CartPage,
   LoginBackendPage,
-  // ProductDetailPageBySide,
   CheckoutFormPage,
   OrderListsPage,
   CheckoutPaymentPageFromOrders,
@@ -56,10 +55,6 @@ const routes = [
         element: <NotFoundPage />,
       },
     ],
-  },
-  {
-    path: "*",
-    element: <NotFoundPage />,
   },
 ];
 

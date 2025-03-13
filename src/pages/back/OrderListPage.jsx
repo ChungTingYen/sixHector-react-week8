@@ -57,14 +57,7 @@ export default function OrderListPage() {
   //     // ProductDetailModalRef.current.close();
   //   }
   // };
-  const handleGetOrders = useCallback(async () => {
-    try {
-      await getOrderData();
-    } catch (error) {
-      console.log(error);
-      navigate('/loginBackEnd');
-    } 
-  },[navigate,getOrderData]);
+
   const getOrderData = useCallback(async (page = 1) => {
     updateFlashModal("loadingData",true);
     try {
@@ -86,6 +79,14 @@ export default function OrderListPage() {
       updateFlashModal("closing",false);
     }
   }, [navigate,updateFlashModal]);
+  const handleGetOrders = useCallback(async () => {
+    try {
+      await getOrderData();
+    } catch (error) {
+      console.log(error);
+      navigate('/loginBackEnd');
+    } 
+  },[navigate,getOrderData]);
   const handleDeleteModal = useCallback(
     (orderId) => {
       const updatedOrder =

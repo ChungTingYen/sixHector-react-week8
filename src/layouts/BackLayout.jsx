@@ -6,6 +6,7 @@ const routes = [
   { path: "/admin", name: "後台首頁" },
   { path: "/admin/productList", name: "產品後台列表" },
   { path: "/admin/orderList", name: "訂單列表" },
+  { path: "/admin/couponList", name: "優惠券列表" },
   { path: "/", name: "前台首頁" },
 ];
 export default function BackLayout() {

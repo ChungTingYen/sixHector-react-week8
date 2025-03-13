@@ -62,15 +62,14 @@ const Product = (props) => {
     <>
       <div className="col-md-6" key={product.id}>
         <div
-          className="card border-0 mb-4 position-relative position-relative"
+          className="card border-0 mx-auto"
           style={{
             width: "100%",
             height: "100%",
-            maxWidth: "300px",
+            maxWidth: "500px",
             maxHeight: "500px",
           }}
         >
-          <span>{product.title}</span>
           <a
             href="#"
             className="text-dark"
@@ -107,8 +106,7 @@ const Product = (props) => {
                 to={`/product/${product.id}`}
                 className="text-dark far fa-regular fa-file"
               >
-                {" "}
-                產品資訊
+                <span>{" "}{product.title}</span>
               </Link>
             </h4>
             <p className="card-text mb-0">

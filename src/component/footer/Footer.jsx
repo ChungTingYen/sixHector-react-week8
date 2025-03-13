@@ -28,7 +28,7 @@ export default function Footer() {
         <div className="container">
           <div className="d-flex align-items-center justify-content-between text-white mb-md-7 mb-4">
             <a className="text-white h4" href="#">
-              LOGO
+            一個簡單的樂器行
             </a>
             <ul className="d-flex list-unstyled mb-0 h4">
               <li>

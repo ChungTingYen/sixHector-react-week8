@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback,useRef } from "react";
 import { apiService } from "../../apiService/apiService";
 import { Link } from "react-router-dom";
 import { Carts, LoadingOverlay } from "../../component/front";
@@ -7,12 +7,17 @@ const APIPath = import.meta.env.VITE_API_PATH;
 import { getCartSign } from "../../utils/utils";
 import { useDispatch } from "react-redux";
 import { useToast } from "../../hook";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+
 export default function CartPage() {
   const [cart, setCart] = useState({});
   const [reload, setReload] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const updateToast = useToast();
   const dispatch = useDispatch();
+  const couponRef = useRef(null);
+  const [startDate, setStartDate] = useState(new Date());
   const handleDeleteCart = useCallback(async (cartId = null) => {
     //如果有cardId就是刪除一個，沒有就是刪除全部
     const path = `api/${APIPath}/cart` + (cartId ? `/${cartId}` : "s");
@@ -42,7 +47,21 @@ export default function CartPage() {
       setIsLoading(false);
     }
   };
-
+  const handleCoupon = async()=>{
+    const putData = {
+      data:{
+        code: couponRef.current.value
+      }
+    };
+    console.log('putadata:',putData);
+    try {
+      const res = await apiService.axiosPost(`/api/${APIPath}/coupon`,putData);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+    
+  };
   useEffect(() => {
     if (reload) {
       getCart();
@@ -51,6 +70,7 @@ export default function CartPage() {
   }, [reload]);
   return (
     <>
+      <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
       <div className="container-fluid">
         <div className="container">
           <div className="row justify-content-center ">
@@ -143,13 +163,16 @@ export default function CartPage() {
                       placeholder="不給你用折扣碼"
                       aria-label="Recipient's username"
                       aria-describedby="button-addon2"
-                      disabled={true}
+                      ref={couponRef}
+
+                      // disabled={true}
                     />
                     <div className="input-group-append">
                       <button
                         className="btn btn-outline-dark border-bottom border-top-0 border-start-0 border-end-0 rounded-0"
                         type="button"
                         id="button-addon2"
+                        onClick={handleCoupon}
                       >
                         <i className="fas fa-paper-plane"></i>
                       </button>

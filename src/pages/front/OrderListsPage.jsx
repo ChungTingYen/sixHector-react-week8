@@ -9,35 +9,11 @@ export default function OrderListsPage() {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [pageInfo, setPageInfo] = useState({});
-  // const updateToast = useToast();
   const [tempOrder, setTempOrder] = useState();
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
-  // console.log("OrderListsPage");
-  // const getOrders = async (page = 1) => {
-  //   // console.log("getOrders");
-  //   setIsLoading(true);
-  //   try {
-  //     const {
-  //       data: { orders, pagination },
-  //     } = await apiService.axiosGetByConfig(`/api/${APIPath}/orders`, {
-  //       params: { page: page },
-  //     });
-  //     // console.log(orders, pagination);
-  //     setOrders(
-  //       orders
-  //         .filter((order) => order.id !== undefined && order.id !== null)
-  //         .sort((a, b) => {
-  //           return new Date(b.create_at) - new Date(a.create_at);
-  //         })
-  //     );
-  //     setPageInfo(pagination);
-  //     // console.log("pagination=", pagination);
-  //   } catch (error) {
-  //     console.log(error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
+  const [width, setWidth] = useState(
+    window.innerWidth <= 568 ? `${window.innerWidth * 0.1}px` : "230px"
+  );
   const handleCreateTime = (time) => {
     const timestamp = time * 1000;
     const date = new Date(timestamp);
@@ -95,13 +71,22 @@ export default function OrderListsPage() {
   useEffect(() => {
     getOrders();
   }, [getOrders]);
-
+  const handleResize = () => {
+    const newWidth =
+      window.innerWidth <= 768 ? `${window.innerWidth * 0.8}px` : "230px";
+    setWidth(newWidth); // 更新狀態
+  };
+  useEffect(() => {
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   return (
     <>
       <div className="container-fluid">
         <div className="container">
-          <div className="mt-3">
-            <h3 className="mt-3 mb-4">您的訂單</h3>
+          <div className="mb-4">
+            <h3 className="">您的訂單</h3>
           </div>
           {orders.length > 0 ? (
             <>
@@ -109,12 +94,13 @@ export default function OrderListsPage() {
                 <div className="row">
                   {orders.map((order) => (
                     <div className="col-md-4" key={order.id}>
-                      <div className="row">
+                      <div className="">
                         <div
-                          className="card border-1 mb-4 position-relative bg-light text-black"
+                          className="card border-1 mb-4 p-2 position-relative bg-light text-black mx-auto"
                           style={{
-                            width: "230px",
-                            height: "100px",
+                            // width: "230px",
+                            width: width,
+                            height: "120px",
                             cursor: "pointer",
                           }}
                           onClick={() => handleOpenOrderModal(order.id)}

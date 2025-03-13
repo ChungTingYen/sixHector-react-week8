@@ -26,8 +26,10 @@ export default function Header() {
     const handleResize = () => {
       if (window.innerWidth >= 768) {
         setIsToggle(true); // 畫面拉大時強制展開
-      }
+      } else
+        setIsToggle(false); 
     };
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -36,7 +38,7 @@ export default function Header() {
     <div className="container d-flex flex-column">
       <nav className="navbar navbar-expand-md navbar-light">
         <NavLink className="navbar-brand" to="/">
-          首頁
+        一個簡單的樂器行
         </NavLink>
         <button
           className="navbar-toggler "
