@@ -63,3 +63,11 @@ export const cartDefaultValue = {
   final_total:0,
   total:0
 };
+
+export const tempCouponDefaultValue = {
+  title: "",
+  code:"",
+  due_date: "",
+  percent: 100,
+  is_enabled: false,
+};

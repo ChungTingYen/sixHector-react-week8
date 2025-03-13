@@ -11,9 +11,14 @@ import {
   CheckoutFormPage,
   OrderListsPage,
   CheckoutPaymentPageFromOrders,
-  ProductsPageFromWishList
+  ProductsPageFromWishList,
 } from "../pages/front";
-import { ProductLitPage, AdminHomePage, OrderListPage } from "../pages/back";
+import {
+  ProductLitPage,
+  AdminHomePage,
+  OrderListPage,
+  CouponListPage,
+} from "../pages/back";
 const routes = [
   {
     path: "/",
@@ -50,6 +55,7 @@ const routes = [
       { path: "", element: <AdminHomePage /> },
       { path: "productList", element: <ProductLitPage /> },
       { path: "orderList", element: <OrderListPage /> },
+      { path: "couponList", element: <CouponListPage /> },
       {
         path: "*",
         element: <NotFoundPage />,
