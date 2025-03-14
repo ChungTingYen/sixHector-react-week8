@@ -8,7 +8,6 @@ import {
   OrderEditModal,
   // 舊context寫法，暫保留
   // ProductDetailModal,
-  // OrderDeleteModal,
   DeleteModal
 } from "../../component/back";
 // 舊context寫法，暫保留
@@ -147,14 +146,6 @@ export default function OrderListPage() {
         isModalOpen={isViewModalOpen}
         setIsModalOpen={setIsViewModalOpen}
       />
-      {/* <OrderDeleteModal
-        setModalMode={setModalMode}
-        modalMode={modalMode}
-        getData={getOrderData}
-        isProductDeleteModalOpen={isProductDeleteModalOpen}
-        setIsProductDeleteModalOpen={setIsProductDeleteModalOpen}
-        editProduct={editProduct}
-      /> */}
       <DeleteModal
         setModalMode={setModalMode}
         modalMode={modalMode}

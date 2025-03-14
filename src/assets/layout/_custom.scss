@@ -79,3 +79,18 @@
 }
 
 
+.del {
+  text-decoration: line-through; /* 添加刪除線 */
+  text-decoration-color: red; /* 刪除線顏色為紅色 */
+  text-decoration-thickness: 3px; /* 調整刪除線的粗細，例如 3px */
+}
+
+
+.del-text {
+  color: black; /* 文字顏色為黑色 */
+  
+}
+
+.del-text.red {
+  color: red; /* 可選：讓文字變成紅色（例如條件觸發時） */
+}

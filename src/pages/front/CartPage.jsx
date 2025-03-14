@@ -7,7 +7,6 @@ const APIPath = import.meta.env.VITE_API_PATH;
 import { getCartSign } from "../../utils/utils";
 import { useDispatch } from "react-redux";
 import { useToast } from "../../hook";
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 export default function CartPage() {
@@ -17,7 +16,8 @@ export default function CartPage() {
   const updateToast = useToast();
   const dispatch = useDispatch();
   const couponRef = useRef(null);
-  const [startDate, setStartDate] = useState(new Date());
+  const [isCouponPrice,setIsCouponPrice] = useState(false);
+
   const handleDeleteCart = useCallback(async (cartId = null) => {
     //如果有cardId就是刪除一個，沒有就是刪除全部
     const path = `api/${APIPath}/cart` + (cartId ? `/${cartId}` : "s");
@@ -41,26 +41,30 @@ export default function CartPage() {
         data: { data, },
       } = await apiService.axiosGet(`/api/${APIPath}/cart`);
       setCart(data);
+      setIsCouponPrice(!!(data?.carts?.[0]?.coupon));
     } catch (error) {
       console.log(error);
     } finally {
       setIsLoading(false);
     }
   };
+
   const handleCoupon = async()=>{
     const putData = {
       data:{
         code: couponRef.current.value
       }
     };
-    console.log('putadata:',putData);
     try {
-      const res = await apiService.axiosPost(`/api/${APIPath}/coupon`,putData);
-      console.log(res);
+      await apiService.axiosPost(`/api/${APIPath}/coupon`,putData);
+      updateToast('已套用優惠券', "light", true);
+      setIsCouponPrice(true);
+      setReload(true);
+      setIsLoading(true);
     } catch (error) {
+      updateToast(`套用優惠券失敗:` + error, "light", true);
       console.log(error);
     }
-    
   };
   useEffect(() => {
     if (reload) {
@@ -70,7 +74,6 @@ export default function CartPage() {
   }, [reload]);
   return (
     <>
-      <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
       <div className="container-fluid">
         <div className="container">
           <div className="row justify-content-center ">
@@ -155,40 +158,45 @@ export default function CartPage() {
                 <p className="text-danger fw-bold">購物車沒有商品</p>
               )}
               {cart.carts?.length > 0 && (
-                <div className="d-flex">
-                  <div className="input-group w-50 mb-3">
-                    <input
-                      type="text"
-                      className="form-control rounded-0 border-bottom border-top-0 border-start-0 border-end-0 shadow-none"
-                      placeholder="不給你用折扣碼"
-                      aria-label="Recipient's username"
-                      aria-describedby="button-addon2"
-                      ref={couponRef}
-
-                      // disabled={true}
-                    />
-                    <div className="input-group-append">
+                <div className=''>
+                  {isCouponPrice ? <div className=""><span className="text-success fw-bold">已套用優惠券</span></div> : ''}
+                  <div className="d-flex">
+                    <div className="input-group mb-3">
+                      <input
+                        type="text"
+                        className="form-control rounded-0 border-bottom border-top-0 border-start-0 border-end-0 shadow-none"
+                        placeholder="不給你用折扣碼"
+                        aria-label="Recipient's username"
+                        aria-describedby="button-addon2"
+                        ref={couponRef}
+                        defaultValue={isCouponPrice ? cart.carts[0]?.coupon?.code : ''}
+                        disabled={isCouponPrice}
+                      />
+                      <div className="input-group-append">
+                        <button
+                          className="btn btn-outline-dark border-bottom border-top-0 border-start-0 border-end-0 rounded-0"
+                          type="button"
+                          id="button-addon2"
+                          onClick={handleCoupon}
+                          disabled={isCouponPrice}
+                        >
+                          <i className="fas fa-paper-plane"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div className="input-group w-50 mb-3">
                       <button
-                        className="btn btn-outline-dark border-bottom border-top-0 border-start-0 border-end-0 rounded-0"
+                        className="btn border-bottom border-top-0 btn-dark ms-auto"
                         type="button"
-                        id="button-addon2"
-                        onClick={handleCoupon}
+                        onClick={() => handleDeleteCart()}
+                        disabled={cart.carts?.length <= 0}
                       >
-                        <i className="fas fa-paper-plane"></i>
+                    刪除購物車
                       </button>
                     </div>
                   </div>
-                  <div className="input-group w-50 mb-3">
-                    <button
-                      className="btn border-bottom border-top-0  btn-dark ms-auto"
-                      type="button"
-                      onClick={() => handleDeleteCart()}
-                      disabled={cart.carts?.length <= 0}
-                    >
-                      刪除購物車
-                    </button>
-                  </div>
                 </div>
+                
               )}
               <div className="d-flex flex-column-reverse flex-md-row mt-4 justify-content-between align-items-md-center align-items-end w-100">
                 <Link to="/products" className="text-dark mt-md-0 mt-3 fw-bold">
@@ -224,13 +232,15 @@ export default function CartPage() {
                     </tr>
                   </tbody>
                 </table>
-                <div className="d-flex justify-content-between mt-4">
-                  <p className="mb-0 h4 fw-bold">總價</p>
-                  <p className="mb-0 h4 fw-bold">
-                    NT$
-                    {cart.final_total && cart.final_total.toLocaleString()}
-                  </p>
+                <div className='d-flex justify-content-between mt-4'>
+                  <p className={`mb-0 h4 fw-bold ${isCouponPrice && 'del del-text'}`}>總價 NT$
+                    {cart.total && cart.total.toLocaleString()}</p>
                 </div>
+                {isCouponPrice && 
+                <div className="d-flex justify-content-between mt-4">
+                  <p className="mb-0 h4 fw-bold">折扣碼優惠價 NT$
+                    {cart.final_total && cart.final_total.toLocaleString()}</p>
+                </div>}
               </div>
             </div>
           </div>

@@ -178,7 +178,6 @@ export default function ProductListsPage() {
           },
         }
       );
-      console.log('resProduct:',resProduct);
       setPageInfo(resProduct.data.pagination);
       setProductData(resProduct.data.products);
     } catch (error) {
