@@ -189,7 +189,6 @@ export default function ProductListsPage() {
   },[updateFlashModal,navigate]);
   useEffect(() => {
     getCategoryProducts(debouncedSearchTerm);
-    
   }, [debouncedSearchTerm,getCategoryProducts]);
   return (
     <>

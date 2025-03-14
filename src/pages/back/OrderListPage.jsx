@@ -8,7 +8,8 @@ import {
   OrderEditModal,
   // 舊context寫法，暫保留
   // ProductDetailModal,
-  OrderDeleteModal,
+  // OrderDeleteModal,
+  DeleteModal
 } from "../../component/back";
 // 舊context寫法，暫保留
 // import * as utils from "../../utils/utils";
@@ -24,6 +25,7 @@ export default function OrderListPage() {
   const [modalMode, setModalMode] = useState(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   // 舊context寫法，暫保留
   // const [productDetailModalType, setProductDetailModalType] = useState("");
   // const ProductDetailModalRef = useRef(null);
@@ -35,29 +37,8 @@ export default function OrderListPage() {
   //   [setProductDetailModalType, productDetailModalType]
   // );
 
-  const [isProductDeleteModalOpen, setIsProductDeleteModalOpen] =
-    useState(false);
   const editOrderId = useRef(null);
-  // const [isLoging, setIsLogin] = useState(false);
   const updateFlashModal = useFlashModal();
-  // const handleCheckLogin = async () => {
-  //   // 舊context寫法，暫保留
-  //   // setProductDetailModalType("checking");
-  //   // utils.modalStatus(ProductDetailModalRef, "", null, false);
-  //   updateFlashModal("checking",true);
-  //   try {
-  //     await apiServiceAdmin.axiosPost("/api/user/check", {});
-  //     setIsLogin(true);
-  //   } catch (error) {
-  //     console.log(error);
-  //     navigate('/loginBackEnd');
-  //   } finally {
-  //     updateFlashModal("closing",false);
-  //     // 舊context寫法，暫保留
-  //     // ProductDetailModalRef.current.close();
-  //   }
-  // };
-
   const getOrderData = useCallback(async (page = 1) => {
     updateFlashModal("loadingData",true);
     try {
@@ -92,7 +73,7 @@ export default function OrderListPage() {
       const updatedOrder =
         orderData.find((order) => order.id === orderId) ?? {};
       setEditProduct(updatedOrder);
-      setIsProductDeleteModalOpen(true);
+      setIsDeleteModalOpen(true);
     },
     [orderData]
   );
@@ -166,13 +147,23 @@ export default function OrderListPage() {
         isModalOpen={isViewModalOpen}
         setIsModalOpen={setIsViewModalOpen}
       />
-      <OrderDeleteModal
+      {/* <OrderDeleteModal
         setModalMode={setModalMode}
         modalMode={modalMode}
         getData={getOrderData}
         isProductDeleteModalOpen={isProductDeleteModalOpen}
         setIsProductDeleteModalOpen={setIsProductDeleteModalOpen}
         editProduct={editProduct}
+      /> */}
+      <DeleteModal
+        setModalMode={setModalMode}
+        modalMode={modalMode}
+        getData={getOrderData}
+        isDeleteModalOpen={isDeleteModalOpen}
+        setIsDeleteModalOpen={setIsDeleteModalOpen}
+        editData={editProduct}
+        text='訂單'
+        apiName='order'
       />
       <OrderEditModal
         editProduct={editProduct}

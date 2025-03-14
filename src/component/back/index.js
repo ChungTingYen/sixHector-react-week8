@@ -14,4 +14,5 @@ export { default as InputField } from './InputField';
 export { default as WithLoginCheck } from './WithLoginCheck';
 export { default as Coupons } from './Coupons';
 export { default as CouponEditModal } from './CouponEditModal';
+export { default as DeleteModal } from './DeleteModal';
 

@@ -56,9 +56,9 @@ const FlashModal = ()=> {
         aria-hidden="true"
         style={{ zIndex: 1099 }}
       >
-        <div className="modal-dialog" style={{ width: "30%" }}>
+        <div className="modal-dialog" style={{ width: "30%"  }}>
           <div className="modal-content" style={{ height:'200px' }}>
-            <div className="modal-header">
+            <div className="modal-header" style={{ backgroundColor:"#F5F5F5" }}>
               <h1 className="modal-title fs-5" id="exampleModalLabel">
                訊息
               </h1>
@@ -72,6 +72,7 @@ const FlashModal = ()=> {
             <div
               className="modal-body d-flex justify-content-center align-items-center"
               id="modalBody"
+              style={{ backgroundColor:"#F5F5F5"  }}
             >
               {getMessage(flashModalSlice.text)}
             </div>

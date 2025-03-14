@@ -8,35 +8,21 @@ import { tempCouponDefaultValue } from "../../data/defaultValue";
 import { useToast, useFlashModal } from "../../hook";
 const CouponEditModal = (props) => {
   const {
-    editProduct,
+    editData,
     setModalMode,
     modalMode,
-    getProductData,
+    getData,
     isEditModalOpen,
     setIsEditModalOpen,
   } = props;
   const updateToast = useToast();
   const updateFlashModal = useFlashModal();
-  const [modalProduct, setModalProduct] = useState(editProduct);
+  const [modalCoupon, setModalCoupon] = useState(editData);
   const editModalDivRef = useRef(null);
-  const uploadRef = useRef(null);
-
-  useEffect(() => {
-    setModalProduct(editProduct);
-  }, [editProduct]);
-  useEffect(() => {
-    if (editModalDivRef.current) {
-      new Modal(editModalDivRef.current, { backdrop: false });
-    }
-  }, []);
-  useEffect(() => {
-    if (isEditModalOpen) openEditModal();
-  }, [isEditModalOpen]);
 
   const closeEditModal = () => {
     setModalMode(null);
-    setModalProduct(tempCouponDefaultValue);
-    uploadRef.current.value = "";
+    setModalCoupon(tempCouponDefaultValue);
     const modalInstance = Modal.getInstance(editModalDivRef.current);
     modalInstance.hide();
     setIsEditModalOpen(false);
@@ -51,30 +37,30 @@ const CouponEditModal = (props) => {
     let tempValue;
     if (type === "number") tempValue = Number(value);
     else if (type === "checkbox") tempValue = checked;
+    else if (type === "date") tempValue = new Date(value).getTime() / 1000;
     else tempValue = value;
     const temp = {
-      ...modalProduct,
+      ...modalCoupon,
       [name]: tempValue,
     };
-    setModalProduct(temp);
+    setModalCoupon(temp);
   };
-  const implementEditProduct = async (type, modalProduct) => {
+  const implementEditProduct = async (type, modalCoupon) => {
     try {
       const wrapData = {
         data: {
-          ...modalProduct,
-          is_enabled: modalProduct.is_enabled ? 1 : 0,
-          //price,original_price在取得輸入資料時handleEditDataChange已處理過
+          ...modalCoupon,
+          is_enabled: modalCoupon.is_enabled ? 1 : 0,
         },
       };
       let path = "";
       switch (type) {
         case "create":
-          path = `/api/${APIPath}/admin/product`;
+          path = `/api/${APIPath}/admin/coupon`;
           await apiServiceAdmin.axiosPostAddProduct(path, wrapData);
           break;
         case "edit":
-          path = `/api/${APIPath}/admin/product/${modalProduct.id}`;
+          path = `/api/${APIPath}/admin/coupon/${modalCoupon.id}`;
           await apiServiceAdmin.axiosPutProduct(path, wrapData);
           break;
         default:
@@ -87,18 +73,17 @@ const CouponEditModal = (props) => {
     }
   };
   const handleUpdateProduct = async () => {
-    if (!modalProduct.id && modalMode === "edit") {
-      alert("未取得product ID");
+    if (!modalCoupon.id && modalMode === "edit") {
+      alert("未取得coupon ID");
       return;
     }
     updateFlashModal("loading", true);
     try {
-      const result = await implementEditProduct(modalMode, modalProduct);
+      const result = await implementEditProduct(modalMode, modalCoupon);
       if (result) {
         closeEditModal();
-        getProductData();
-        setModalProduct(tempCouponDefaultValue);
-        uploadRef.current.value = "";
+        getData();
+        setModalCoupon(tempCouponDefaultValue);
         updateToast(
           modalMode === "create" ? "新增完成" : "更新完成",
           "warning",
@@ -113,6 +98,25 @@ const CouponEditModal = (props) => {
       updateFlashModal("closing", false);
     }
   };
+  const setDue_date = (due_date) => {
+    const date = new Date(due_date * 1000);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`; // 返回 YYYY-MM-DDTHH:mm
+  };
+  useEffect(() => {
+    if (editModalDivRef.current) {
+      new Modal(editModalDivRef.current, { backdrop: false });
+    }
+  }, []);
+  useEffect(() => {
+    if (isEditModalOpen) {
+      Object.keys(editData).length > 0 ? setModalCoupon(editData) : setModalCoupon(tempCouponDefaultValue);
+      openEditModal();
+    }
+  }, [isEditModalOpen,editData]);
+
   return (
     <>
       <div
@@ -124,194 +128,92 @@ const CouponEditModal = (props) => {
         <div className="modal-dialog modal-dialog-centered modal-xl">
           <div className="modal-content border-0 shadow">
             <div className="modal-header border-bottom">
-              <h5 className="modal-title fs-4">{modalProduct.title}</h5>
+              <h5 className="modal-title fs-4">{modalCoupon.title}</h5>
               <button
                 type="button"
                 className="btn-close"
                 aria-label="Close"
                 onClick={closeEditModal}
-                // data-bs-dismiss="modal"
+                data-bs-dismiss="modal"
               ></button>
             </div>
             <div className="modal-body p-4">
+
               <div className="row g-4">
                 <div className="col-md-12">
-                  <div className="mb-3">
+                   <div className="mb-3">
                     <label htmlFor="title" className="form-label">
-                      標題
+                      名稱
                     </label>
                     <input
                       name="title"
                       id="title"
                       type="text"
                       className="form-control"
-                      placeholder="請輸入標題"
-                      value={modalProduct.title}
+                      placeholder="請輸入名稱"
+                      value={modalCoupon.title}
                       onChange={handleEditDataChange}
                     />
                   </div>
                   <div className="mb-3">
-                    <label htmlFor="category" className="form-label">
-                      分類
+                    <label htmlFor="code" className="form-label">
+                    代碼
                     </label>
                     <input
-                      name="category"
-                      id="category"
+                      name="code"
+                      id="code"
                       type="text"
                       className="form-control"
-                      placeholder="請輸入分類"
-                      value={modalProduct.category}
+                      placeholder="請輸入代碼"
+                      value={modalCoupon.code}
                       onChange={handleEditDataChange}
                     />
                   </div>
                   <div className="mb-3">
-                    <label htmlFor="unit" className="form-label">
-                      單位
+                    <label htmlFor="percent" className="form-label">
+                      折扣
                     </label>
                     <input
-                      name="unit"
-                      id="unit"
-                      type="text"
+                      name="percent"
+                      id="percent"
+                      type="number"
                       className="form-control"
-                      placeholder="請輸入單位"
-                      value={modalProduct.unit}
+                      placeholder="請輸入折扣"
+                      min={0}
+                      value={modalCoupon.percent}
                       onChange={handleEditDataChange}
                     />
                   </div>
                   <div className="row g-3 mb-3">
                     <div className="col-6">
-                      <label htmlFor="origin_price" className="form-label">
-                        原價
+                      <label htmlFor="due_date" className="form-label">
+                        到期日
                       </label>
                       <input
-                        name="origin_price"
-                        id="origin_price"
-                        type="number"
+                        name="due_date"
+                        id="due_date"
+                        type="date"
                         className="form-control"
-                        placeholder="請輸入原價"
-                        min={0}
-                        value={modalProduct.origin_price}
+                        placeholder="請輸入到期日"
+                        value={modalCoupon.due_date ? setDue_date(modalCoupon.due_date) : ""} // 時間戳記轉換
                         onChange={handleEditDataChange}
                       />
                     </div>
-                    <div className="col-6">
-                      <label htmlFor="price" className="form-label">
-                        售價
-                      </label>
-                      <input
-                        name="price"
-                        id="price"
-                        type="number"
-                        className="form-control"
-                        placeholder="請輸入售價"
-                        min={0}
-                        value={modalProduct.price}
-                        onChange={handleEditDataChange}
-                      />
-                    </div>
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="description" className="form-label">
-                      產品描述
-                    </label>
-                    <textarea
-                      name="description"
-                      id="description"
-                      className="form-control"
-                      rows={4}
-                      placeholder="請輸入產品描述"
-                      value={modalProduct.description}
-                      onChange={handleEditDataChange}
-                    ></textarea>
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="content" className="form-label">
-                      說明內容
-                    </label>
-                    <textarea
-                      name="content"
-                      id="content"
-                      className="form-control"
-                      rows={4}
-                      placeholder="請輸入說明內容"
-                      value={modalProduct.content}
-                      onChange={handleEditDataChange}
-                    ></textarea>
-                  </div>
+                  </div> 
                   <div className="form-check">
                     <input
                       name="is_enabled"
                       type="checkbox"
                       className="form-check-input"
                       id="isEnabled"
-                      checked={modalProduct.is_enabled}
+                      checked={modalCoupon.is_enabled}
                       onChange={handleEditDataChange}
                     />
                     <label className="form-check-label" htmlFor="isEnabled">
                       是否啟用
                     </label>
                   </div>
-                  <div className="row g-3 mb-3 mt-1">
-                    <label htmlFor="buyerNumber">購買人數</label>
-                    <input
-                      name="buyerNumber"
-                      id="buyerNumber"
-                      type="number"
-                      className="form-control"
-                      placeholder="請輸入購買人數"
-                      min={0}
-                      value={modalProduct.buyerNumber}
-                      onChange={handleEditDataChange}
-                    />
-                  </div>
                 </div>
-              </div>
-            </div>
-            <div className="modal-body p-4">
-              <div className="row g-4">
-                <div className="col-12 ">
-                  <div className="mb-3">
-                    <label htmlFor="fileInput" className="form-label">
-                      主圖上傳
-                    </label>
-                    <input
-                      type="file"
-                      accept=".jpg,.jpeg,.png"
-                      className="form-control"
-                      id="fileInput"
-                      ref={uploadRef}
-                    />
-                  </div>
-                  <label htmlFor="primary-image" className="form-label">
-                    主圖
-                  </label>
-                  <div className="input-group">
-                    <input
-                      name="imageUrl"
-                      type="text"
-                      id="primary-image"
-                      className="form-control"
-                      placeholder="請輸入圖片連結"
-                      value={modalProduct.imageUrl}
-                      onChange={handleEditDataChange}
-                    />
-                  </div>
-                  {modalProduct.imageUrl && (
-                    <div style={{ width: "100%", height: "500px" }}>
-                      <img
-                        src={modalProduct.imageUrl}
-                        alt={modalProduct.title}
-                        className="img-fluid"
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          objectFit: "cover",
-                        }}
-                      />
-                    </div>
-                  )}
-                </div>
-                <hr />
               </div>
             </div>
             <div className="modal-footer border-top bg-light">

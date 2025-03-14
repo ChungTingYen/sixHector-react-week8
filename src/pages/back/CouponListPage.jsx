@@ -5,7 +5,7 @@ import {
   Pagination,
   Coupons,
   CouponEditModal,
-  OrderDeleteModal,
+  DeleteModal
 } from "../../component/back";
 const APIPath = import.meta.env.VITE_API_PATH;
 import { useFlashModal } from "../../hook";
@@ -15,11 +15,11 @@ export default function CouponListPage() {
   const navigate = useNavigate();
   const [couponData, setCouponData] = useState([]);
   const [pageInfo, setPageInfo] = useState({});
-  const [editProduct, setEditProduct] = useState({});
+  const [editData, setEditData] = useState(tempCouponDefaultValue);
   const [modalMode, setModalMode] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  const [isProductDeleteModalOpen, setIsProductDeleteModalOpen] =
+  const [isDeleteModalOpen, setIsDeleteModalOpen] =
     useState(false);
   const editOrderId = useRef(null);
   const updateFlashModal = useFlashModal();
@@ -57,25 +57,23 @@ export default function CouponListPage() {
     }
   }, [navigate, getCouponData]);
   const handleDeleteModal = useCallback(
-    (orderId) => {
-      const updatedOrder =
-        couponData.find((order) => order.id === orderId) ?? {};
-      setEditProduct(updatedOrder);
-      setIsProductDeleteModalOpen(true);
+    (couponId) => {
+      const updatedCoupon =
+        couponData.find((coupon) => coupon.id === couponId) ?? {};
+      setEditData(updatedCoupon);
+      setIsDeleteModalOpen(true);
     },
     [couponData]
   );
   const handleOpenEditModalWithValue = useCallback(
     (mode, couponId = null) => {
-      console.log("handleOpenEditModalWithValue");
       if (mode === "create") {
-        setEditProduct(tempCouponDefaultValue);
+        setEditData(tempCouponDefaultValue);
         setModalMode(mode);
       } else if (couponId && mode === "edit") {
         const updatedProduct =
           couponData.find((coupon) => coupon.id === couponId) ?? {};
-        console.log("updatedProduct:", updatedProduct);
-        setEditProduct(updatedProduct);
+        setEditData(updatedProduct);
         setModalMode(mode);
       }
       setIsEditModalOpen(true);
@@ -87,6 +85,17 @@ export default function CouponListPage() {
   }, [handleGetCoupons]);
   return (
     <>
+      <div className="row mt-2 mb-2 mx-1">
+        <div className="d-flex justify-content-end align-items-center">
+          <button
+            type="button"
+            className="btn btn-primary mx-1"
+            onClick={() => handleOpenEditModalWithValue("create")}
+          >
+              建立新的優惠券
+          </button>
+        </div>
+      </div>
       {couponData.length > 0 ? (
         <>
           <div className="row mt-1 mb-2 mx-1">
@@ -144,19 +153,21 @@ export default function CouponListPage() {
       ) : (
         <h1>沒有優惠券或優惠券載入中</h1>
       )}
-      <OrderDeleteModal
+      <DeleteModal
+        editData={editData}
         setModalMode={setModalMode}
         modalMode={modalMode}
         getData={getCouponData}
-        isProductDeleteModalOpen={isProductDeleteModalOpen}
-        setIsProductDeleteModalOpen={setIsProductDeleteModalOpen}
-        editProduct={editProduct}
+        isDeleteModalOpen={isDeleteModalOpen}
+        setIsDeleteModalOpen={setIsDeleteModalOpen}
+        text='優惠券'
+        apiName='coupon'
       />
       <CouponEditModal
-        editProduct={editProduct}
+        editData={editData}
         setModalMode={setModalMode}
         modalMode={modalMode}
-        getProductData={getCouponData}
+        getData={getCouponData}
         isEditModalOpen={isEditModalOpen}
         setIsEditModalOpen={setIsEditModalOpen}
       />
