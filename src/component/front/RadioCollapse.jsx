@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes, { shape } from "prop-types";
 import { useRef, } from "react";
 const RadioCollapse = (props) => {
   const { index, activeKey, handleToggle, title, id, contentRef, contents } =
@@ -47,5 +47,22 @@ const RadioCollapse = (props) => {
     </div>
   );
 };
-
+RadioCollapse.propTypes = {
+  index:PropTypes.string,
+  activeKey:PropTypes.string,
+  handleToggle:PropTypes.func,
+  title:PropTypes.string, 
+  id:PropTypes.string, 
+  contentRef: PropTypes.shape({
+    current: PropTypes.oneOfType([
+      PropTypes.instanceOf(Element),          // 單一 DOM 節點
+      PropTypes.arrayOf(PropTypes.instanceOf(Element)) // 多個 DOM 節點
+    ]),
+  }).isRequired,
+  contents:PropTypes.arrayOf(shape({
+    id: PropTypes.string,
+    title: PropTypes.string,
+    placeholder: PropTypes.string,
+  })).isRequired,
+};
 export default RadioCollapse;

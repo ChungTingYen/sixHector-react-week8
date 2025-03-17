@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from "prop-types";
 import { useRef, useState, useEffect, Fragment, memo, useCallback } from "react";
 import { Modal } from "bootstrap";
 import { apiServiceAdmin } from "../../apiService/apiService";
@@ -263,4 +263,18 @@ function OrderEditModal(props) {
     </>
   );
 }
+
+OrderEditModal.propTypes = {
+  editProduct:PropTypes.object,
+  setModalMode:PropTypes.func,
+  isModalOpen:PropTypes.bool,
+  setIsModalOpen:PropTypes.func,
+  getData:PropTypes.func,
+  editOrderId: PropTypes.shape({
+    current: PropTypes.oneOfType([
+      PropTypes.string, // 當 ref 指向一個字串
+      PropTypes.oneOf([null]),     // 當 ref 尚未被賦值
+    ])
+  }).isRequired,
+};
 export default memo(OrderEditModal);

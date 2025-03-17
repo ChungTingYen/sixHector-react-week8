@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from "prop-types";
 import { memo } from "react";
 const Pagination = (props) => {
   const { getData, pageInfo } = props;
@@ -62,5 +62,8 @@ const Pagination = (props) => {
     </>
   );
 };
-
+Pagination.propTypes = {
+  getData:PropTypes.func.isRequired,
+  pageInfo:PropTypes.object
+};
 export default memo(Pagination);

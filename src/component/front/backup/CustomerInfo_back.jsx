@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
 import { apiService } from "../../apiService/apiService";
 import { registerRules } from "../../data/data";
@@ -27,7 +27,17 @@ const Input = (props) => {
     </>
   );
 };
-
+// 定義 Input 的 propTypes
+Input.propTypes = {
+  label: PropTypes.string.isRequired,        // 必填，字串類型
+  id: PropTypes.string.isRequired,           // 必填，字串類型
+  name: PropTypes.string.isRequired,         // 必填，字串類型
+  type: PropTypes.string.isRequired,         // 必填，字串類型
+  placeholder: PropTypes.string,             // 選填，字串類型
+  register: PropTypes.func.isRequired,       // 必填，函數類型
+  rules: PropTypes.object,                   // 選填，物件類型
+  errors: PropTypes.object                   // 選填，物件類型
+};
 const CustomerInfo = (props) => {
   const { setIsLoading, setReload } = props;
   const updateToast = useToast();
@@ -137,5 +147,9 @@ const CustomerInfo = (props) => {
       </form>
     </div>
   );
+};
+CustomerInfo.propTypes = {
+  setIsLoading:PropTypes.func,
+  setReload:PropTypes.func
 };
 export default CustomerInfo;

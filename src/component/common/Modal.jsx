@@ -1,5 +1,5 @@
-/* eslint-disable react/prop-types */
 /* eslint-disable react/display-name */
+import PropTypes from 'prop-types';
 import  {
   useRef,
   useEffect,
@@ -119,4 +119,11 @@ const Modal = forwardRef((props, ref) => {
     </>
   );
 });
+
+Modal.propTypes = {
+  modalBodyText:PropTypes.string,
+  modalSize:PropTypes.object
+};
+
 export default Modal;
+

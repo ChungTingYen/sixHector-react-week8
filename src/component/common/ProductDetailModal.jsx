@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
 /* eslint-disable react/display-name */
 import {
   useRef,
@@ -141,4 +141,9 @@ const ProductDetailModal = forwardRef((props, ref) => {
     </>
   );
 });
+ProductDetailModal.propTypes = {
+  modalBodyText:PropTypes.string,
+  modalSize:PropTypes.number,
+  modalImgSize:PropTypes.number 
+};
 export default memo(ProductDetailModal);

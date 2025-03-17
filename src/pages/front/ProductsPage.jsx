@@ -1,4 +1,4 @@
-/* eslint-disable indent */
+
 import { useEffect, useState, useCallback } from "react";
 import { apiService } from "../../apiService/apiService";
 import { Product, LoadingOverlay, Pagination } from "../../component/front";
@@ -144,8 +144,8 @@ export default function ProductsPage() {
                                 onClick={() => handleSelectedCategory(item)}
                                 className={`btn btn-border-none py-2 d-block text-muted 
                                 ${
-                                  item === selectedCategory ? "bg-warning" : ""
-                                }`}
+                            item === selectedCategory ? "bg-warning" : ""
+                            }`}
                               >
                                 {item}
                               </button>

@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from "prop-types";
 import { memo } from "react";
 const Orders = (props) => {
   const { id, total, is_paid, handleOpenOrderModalWithValue, } = props;
@@ -30,5 +30,10 @@ const Orders = (props) => {
     </>
   );
 };
-
+Orders.propTypes = {
+  id:PropTypes.string, 
+  total:PropTypes.number,
+  is_paid:PropTypes.bool,
+  handleOpenOrderModalWithValue:PropTypes.func
+};
 export default memo(Orders);

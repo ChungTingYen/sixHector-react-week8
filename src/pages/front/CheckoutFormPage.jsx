@@ -70,17 +70,18 @@ export default function CheckoutFormPage() {
                   {cart.carts?.map((cart) => (
                     <Fragment key={cart.id}>
                       <div className="d-flex mt-2">
-                        <img
-                          src={cart.product.imageUrl}
-                          alt={cart.product.title}
-                          className="me-2"
-                          style={{
-                            width: "48px",
-                            height: "48px",
-                            objectFit: "cover",
-                          }}
-                        />
-                        <div className="w-100">
+                        <div style={{ width: '240px', height: '100px', overflow:'hidden' }}>
+                          <img
+                            src={cart.product.imageUrl}
+                            alt={cart.product.title}
+                            className="me-2"
+                            style={{
+                              width: '100%', height: '100%', 
+                              objectFit: "cover",
+                            }}
+                          />
+                        </div>
+                        <div className="w-100 ms-2">
                           <div>
                             <div className="mb-0 fw-bold">
                               {cart.product.title}

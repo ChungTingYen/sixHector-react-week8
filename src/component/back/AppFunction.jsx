@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { apiServiceAdmin } from "../../apiService/apiService";
 import * as utils from '../../utils/utils';
@@ -70,5 +70,7 @@ const AppFunction = (props) => {
     </>
   );
 };
-
+AppFunction.propTypes = {
+  setIsLogin:PropTypes.bool
+};
 export default AppFunction;

@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from "prop-types";
 import  { memo } from "react";
 // import Modal from "./Modal";
 
@@ -61,5 +61,17 @@ const Product = (props) => {
     </>
   );
 };
-
+Product.propTypes = {
+  index:PropTypes.number,
+  id:PropTypes.string,
+  title:PropTypes.string,
+  origin_price:PropTypes.number,
+  price:PropTypes.number,
+  is_enabled:PropTypes.number,
+  category:PropTypes.string,
+  isSelected:PropTypes.bool,
+  handleOpenEditModalWithValue:PropTypes.func,
+  handleDeleteModal:PropTypes.func,
+  buyerNumber:PropTypes.number
+};
 export default memo(Product);

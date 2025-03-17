@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { LoadingOverlay, Pagination, OrderModal } from "../../component/front";
 import { apiService } from "../../apiService/apiService";
-// import { useToast } from "../../hook";
-
 const APIPath = import.meta.env.VITE_API_PATH;
 
 export default function OrderListsPage() {

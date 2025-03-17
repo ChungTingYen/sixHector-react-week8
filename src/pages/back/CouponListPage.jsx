@@ -31,7 +31,6 @@ export default function CouponListPage() {
           `/api/${APIPath}/admin/coupons`,
           { params: { page: page } }
         );
-        console.log("couponData:", resCoupon);
         setCouponData(
           resCoupon.data.coupons.filter((coupon) => {
             return coupon.id !== undefined;

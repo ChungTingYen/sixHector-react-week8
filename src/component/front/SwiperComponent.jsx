@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from "prop-types";
 import {  useRef, } from "react";
 import { Swiper as SwiperReact, SwiperSlide } from "swiper/react";
 import { useSwiperRender } from '../../hook';
@@ -156,4 +156,9 @@ const SwiperComponent = (props) => {
     </>
   );
 };
+SwiperComponent.propTypes = {
+  product:PropTypes.object,
+  swiperType:PropTypes.number
+};
+
 export default SwiperComponent;

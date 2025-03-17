@@ -1,5 +1,4 @@
-/* eslint-disable indent */
-/* eslint-disable react/prop-types */
+import PropTypes from "prop-types";
 import { useEffect, useState, useRef, memo } from "react";
 import { Modal } from "bootstrap";
 import { apiServiceAdmin } from "../../apiService/apiService";
@@ -109,16 +108,16 @@ const ProductEditModal = (props) => {
       };
       let path = "";
       switch (type) {
-        case "create":
-          path = `/api/${APIPath}/admin/product`;
-          await apiServiceAdmin.axiosPostAddProduct(path, wrapData);
-          break;
-        case "edit":
-          path = `/api/${APIPath}/admin/product/${modalProduct.id}`;
-          await apiServiceAdmin.axiosPutProduct(path, wrapData);
-          break;
-        default:
-          break;
+      case "create":
+        path = `/api/${APIPath}/admin/product`;
+        await apiServiceAdmin.axiosPostAddProduct(path, wrapData);
+        break;
+      case "edit":
+        path = `/api/${APIPath}/admin/product/${modalProduct.id}`;
+        await apiServiceAdmin.axiosPutProduct(path, wrapData);
+        break;
+      default:
+        break;
       }
       return true;
     } catch (error) {
@@ -403,13 +402,13 @@ const ProductEditModal = (props) => {
                 {modalProduct.imagesUrl.length < 5 &&
                   modalProduct.imagesUrl[modalProduct.imagesUrl.length - 1] !==
                     "" && (
-                    <button
-                      className="btn btn-outline-primary btn-sm w-50"
-                      onClick={(e) => handleAddImage(e.target.value)}
-                    >
+                  <button
+                    className="btn btn-outline-primary btn-sm w-50"
+                    onClick={(e) => handleAddImage(e.target.value)}
+                  >
                       新增圖片
-                    </button>
-                  )}
+                  </button>
+                )}
                 {modalProduct.imagesUrl.length > 1 && (
                   <button
                     className="btn btn-outline-danger btn-sm w-50"
@@ -443,5 +442,12 @@ const ProductEditModal = (props) => {
     </>
   );
 };
-
+ProductEditModal.propTypes = {
+  editProduct:PropTypes.object,
+  setModalMode:PropTypes.func,
+  modalMode:PropTypes.string,
+  isProductEditModalOpen:PropTypes.bool,
+  setIsProductEditModalOpen:PropTypes.func,
+  getProductData:PropTypes.func,
+};
 export default memo(ProductEditModal);

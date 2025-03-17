@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { apiService } from "../../apiService/apiService";
 
@@ -93,5 +93,17 @@ const Product = (props) => {
     </tr>
   </>
   );
+};
+
+Product.propTypes = {
+  product:PropTypes.shape({
+    id:PropTypes.string,
+    origin_price:PropTypes.number,
+    price:PropTypes.number,
+    imageUrl:PropTypes.string,
+    title:PropTypes.string
+  }).isRequired, 
+  handleSeeMore:PropTypes.func.isRequired,
+  setIsLoading:PropTypes.func.isRequired 
 };
 export default Product;

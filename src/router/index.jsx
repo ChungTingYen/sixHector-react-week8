@@ -24,7 +24,7 @@ const routes = [
     path: "/",
     element: <FrontLayout />,
     children: [
-      { path: "", element: <HomePage /> },
+      { index:true, element: <HomePage /> },
       {
         path: "products",
         element: <ProductsPage />,
@@ -52,7 +52,7 @@ const routes = [
     path: "admin",
     element: <BackLayout />,
     children: [
-      { path: "", element: <AdminHomePage /> },
+      { index: true, element: <AdminHomePage /> },
       { path: "productList", element: <ProductLitPage /> },
       { path: "orderList", element: <OrderListPage /> },
       { path: "couponList", element: <CouponListPage /> },

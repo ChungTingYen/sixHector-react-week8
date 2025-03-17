@@ -1,5 +1,4 @@
-/* eslint-disable indent */
-/* eslint-disable react/prop-types */
+import PropTypes from "prop-types";
 import { useEffect, useState, useRef, memo } from "react";
 import { Modal } from "bootstrap";
 import { apiServiceAdmin } from "../../apiService/apiService";
@@ -55,16 +54,16 @@ const CouponEditModal = (props) => {
       };
       let path = "";
       switch (type) {
-        case "create":
-          path = `/api/${APIPath}/admin/coupon`;
-          await apiServiceAdmin.axiosPostAddProduct(path, wrapData);
-          break;
-        case "edit":
-          path = `/api/${APIPath}/admin/coupon/${modalCoupon.id}`;
-          await apiServiceAdmin.axiosPutProduct(path, wrapData);
-          break;
-        default:
-          break;
+      case "create":
+        path = `/api/${APIPath}/admin/coupon`;
+        await apiServiceAdmin.axiosPostAddProduct(path, wrapData);
+        break;
+      case "edit":
+        path = `/api/${APIPath}/admin/coupon/${modalCoupon.id}`;
+        await apiServiceAdmin.axiosPutProduct(path, wrapData);
+        break;
+      default:
+        break;
       }
       return true;
     } catch (error) {
@@ -141,7 +140,7 @@ const CouponEditModal = (props) => {
 
               <div className="row g-4">
                 <div className="col-md-12">
-                   <div className="mb-3">
+                  <div className="mb-3">
                     <label htmlFor="title" className="form-label">
                       名稱
                     </label>
@@ -239,5 +238,12 @@ const CouponEditModal = (props) => {
     </>
   );
 };
-
+CouponEditModal.propTypes = {
+  editData:PropTypes.object,
+  setModalMode:PropTypes.func,
+  modalMode:PropTypes.string,
+  getData:PropTypes.func,
+  isEditModalOpen:PropTypes.bool,
+  setIsEditModalOpen:PropTypes.func,
+};
 export default memo(CouponEditModal);

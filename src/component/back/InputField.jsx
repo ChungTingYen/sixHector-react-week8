@@ -1,6 +1,5 @@
-
+import PropTypes from "prop-types";
 const InputField = (props) => {
-  // eslint-disable-next-line react/prop-types
   const { label, name, type, value, onChange, checked } = props;
   return (
     <>
@@ -44,5 +43,17 @@ const InputField = (props) => {
       )}
     </>
   );
+};
+InputField.propTypes = {
+  label:PropTypes.string,
+  name:PropTypes.string, 
+  type:PropTypes.string, 
+  value:PropTypes.string,
+  onChange:PropTypes.func,
+  checked: PropTypes.oneOfType([
+    PropTypes.bool, 
+    PropTypes.number, 
+  ])// 如果必須傳入這個屬性
+ 
 };
 export default InputField;

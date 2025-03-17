@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from "prop-types";
 import { useRef, useEffect, useState } from "react";
 import ReactLoading from "react-loading";
 import { apiService } from "../../apiService/apiService";
@@ -201,5 +201,10 @@ const ProductModal = (props) => {
       />
     </>
   );
+};
+ProductModal.propTypes = {
+  tempProduct:PropTypes.object,
+  setIsProductModalOpen:PropTypes.func.isRequired,
+  isProductModalOpen:PropTypes.func,
 };
 export default ProductModal;

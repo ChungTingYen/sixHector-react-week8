@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from "prop-types";
 import { apiService } from "../../apiService/apiService";
 const APIPath = import.meta.env.VITE_API_PATH;
 import { useDispatch } from "react-redux";
@@ -121,6 +121,22 @@ const Carts = (props) => {
       </tr>
     </>
   );
+};
+Carts.propTypes = {
+  cart: PropTypes.shape({
+    id: PropTypes.string,
+    qty: PropTypes.number, 
+    total: PropTypes.number,
+    product: PropTypes.shape({
+      title: PropTypes.string,
+      imageUrl: PropTypes.string,
+      unit: PropTypes.string,
+      id: PropTypes.string
+    }).isRequired
+  }).isRequired,
+  handleDeleteCart: PropTypes.func.isRequired,
+  setIsLoading: PropTypes.func.isRequired,
+  setReload: PropTypes.func.isRequired,
 };
 
 export default Carts;

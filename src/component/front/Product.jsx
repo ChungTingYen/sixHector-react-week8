@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { apiService } from "../../apiService/apiService";
 const APIPath = import.meta.env.VITE_API_PATH;
@@ -46,7 +46,6 @@ const Product = (props) => {
       updateToastInfo("已從心願清單移除", "success", true);
       setWishList((prev) =>
         prev.filter((item) => {
-          console.log(item);
           return item.includes(newWishList);
         })
       );
@@ -64,10 +63,10 @@ const Product = (props) => {
         <div
           className="card border-0 mx-auto"
           style={{
-            width: "100%",
-            height: "100%",
-            maxWidth: "500px",
-            maxHeight: "500px",
+            // width: "100%",
+            // height: "100%",
+            width: "350px",
+            height: "500px",
           }}
         >
           <a
@@ -132,5 +131,11 @@ const Product = (props) => {
       </div>
     </>
   );
+};
+Product.propTypes = {
+  product:PropTypes.object,
+  setIsLoading:PropTypes.func.isRequired,
+  wishList:PropTypes.array,
+  setWishList:PropTypes.func.isRequired
 };
 export default memo(Product);

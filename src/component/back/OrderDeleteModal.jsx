@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from "prop-types";
 import { useEffect, useRef } from "react";
 import { Modal } from "bootstrap";
 import { apiServiceAdmin } from "../../apiService/apiService";
@@ -115,3 +115,10 @@ export default function OrderDeleteModal(props) {
     </>
   );
 }
+OrderDeleteModal.propTypes = {
+  editProduct:PropTypes.object,
+  setModalMode:PropTypes.func,
+  isProductDeleteModalOpen:PropTypes.bool,
+  setIsProductDeleteModalOpen:PropTypes.func,
+  getData:PropTypes.func,
+};

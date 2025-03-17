@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from "prop-types";
 import { useRef, useState, useEffect, Fragment, useCallback } from "react";
 import { Modal } from "bootstrap";
 function OrderEditModal(props) {
@@ -152,4 +152,10 @@ function OrderEditModal(props) {
     </>
   );
 }
+OrderEditModal.propTypes = {
+  editProduct:PropTypes.object,
+  setModalMode:PropTypes.func,
+  isModalOpen:PropTypes.bool, 
+  setIsModalOpen:PropTypes.func
+};
 export default OrderEditModal;

@@ -1,9 +1,9 @@
-/* eslint-disable react-hooks/rules-of-hooks */
+
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const WithLoginCheck = (Component)=>{
-  return function checkIsloginOnNavLink(props){
+  return function CheckIsloginOnNavLink(props){
     const navigate = useNavigate();
     const isLogin = useSelector(state=>state.loginAtStore.isLogin);
     console.log('WithLoginCheck');

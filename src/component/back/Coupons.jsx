@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from "prop-types";
 import { memo } from "react";
 const Coupons = (props) => {
   const {
@@ -64,5 +64,15 @@ const Coupons = (props) => {
     </>
   );
 };
-
+Coupons.propTypes = {
+  index:PropTypes.number,
+  id:PropTypes.string,
+  code:PropTypes.string,
+  title:PropTypes.string,
+  due_date:PropTypes.number,
+  percent:PropTypes.number,
+  is_enabled:PropTypes.number,
+  handleDeleteModal:PropTypes.func,
+  handleOpenEditModalWithValue:PropTypes.func,
+};
 export default memo(Coupons);
