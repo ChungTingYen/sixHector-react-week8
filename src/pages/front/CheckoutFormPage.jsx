@@ -35,9 +35,12 @@ export default function CheckoutFormPage() {
         <div className="container">
           <div className="row justify-content-center ">
             <div className="col-md-10 d-flex d-flex align-items-center justify-content-between">
-              <div className="fw-bold">訂購流程</div>
               <div>
                 <ul className="list-unstyled mb-0 ms-md-auto d-flex align-items-center justify-content-between justify-content-md-end w-100 mt-md-0 mt-4">
+                  <li className="me-md-6 me-3 position-relative custom-step-line">
+                    <i className="fas fa-check-circle d-md-inline d-block text-center"></i>
+                    <span className="text-nowrap ms-1">訂購開始</span>
+                  </li>
                   <li className="me-md-6 me-3 position-relative custom-step-line">
                     <i className="fas fa-check-circle d-md-inline d-block text-center"></i>
                     <span className="text-nowrap ms-1">購物車</span>

@@ -237,7 +237,7 @@ export default function ProductListsPage() {
         </div>
         <div className="d-flex align-items-center mt-2">
           <div className="">
-            測試功能:搜尋此頁商品名稱:
+            搜尋此頁商品名稱:
             <input
               type="search"
               style={{ width: "100px" }}
@@ -264,7 +264,7 @@ export default function ProductListsPage() {
             />
           </div>
           <div className="me-2 mx-1 ms-5">
-            測試功能:Desbounce for category:
+            搜尋category:
             <input
               type="search"
               style={{ width: "200px" }}

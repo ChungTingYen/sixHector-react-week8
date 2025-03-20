@@ -6,7 +6,7 @@ export default function Header() {
   const routes = [
     // { path: "/", name: "首頁", id: "home" },
     { path: "/products", name: "產品列表", id: "products" },
-    { path: "/cart", name: "購物車/訂購者資料", id: "cart" },
+    // { path: "/cart", name: "購物車/訂購者資料", id: "cart" },
     { path: "/wishList", name: "心願清單", id: "wishList" },
     { path: "/cart", name: "購物車", id: "cartSign" },
     { path: "/orderList", name: "訂單清單", id: "orderList" },

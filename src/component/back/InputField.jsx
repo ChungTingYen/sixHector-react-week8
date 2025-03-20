@@ -4,7 +4,7 @@ const InputField = (props) => {
   return (
     <>
       {type === "checkbox" ? (
-        <>
+        <div className="mb-3">
           <input
             name={name}
             id={name}
@@ -24,9 +24,9 @@ const InputField = (props) => {
           >
             目前狀態:{checked ? "已付款" : "未付款"}
           </span>
-        </>
+        </div>
       ) : (
-        <>
+        <div className="mb-3">
           <label htmlFor={name} className="form-label text-primary fw-bold">
             {label}
           </label>
@@ -39,7 +39,7 @@ const InputField = (props) => {
             value={type === "checkbox" ? undefined : value}
             onChange={onChange}
           />
-        </>
+        </div>
       )}
     </>
   );

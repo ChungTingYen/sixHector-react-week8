@@ -171,73 +171,77 @@ function OrderEditModal(props) {
                 // data-bs-dismiss="modal"
               ></button>
             </div>
-            <div className="modal-body">
-              <p>客戶資料:</p>
-              {userColumn.map((column) => (
-                <InputField
-                  key={column.name}
-                  label={column.label}
-                  name={column.name}
-                  type={column.type}
-                  checked={column.checked}
-                  value={column.value}
-                  onChange={handleEditDataChange}
-                />
-              ))}
-              <div className="mb-3">
-                <label htmlFor="unit" className="form-label">
+            <div className="modal-body p-4">
+              <div className="row g-4">
+                <div className="col-md-12">
+                  <p>客戶資料:</p>
+                  {userColumn.map((column) => (
+                    <InputField
+                      key={column.name}
+                      label={column.label}
+                      name={column.name}
+                      type={column.type}
+                      checked={column.checked}
+                      value={column.value}
+                      onChange={handleEditDataChange}
+                    />
+                  ))}
+                  <div className="mb-3">
+                    <label htmlFor="unit" className="form-label">
                   客戶的留言:
-                </label>
-                <span>{modalOrder.data?.message}</span>
-              </div>
-              <hr />
-              <div className="mb-3">
-                <span className="text-success fw-bold">訂購商品資料:</span>
-                {Object.entries(modalOrder.data?.products).map(
-                  ([key, value], index) => (
-                    <Fragment key={key}>
-                      <div className="mb-3">
-                        <div>
-                          <span className="text-primary fw-bold">訂購商品{index + 1}:</span>
-                        </div>
-                        <label className="form-label">Order list id</label>
-                        <input
-                          name={key}
-                          id={key}
-                          type="text"
-                          className="form-control"
-                          value={key}
-                          disabled
-                        />
-                      </div>
-                      <div className="mb-3">
-                        <label className="form-label">Product id</label>
-                        <input
-                          name={value.product_id}
-                          id={value.product_id}
-                          type="text"
-                          className="form-control"
-                          value={value.product_id}
-                          disabled
-                        />
-                      </div>
-                      <div className="mb-3">
-                        <label htmlFor={`qty${index}`} className="form-label">
+                    </label>
+                    <span>{modalOrder.data?.message}</span>
+                  </div>
+                  <hr />
+                  <div className="mb-3">
+                    <span className="text-success fw-bold">訂購商品資料:</span>
+                    {Object.entries(modalOrder.data?.products).map(
+                      ([key, value], index) => (
+                        <Fragment key={key}>
+                          <div className="mb-3 mt-3">
+                            <div  className="mb-3 mt-1">
+                              <span className="text-primary fw-bold">訂購商品{index + 1}:</span>
+                            </div>
+                            <label className="form-label">Order list id</label>
+                            <input
+                              name={key}
+                              id={key}
+                              type="text"
+                              className="form-control"
+                              value={key}
+                              disabled
+                            />
+                          </div>
+                          <div className="mb-3">
+                            <label className="form-label">Product id</label>
+                            <input
+                              name={value.product_id}
+                              id={value.product_id}
+                              type="text"
+                              className="form-control"
+                              value={value.product_id}
+                              disabled
+                            />
+                          </div>
+                          <div className="mb-3">
+                            <label htmlFor={`qty${index}`} className="form-label">
                           qty
-                        </label>
-                        <input
-                          name={`qty${index}`}
-                          id={`qty${index}`}
-                          type="number"
-                          className="form-control"
-                          value={value.qty}
-                          onChange={(e) => handleEditDataChange(e, key)}
-                        />
-                      </div>
-                      <hr />
-                    </Fragment>
-                  )
-                )}
+                            </label>
+                            <input
+                              name={`qty${index}`}
+                              id={`qty${index}`}
+                              type="number"
+                              className="form-control"
+                              value={value.qty}
+                              onChange={(e) => handleEditDataChange(e, key)}
+                            />
+                          </div>
+                          <hr />
+                        </Fragment>
+                      )
+                    )}
+                  </div>
+                </div>
               </div>
               <div className="modal-footer border-top bg-light">
                 <button
