@@ -2,6 +2,8 @@
 import { useEffect, useState, useCallback } from "react";
 import { apiService } from "../../apiService/apiService";
 import { Product, LoadingOverlay, Pagination } from "../../component/front";
+import { getWishList as wishListSlice } from '../../slice/wishListSlice';
+import { useDispatch, useSelector } from "react-redux";
 const APIPath = import.meta.env.VITE_API_PATH;
 
 export default function ProductsPage() {
@@ -12,11 +14,8 @@ export default function ProductsPage() {
   const [category, setCategory] = useState(["全部"]);
   const [selectedCategory, setSelectedCategory] = useState("全部");
   const [wishList, setWishList] = useState([]);
-
-  const getWishList = () => {
-    const wishListStorage = JSON.parse(localStorage.getItem("wishList")) || {};
-    setWishList(Object.keys(wishListStorage));
-  };
+  const dispatch = useDispatch();
+  const wishContent = useSelector((state) => state.wishListAtStore);
 
   const getProducts = useCallback(async (page = 1) => {
     setIsLoading(true);
@@ -44,10 +43,18 @@ export default function ProductsPage() {
   const scroll = () => {
     window.scrollTo(0, 200);
   };
+  const getWishList = useCallback(() => {
+    dispatch(wishListSlice());
+  },[dispatch,]);
   useEffect(() => {
     getCategory();
     getWishList();
-  }, []);
+  }, [getWishList]);
+  useEffect(() => {
+    setWishList(Object.keys(wishContent));
+    console.log('setWishList');
+  }, [wishContent]);
+
   useEffect(() => {
     const fetchData = async () => {
       await getProducts();
@@ -55,8 +62,6 @@ export default function ProductsPage() {
     };
     fetchData();
   }, [getProducts]);
-
-  // useEffect(() => console.log("wishList:", wishList));
 
   const handleToggle = (id) => {
     // 找到目標對象

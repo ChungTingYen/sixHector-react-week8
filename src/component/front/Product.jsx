@@ -46,7 +46,7 @@ const Product = (props) => {
       updateToastInfo("已從心願清單移除", "success", true);
       setWishList((prev) =>
         prev.filter((item) => {
-          return item.includes(newWishList);
+          return newWishList[item];;
         })
       );
     }
