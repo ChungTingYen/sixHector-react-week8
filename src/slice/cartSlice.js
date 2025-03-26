@@ -6,10 +6,12 @@ export const cartSlice = createSlice({
   cartDefaultValue,
   reducers:{
     updateCartSlice(state,action){
-      const { carts,total,final_total } = action.payload;
-      return {
-        ...state,carts,total,final_total
-      };
+      return action.payload;
+      //等義
+      // const { carts,total,final_total } = action.payload;
+      // return {
+      //   ...state,carts,total,final_total
+      // };
       //等義
       // state.carts = carts;
       // state.total = total;

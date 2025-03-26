@@ -11,10 +11,12 @@ const Carts = (props) => {
   // const updateCartSign = useGetCart(updateCartSlice);
   const handleIncreDecreProduct = async (cartId, type) => {
     setIsLoading(true);
+    console.log('cart.product.id:',cart.product.id);
+    console.log('cart.id:',cart.id);
     try {
       const putData = {
         data: {
-          product_id: cart.product.id,
+          product_id: cart.product_id,
           qty: type === "+" ? cart.qty + 1 : cart.qty - 1,
         },
       };
@@ -117,6 +119,7 @@ Carts.propTypes = {
     id: PropTypes.string,
     qty: PropTypes.number, 
     total: PropTypes.number,
+    product_id:PropTypes.number,
     product: PropTypes.shape({
       title: PropTypes.string,
       imageUrl: PropTypes.string,
