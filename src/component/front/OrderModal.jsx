@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { useRef, useEffect, useState } from "react";
 import { Modal } from "bootstrap";
 import { useNavigatePage } from "../../hook";
+import { Link } from "react-router-dom";
 
 const OrderModal = (props) => {
   const { tempProduct, setIsProductModalOpen, isProductModalOpen } = props;
@@ -20,6 +21,7 @@ const OrderModal = (props) => {
   };
   const linkToPayment = () => {
     closeProductModal();
+    console.log('modalProduct.id:',modalProduct.id);   
     navigate(`/payment/${modalProduct.id}`);
   };
   useEffect(() => {
@@ -153,7 +155,6 @@ const OrderModal = (props) => {
                 </button>
                 {modalProduct !== undefined && !modalProduct.is_paid && (
                   <button
-                    to="/payment"
                     className="btn btn-primary"
                     onClick={linkToPayment}
                   >
