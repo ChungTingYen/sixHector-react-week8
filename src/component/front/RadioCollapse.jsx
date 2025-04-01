@@ -38,6 +38,7 @@ const RadioCollapse = (props) => {
                   className="form-control"
                   id={content.id}
                   placeholder={content.placeholder}
+                  defaultValue=''
                 />
               </div>
             ))}

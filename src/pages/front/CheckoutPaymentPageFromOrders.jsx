@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 
 export default function CheckoutPaymentPageFromOrders() {
   const contentRef = useRef([]);
+  const paymentRef = useRef([]);
   const { id: inputId } = useParams();
   const [activeKey, setActiveKey] = useState("0");
   const [isLoading, setIsLoading] = useState(true);
@@ -37,8 +38,37 @@ export default function CheckoutPaymentPageFromOrders() {
     },
     [activeKey]
   );
-
+  const checkPayment = ()=>{
+    let checkIsOK = true;
+    const checkItem = paymentRef.current.filter((item)=>item.id === parseInt(activeKey));
+    if(checkItem.length === 0) {
+      updateToast('錯誤:沒有取得結帳方式', "secondary", true);
+      checkIsOK = false;
+      return checkIsOK;
+    }
+    checkItem.map((item)=>{
+      item.check.map((checkObj)=>{
+        let isCheckObjValid = true;
+        Object.entries(checkObj).forEach(([_,inputElment])=>{
+          if(inputElment instanceof HTMLInputElement){
+            const regex = checkObj.regex;
+            if(regex instanceof RegExp && !regex.test(inputElment.value)){
+              isCheckObjValid = false;
+            }
+          }
+          if (!isCheckObjValid) {
+            checkIsOK = false;
+          }
+        });
+      });
+    });
+    if(!checkIsOK)
+      updateToast(`${checkItem[0].title} 輸入錯誤`, "secondary", true);
+    return checkIsOK;
+  };
   const handlePay = async () => {
+    if(!checkPayment())
+      return ;
     setIsLoading(true);
     try {
       const {
@@ -57,7 +87,42 @@ export default function CheckoutPaymentPageFromOrders() {
       setIsLoading(false);
     }
   };
-
+  useEffect(()=>{
+    const credit = document.querySelector('#credit');
+    if(credit)
+      credit.classList.add("show");
+  },[]);
+  useEffect(()=>{
+    const creditNumberInput = document.querySelector('#creditNumber');
+    const creditLast3NumberInput = document.querySelector('#creditLast3Number');
+    const applePayInput  = document.querySelector('#applePayNumber');
+    const newItem0 = {
+      id:0,
+      title:'信用卡',
+      check:[
+        { creditNumberInput:creditNumberInput,regex :/^\d{12}$/ },
+        { creditLast3Number:creditLast3NumberInput,regex :/^\d{3}$/ }]
+    };
+    paymentRef.current[0] = newItem0; 
+    const newItem1 = {
+      id:1,
+      title:'Apple Pay',
+      check:[{ applePayNumber: applePayInput, regex :/^\d{12}$/ }]
+    };
+    paymentRef.current[1] = newItem1; 
+  },[]);
+  useEffect(()=>{
+    paymentRef.current.filter((title)=>title.id !== parseInt(activeKey))
+      .map((item)=>{
+        item.check.map((checkItem)=>{
+          Object.keys(checkItem).forEach((key) => {
+            if (checkItem[key] instanceof HTMLInputElement) {
+              checkItem[key].value = ''; // 清空 HTMLInputElement 的 value
+            } 
+          });
+        });
+      });
+  },[activeKey]);
   useEffect(() => {
     const getOrder = async () => {
       setIsLoading(true);
@@ -183,10 +248,10 @@ export default function CheckoutPaymentPageFromOrders() {
                   handleToggle={handleToggle}
                   title="Apple Pay"
                   contentRef={contentRef}
-                  id="ApplePay"
+                  id="applePay"
                   contents={[
                     {
-                      id: "ApplePay",
+                      id: "applePayNumber",
                       title: "號碼",
                       placeholder: "123456789012",
                     },
@@ -196,9 +261,9 @@ export default function CheckoutPaymentPageFromOrders() {
                   index="2"
                   activeKey={activeKey}
                   handleToggle={handleToggle}
-                  title="Line Pay"
+                  title="line Pay"
                   contentRef={contentRef}
-                  id="LinePay"
+                  id="linePay"
                   contents={[]}
                 />
               </div>
