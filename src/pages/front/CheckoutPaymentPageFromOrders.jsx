@@ -88,59 +88,64 @@ export default function CheckoutPaymentPageFromOrders() {
     }
   };
   useEffect(()=>{
-    const credit = document.querySelector('#credit');
-    if(credit)
-      credit.classList.add("show");
+    (function(){
+      const credit = document.querySelector('#credit');
+      if(credit)
+        credit.classList.add("show");
+    })();
   },[]);
   useEffect(()=>{
-    const creditNumberInput = document.querySelector('#creditNumber');
-    const creditLast3NumberInput = document.querySelector('#creditLast3Number');
-    const applePayInput  = document.querySelector('#applePayNumber');
-    const newItem0 = {
-      id:0,
-      title:'信用卡',
-      check:[
-        { creditNumberInput:creditNumberInput,regex :/^\d{12}$/ },
-        { creditLast3Number:creditLast3NumberInput,regex :/^\d{3}$/ }]
-    };
-    paymentRef.current[0] = newItem0; 
-    const newItem1 = {
-      id:1,
-      title:'Apple Pay',
-      check:[{ applePayNumber: applePayInput, regex :/^\d{12}$/ }]
-    };
-    paymentRef.current[1] = newItem1; 
+    (function(){
+      const creditNumberInput = document.querySelector('#creditNumber');
+      const creditLast3NumberInput = document.querySelector('#creditLast3Number');
+      const applePayInput  = document.querySelector('#applePayNumber');
+      const newItem0 = {
+        id:0,
+        title:'信用卡',
+        check:[
+          { creditNumberInput:creditNumberInput,regex :/^\d{12}$/ },
+          { creditLast3Number:creditLast3NumberInput,regex :/^\d{3}$/ }]
+      };
+      paymentRef.current[0] = newItem0; 
+      const newItem1 = {
+        id:1,
+        title:'Apple Pay',
+        check:[{ applePayNumber: applePayInput, regex :/^\d{12}$/ }]
+      };
+      paymentRef.current[1] = newItem1; 
+    })();
   },[]);
   useEffect(()=>{
-    paymentRef.current.filter((title)=>title.id !== parseInt(activeKey))
-      .map((item)=>{
-        item.check.map((checkItem)=>{
-          Object.keys(checkItem).forEach((key) => {
-            if (checkItem[key] instanceof HTMLInputElement) {
-              checkItem[key].value = ''; // 清空 HTMLInputElement 的 value
-            } 
+    (function(){
+      paymentRef.current.filter((title)=>title.id !== parseInt(activeKey))
+        .map((item)=>{
+          item.check.map((checkItem)=>{
+            Object.keys(checkItem).forEach((key) => {
+              if (checkItem[key] instanceof HTMLInputElement) {
+                checkItem[key].value = ''; // 清空 HTMLInputElement 的 value
+              } 
+            });
           });
         });
-      });
+    })();
   },[activeKey]);
+  const getOrder = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const {
+        data: { order },
+      } = await apiService.axiosGet(`/api/${APIPath}/order/${inputId}`);
+      setGoods(order);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  },[inputId]);
   useEffect(() => {
-    const getOrder = async () => {
-      setIsLoading(true);
-      try {
-        const {
-          data: { order },
-        } = await apiService.axiosGet(`/api/${APIPath}/order/${inputId}`);
-        setGoods(order);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
     if(firstLoadRef.current)
       getOrder(inputId);
-  }, [inputId]);
-
+  }, [inputId,getOrder]);
   return (
     <>
       <div className="container-fluid">

@@ -1,8 +1,7 @@
 import PropTypes, { shape } from "prop-types";
 import { useRef, } from "react";
 const RadioCollapse = (props) => {
-  const { index, activeKey, handleToggle, title, id, contentRef, contents } =
-      props;
+  const { index, activeKey, handleToggle, title, id, contentRef, contents } = props;
   const radioRef = useRef(null);
   return (
     <div className="card rounded-0" onClick={() => radioRef.current && radioRef.current.click()}> 
