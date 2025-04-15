@@ -1,10 +1,11 @@
 import PropTypes from "prop-types";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { apiService } from "../../apiService/apiService";
 import { registerRules } from "../../data/data";
 const APIPath = import.meta.env.VITE_API_PATH;
 import { useToast } from "../../hook";
 import { Link } from "react-router-dom";
+import { forwardRef, } from "react";
 const Input = (props) => {
   const { label, id, name, type, placeholder, register, rules, errors } = props;
   return (
@@ -16,7 +17,7 @@ const Input = (props) => {
         id={id}
         name={name}
         type={type}
-        className={`form-control ${errors[id] && "is-invalid"}`}
+        className={`form-control ${errors?.[id] && "is-invalid"}`}
         placeholder={placeholder}
         {...register(id, rules)}
       />
@@ -24,6 +25,31 @@ const Input = (props) => {
     </div>
   );
 };
+//使用Contoller建議使用forwardRef因為field會把ref傳進來
+//不然就是把ref過濾掉不傳進來
+const CustomInput = forwardRef((props,ref)=>{
+  const { label, type, placeholder, errors,name,onChange,onBlur,value, } = props;
+  return (
+    <div className="mb-3">
+      <label htmlFor={name} className="form-label">
+        {label}
+      </label>
+      <input
+        id={name}
+        name={name}
+        type={type}
+        className={`form-control ${errors?.[name] && "is-invalid"}`}
+        placeholder={placeholder}
+        onChange={onChange}
+        onBlur={onBlur}
+        value={value}
+        ref={ref}
+      />
+      {errors?.[name] && <p className="text-danger my-2">{errors[name]?.message}</p>}
+    </div>
+  );
+});
+
 // 定義 Input 的 propTypes
 Input.propTypes = {
   label: PropTypes.string.isRequired,        // 必填，字串類型
@@ -35,6 +61,17 @@ Input.propTypes = {
   rules: PropTypes.object,                   // 選填，物件類型
   errors: PropTypes.object                   // 選填，物件類型
 };
+CustomInput.displayName = "CustomInput";
+CustomInput.propTypes = {
+  label: PropTypes.string.isRequired,        // 必填，字串類型
+  name: PropTypes.string.isRequired,         // 必填，字串類型
+  type: PropTypes.string.isRequired,         // 必填，字串類型
+  placeholder: PropTypes.string,   
+  errors: PropTypes.object,  
+  value:PropTypes.string.isRequired,
+  onChange:PropTypes.func.isRequired,
+  onBlur:PropTypes.func.isRequired
+};
 const CustomerInfo = (props) => {
   const { setIsLoading, setReload } = props;
   const updateToast = useToast();
@@ -43,6 +80,7 @@ const CustomerInfo = (props) => {
     handleSubmit,
     formState: { errors, isValid },
     reset,
+    control
   } = useForm({
     defaultValues: {
       name: "",
@@ -82,6 +120,17 @@ const CustomerInfo = (props) => {
   return (
     <>
       <form onSubmit={onSubmit}>
+        <Controller name="tel" control={control} rules={registerRules.tel}
+          render={({ field })=> {
+            const { ref,...rest } = field;
+            return <CustomInput 
+              label="收件人手機"
+              type="tel"
+              placeholder="請輸入手機" 
+              errors={errors} 
+              {...rest}
+            />;
+          }}/>
         <Input
           label="收件人姓名"
           id="name"
@@ -102,7 +151,7 @@ const CustomerInfo = (props) => {
           rules={registerRules.email}
           errors={errors}
         />
-        <Input
+        {/* <Input
           label="收件人電話"
           id="tel"
           type="tel"
@@ -111,7 +160,7 @@ const CustomerInfo = (props) => {
           register={register}
           rules={registerRules.tel}
           errors={errors}
-        />
+        /> */}
         <Input
           label="收件人地址"
           id="address"
@@ -122,6 +171,7 @@ const CustomerInfo = (props) => {
           rules={registerRules.address}
           errors={errors}
         />
+        
         <div className="mb-3">
           <label htmlFor="message" className="text-muted mb-0">
             備註
